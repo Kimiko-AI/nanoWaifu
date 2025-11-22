@@ -101,13 +101,11 @@ class xFlowMatching(nn.Module):
             t_curr_expanded = t_curr.repeat(shape[0])
             
             if cfg_scale > 1.0 and context is not None and null_context is not None:
-                # CFG Batching: [Uncond, Cond]
-                z_in = torch.cat([z, z], dim=0)
-                t_in = torch.cat([t_curr_expanded, t_curr_expanded], dim=0)
-                context_in = torch.cat([null_context, context], dim=0)
+                # Predict Unconditional
+                x_pred_uncond = self.net(z, t_curr_expanded, null_context)
                 
-                x_pred_all = self.net(z_in, t_in, context_in)
-                x_pred_uncond, x_pred_cond = x_pred_all.chunk(2, dim=0)
+                # Predict Conditional
+                x_pred_cond = self.net(z, t_curr_expanded, context)
                 
                 x_pred = x_pred_uncond + cfg_scale * (x_pred_cond - x_pred_uncond)
             else:

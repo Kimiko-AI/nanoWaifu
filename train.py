@@ -196,15 +196,12 @@ class Trainer:
                 # Expand t for batch
                 t_curr_expanded = t_curr.repeat(shape[0])
                 
-                # --- CFG Batching ---
-                # We concatenate [Uncond, Cond] for efficient processing
-                z_in = torch.cat([z, z], dim=0)
-                t_in = torch.cat([t_curr_expanded, t_curr_expanded], dim=0)
-                text_in = torch.cat([uncond_emb, text_emb], dim=0)
+                # --- CFG (No Batching) ---
+                # Predict Unconditional
+                x_pred_uncond = self.model(z, t_curr_expanded, uncond_emb)
                 
-                # Model Prediction
-                x_pred_all = self.model(z_in, t_in, text_in)
-                x_pred_uncond, x_pred_cond = x_pred_all.chunk(2, dim=0)
+                # Predict Conditional
+                x_pred_cond = self.model(z, t_curr_expanded, text_emb)
                 
                 # Apply Guidance
                 # pred = uncond + scale * (cond - uncond)
