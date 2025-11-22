@@ -117,15 +117,30 @@ class Trainer:
         self.flow_helper = xFlowMatching(self.model)
 
     def encode_prompt(self, prompt_batch, proportion_empty_prompts, is_train=True):
-        captions = []
-        for caption in prompt_batch:
-            if random.random() < proportion_empty_prompts:
-                captions.append("")
-            elif isinstance(caption, str):
-                captions.append(caption)
-            elif isinstance(caption, (list, np.ndarray)):
-                # take a random caption if there are multiple
-                captions.append(random.choice(caption) if is_train else caption[0])
+        # Batch processing of captions
+        if isinstance(prompt_batch[0], (list, np.ndarray)):
+            if is_train:
+                captions = [random.choice(p) for p in prompt_batch]
+            else:
+                captions = [p[0] for p in prompt_batch]
+        else:
+            captions = list(prompt_batch)
+
+        # Whole batch dropout
+        if is_train and random.random() < proportion_empty_prompts:
+            # Create zeros directly - skipping text encoder
+            B = len(captions)
+            # Calculate Context Dimension: text_encoder.hidden_size * 4
+            D = self.text_encoder.config.hidden_size * 4
+            
+            # Robust dtype fetching
+            try:
+                dtype = self.raw_model.patch_embed[0].weight.dtype
+            except:
+                dtype = torch.bfloat16
+            
+            # Return (B, 1, D) - L=1 is sufficient for zero-attention
+            return torch.zeros(B, 1, D, device=self.target_device, dtype=dtype), None
 
         text_inputs = self.tokenizer(
             captions,
@@ -157,7 +172,7 @@ class Trainer:
             prompt_embeds = prompt_embeds.permute(1, 2, 0, 3).reshape(prompt_embeds.size(1), prompt_embeds.size(2), -1)
 
             # Cast to model dtype
-            prompt_embeds = prompt_embeds.to(dtype=self.raw_model.final_proj.weight.dtype)
+            prompt_embeds = prompt_embeds.to(dtype=self.raw_model.patch_embed[0].weight.dtype)
 
         return prompt_embeds, prompt_masks
 
@@ -177,9 +192,9 @@ class Trainer:
             # Conditional Embeddings
             text_emb, _ = self.encode_prompt(prompts, proportion_empty_prompts=0.0, is_train=False)
             
-            # Unconditional Embeddings (Empty strings)
-            uncond_prompts = [""] * len(prompts)
-            uncond_emb, _ = self.encode_prompt(uncond_prompts, proportion_empty_prompts=0.0, is_train=False)
+            # Unconditional Embeddings (zeros for CFG, fixed length 1)
+            B, L, D = text_emb.shape # L is the conditional sequence length
+            uncond_emb = torch.zeros(B, 1, D, device=text_emb.device, dtype=text_emb.dtype)
             
             H = W = self.config.image_size
             shape = (len(prompts), self.config.in_channels, H, W)
