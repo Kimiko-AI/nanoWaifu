@@ -73,13 +73,16 @@ class xFlowMatching(nn.Module):
         return loss
 
     @torch.no_grad()
-    def sample(self, shape, steps=50, device='cpu'):
+    def sample(self, shape, steps=50, device='cpu', context=None, null_context=None, cfg_scale=1.0):
         """
         Algorithm 2: Sampling step (Euler)
         Args:
             shape: Tuple of output shape (e.g., (1, 3, 32, 32))
             steps: Number of integration steps (ODE solver steps)
             device: Torch device
+            context: Conditional embeddings (e.g., text)
+            null_context: Unconditional embeddings (for CFG)
+            cfg_scale: Classifier-free guidance scale
         Returns:
             Generated sample x_pred
         """
@@ -96,12 +99,23 @@ class xFlowMatching(nn.Module):
 
             # Expand t for batch processing
             t_curr_expanded = t_curr.repeat(shape[0])
-            # (Usually network expects t to be broadcastable or handled internally)
-
-            # 1. Predict x
-            # Note: Depending on your net implementation, you might need to reshape t
-            # inside the loop similar to training.
-            x_pred = self.net(z, t_curr_expanded)
+            
+            if cfg_scale > 1.0 and context is not None and null_context is not None:
+                # CFG Batching: [Uncond, Cond]
+                z_in = torch.cat([z, z], dim=0)
+                t_in = torch.cat([t_curr_expanded, t_curr_expanded], dim=0)
+                context_in = torch.cat([null_context, context], dim=0)
+                
+                x_pred_all = self.net(z_in, t_in, context_in)
+                x_pred_uncond, x_pred_cond = x_pred_all.chunk(2, dim=0)
+                
+                x_pred = x_pred_uncond + cfg_scale * (x_pred_cond - x_pred_uncond)
+            else:
+                # Standard Sampling
+                if context is not None:
+                    x_pred = self.net(z, t_curr_expanded, context)
+                else:
+                    x_pred = self.net(z, t_curr_expanded)
 
             # 2. Derive v_pred
             # v_pred = (x_pred - z) / (1 - t)

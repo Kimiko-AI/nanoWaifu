@@ -248,14 +248,20 @@ class MinimalT2I(nn.Module):
             hidden_size=768,
             depth=12,
             num_heads=12,
-            context_dim=768
+            context_dim=768,
+            bottleneck_dim=128
     ):
         super().__init__()
         self.patch_size = patch_size
         self.hidden_size = hidden_size
 
         # 1. Input
-        self.patch_embed = nn.Conv2d(in_channels, hidden_size, kernel_size=patch_size, stride=patch_size)
+        # Bottleneck Patch Embed: (Cin -> Bottleneck) -> Norm -> (Bottleneck -> Hidden)
+        self.patch_embed = nn.Sequential(
+            nn.Conv2d(in_channels, bottleneck_dim, kernel_size=patch_size, stride=patch_size),
+            LayerNorm2d(bottleneck_dim),
+            nn.Conv2d(bottleneck_dim, hidden_size, kernel_size=1)
+        )
 
         # REMOVED: self.pos_embed (Absolute position embedding)
         # ADDED: Golden Gate RoPE
@@ -279,7 +285,13 @@ class MinimalT2I(nn.Module):
         self.initialize_weights()
 
     def initialize_weights(self):
-        nn.init.xavier_uniform_(self.patch_embed.weight)
+        # Init patch embed modules
+        for m in self.patch_embed.modules():
+            if isinstance(m, nn.Conv2d):
+                nn.init.xavier_uniform_(m.weight)
+                if m.bias is not None:
+                    nn.init.zeros_(m.bias)
+
         nn.init.xavier_uniform_(self.final_proj.weight)
         nn.init.xavier_uniform_(self.context_proj.weight)
         nn.init.constant_(self.context_proj.bias, 0)

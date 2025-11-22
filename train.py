@@ -94,7 +94,8 @@ class Trainer:
             hidden_size=self.config.hidden_size,
             depth=self.config.depth,
             num_heads=self.config.num_heads,
-            context_dim=text_hidden_dim
+            context_dim=text_hidden_dim,
+            bottleneck_dim=self.config.bottleneck_dim
         ).to(self.device)
         
         # Wrap in DDP
@@ -170,8 +171,15 @@ class Trainer:
         self.model.eval()
         print(f"\nGenerating evaluation images at step {step}...")
         
+        cfg_scale = self.config.cfg_scale
+
         with torch.no_grad():
+            # Conditional Embeddings
             text_emb, _ = self.encode_prompt(prompts, proportion_empty_prompts=0.0, is_train=False)
+            
+            # Unconditional Embeddings (Empty strings)
+            uncond_prompts = [""] * len(prompts)
+            uncond_emb, _ = self.encode_prompt(uncond_prompts, proportion_empty_prompts=0.0, is_train=False)
             
             H = W = self.config.image_size
             shape = (len(prompts), self.config.in_channels, H, W)
@@ -185,12 +193,24 @@ class Trainer:
                 t_curr = times[i]
                 t_next = times[i + 1]
                 
+                # Expand t for batch
                 t_curr_expanded = t_curr.repeat(shape[0])
                 
-                # model(x, t, text) -> For DDP, self.model is a wrapper. 
-                # Forward call: self.model(z, t, text) should work fine.
-                x_pred = self.model(z, t_curr_expanded, text_emb)
+                # --- CFG Batching ---
+                # We concatenate [Uncond, Cond] for efficient processing
+                z_in = torch.cat([z, z], dim=0)
+                t_in = torch.cat([t_curr_expanded, t_curr_expanded], dim=0)
+                text_in = torch.cat([uncond_emb, text_emb], dim=0)
                 
+                # Model Prediction
+                x_pred_all = self.model(z_in, t_in, text_in)
+                x_pred_uncond, x_pred_cond = x_pred_all.chunk(2, dim=0)
+                
+                # Apply Guidance
+                # pred = uncond + scale * (cond - uncond)
+                x_pred = x_pred_uncond + cfg_scale * (x_pred_cond - x_pred_uncond)
+                
+                # Derive v_pred
                 denom = 1 - t_curr
                 if denom < 1e-5: denom = 1e-5
                 v_pred = (x_pred - z) / denom
