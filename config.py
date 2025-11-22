@@ -32,6 +32,8 @@ class Config:
         self.save_every = 1000
         self.eval_every = 500
         self.output_dir = "./outputs"
+        self.save_top_k = 3
+        self.resume_from = None # Path to checkpoint .pt file to resume from
         
         # Generation/Eval
         self.num_eval_images = 4

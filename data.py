@@ -61,7 +61,11 @@ def bucket_batcher(data_stream, batch_size=16):
     """
     # Initialize empty lists for each bucket
     buckets = [[] for _ in BUCKET_SIZES]
-    to_tensor = transforms.ToTensor()
+    # Normalize to [-1, 1]
+    to_tensor = transforms.Compose([
+        transforms.ToTensor(),
+        transforms.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5])
+    ])
 
     for sample in data_stream:
         try:
@@ -116,7 +120,8 @@ def get_wds_loader(url_pattern, batch_size, num_workers=4, is_train=True):
         dataset = dataset.shuffle(1000)
     
     # Split among workers on the same node
-    dataset = dataset.split_by_worker()
+    # Use functional composition for better compatibility
+    dataset = dataset.compose(wds.split_by_worker)
 
     # C. Decoding and Mapping
     dataset = (
@@ -132,7 +137,7 @@ def get_wds_loader(url_pattern, batch_size, num_workers=4, is_train=True):
 
     # E. DataLoader
     # batch_size is None because our pipeline already yields full batches
-    loader = DataLoader(
+    loader = wds.WebLoader(
         dataset,
         batch_size=None,
         num_workers=num_workers,

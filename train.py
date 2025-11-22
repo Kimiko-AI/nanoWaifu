@@ -4,7 +4,7 @@ import torch.nn.functional as F
 import torch.optim as optim
 import torch.distributed as dist
 from torch.nn.parallel import DistributedDataParallel as DDP
-from transformers import AutoModelForCausalLM, AutoTokenizer
+from transformers import AutoModelForCausalLM, AutoTokenizer, get_cosine_schedule_with_warmup
 import os
 import numpy as np
 import random
@@ -50,6 +50,7 @@ class Trainer:
         
         self.device = torch.device(f"cuda:{local_rank}")
         self.target_device = self.device
+        self.saved_checkpoints = [] # List of (loss, path)
         
         # Create output directory (only main process)
         if is_main_process():
@@ -106,7 +107,8 @@ class Trainer:
         
         # 3. Optimizer
         self.optimizer = optim.AdamW(self.model.parameters(), lr=self.config.learning_rate)
-        self.scaler = torch.cuda.amp.GradScaler(enabled=(self.config.mixed_precision != 'no'))
+        # Disable scaler for bf16, enable only for fp16
+        self.scaler = torch.cuda.amp.GradScaler(enabled=(self.config.mixed_precision == 'fp16'))
         
         # 4. Flow Matching Helper
         # We pass the underlying model to the helper, or just the forward pass logic
@@ -196,7 +198,8 @@ class Trainer:
                 dt = t_next - t_curr
                 z = z + dt * v_pred
             
-            images = z.clamp(0, 1).cpu()
+            # Un-normalize [-1, 1] -> [0, 1]
+            images = ((z / 2) + 0.5).clamp(0, 1).cpu()
             
             wandb_images = []
             for idx, img_tensor in enumerate(images):
@@ -219,8 +222,31 @@ class Trainer:
         if is_main_process():
             print("Starting Training Loop...")
             
+        # Scheduler
+        num_warmup_steps = int(0.01 * self.config.max_steps)
+        scheduler = get_cosine_schedule_with_warmup(
+            self.optimizer, 
+            num_warmup_steps=num_warmup_steps, 
+            num_training_steps=self.config.max_steps
+        )
+
+        # Resume Logic
+        start_step = 0
+        ema_loss = None
+        if self.config.resume_from:
+            if is_main_process():
+                print(f"Resuming from {self.config.resume_from}...")
+            ckpt = torch.load(self.config.resume_from, map_location=self.device)
+            self.raw_model.load_state_dict(ckpt['model_state_dict'])
+            self.optimizer.load_state_dict(ckpt['optimizer_state_dict'])
+            if 'scheduler_state_dict' in ckpt:
+                scheduler.load_state_dict(ckpt['scheduler_state_dict'])
+            start_step = ckpt['step'] + 1
+            if 'ema_loss' in ckpt:
+                ema_loss = ckpt['ema_loss']
+
         self.model.train()
-        step = 0
+        step = start_step
         data_iter = iter(dataloader)
         
         # Tqdm only on main process
@@ -271,15 +297,31 @@ class Trainer:
             self.scaler.scale(loss).backward()
 
             if (step + 1) % self.config.grad_accum_steps == 0:
+                # Gradient Clipping
+                self.scaler.unscale_(self.optimizer)
+                torch.nn.utils.clip_grad_norm_(self.model.parameters(), 1.0)
+                
                 self.scaler.step(self.optimizer)
                 self.scaler.update()
                 self.optimizer.zero_grad()
+                scheduler.step()
+                
+                # EMA Loss
+                current_loss = loss.item() * self.config.grad_accum_steps
+                if ema_loss is None:
+                    ema_loss = current_loss
+                else:
+                    ema_loss = ema_loss * 0.99 + current_loss * 0.01
                 
                 # Logging (Main process only)
                 if is_main_process():
                     if step % self.config.log_every == 0:
-                        wandb.log({"train/loss": loss.item() * self.config.grad_accum_steps}, step=step)
-                        progress_bar.set_description(f"Loss: {loss.item() * self.config.grad_accum_steps:.4f}")
+                        wandb.log({
+                            "train/loss": current_loss, 
+                            "train/ema_loss": ema_loss,
+                            "train/lr": self.optimizer.param_groups[0]['lr']
+                        }, step=step)
+                        progress_bar.set_description(f"Loss: {current_loss:.4f} | EMA: {ema_loss:.4f}")
                     
                     progress_bar.update(1)
                     
@@ -297,9 +339,24 @@ class Trainer:
                             'step': step,
                             'model_state_dict': self.raw_model.state_dict(),
                             'optimizer_state_dict': self.optimizer.state_dict(),
+                            'scheduler_state_dict': scheduler.state_dict(),
                             'config': self.config.__dict__,
+                            'ema_loss': ema_loss
                         }, save_path)
                         print(f"Saved checkpoint: {save_path}")
+                        
+                        # Top K Logic (Lowest EMA Loss)
+                        self.saved_checkpoints.append((ema_loss, save_path))
+                        self.saved_checkpoints.sort(key=lambda x: x[0]) # Ascending sort
+                        
+                        while len(self.saved_checkpoints) > self.config.save_top_k:
+                            to_remove = self.saved_checkpoints.pop(-1) # Remove highest loss
+                            try:
+                                if os.path.exists(to_remove[1]):
+                                    os.remove(to_remove[1])
+                                    print(f"Removed old checkpoint: {to_remove[1]}")
+                            except OSError as e:
+                                print(f"Error removing checkpoint: {e}")
                     
                 step += 1
 
