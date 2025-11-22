@@ -157,7 +157,7 @@ class Trainer:
             prompt_embeds = prompt_embeds.permute(1, 2, 0, 3).reshape(prompt_embeds.size(1), prompt_embeds.size(2), -1)
 
             # Cast to model dtype
-            prompt_embeds = prompt_embeds.to(dtype=self.raw_model.patch_embed.weight.dtype)
+            prompt_embeds = prompt_embeds.to(dtype=self.raw_model.final_proj.weight.dtype)
 
         return prompt_embeds, prompt_masks
 
