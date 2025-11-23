@@ -50,25 +50,17 @@ class xFlowMatching(nn.Module):
         # Note: At t=0, z=noise. At t=1, z=data.
         z = t_reshaped * x + (1 - t_reshaped) * e
 
-        # 4. Calculate Target Velocity v
-        # Formula from image: v = (x - z) / (1 - t)
-        # Mathematical simplification:
-        # v = (x - (tx + e - te)) / (1-t) = ((1-t)x - (1-t)e) / (1-t) = x - e
-        # We use the algebraic simplification for numerical stability of the target.
-        target_v = x - e
-
         # 5. Model Prediction
-        # The network predicts 'x' (clean data) given noisy 'z' and time 't'
+        # The network predicts 'x' (clean data) directly given noisy 'z' and time 't'
         x_pred = self.net(z, t)
 
-        # 6. Derived Velocity Prediction
-        # Formula: v_pred = (x_pred - z) / (1 - t)
-        # We add a small epsilon to (1-t) to prevent division by zero if t draws exactly 1.0
+        # 6. Min-SNR Weighting
         epsilon = 1e-5
-        v_pred = (x_pred - z) / (1 - t_reshaped + epsilon)
+        snr = (t_reshaped ** 2) / ((1 - t_reshaped + epsilon) ** 2)
+        weights = torch.clamp(snr, max=5.0)
 
-        # 7. Loss (L2 Loss / MSE)
-        loss = F.mse_loss(v_pred, target_v)
+        # 7. Loss (Weighted MSE)
+        loss = torch.mean(weights * (x_pred - x) ** 2)
 
         return loss
 
@@ -115,20 +107,12 @@ class xFlowMatching(nn.Module):
                 else:
                     x_pred = self.net(z, t_curr_expanded)
 
-            # 2. Derive v_pred
-            # v_pred = (x_pred - z) / (1 - t)
-            # Handle division stability near t=1
+            # 3. Derive v_pred
             denom = 1 - t_curr
-            if denom < 1e-5:
-                # At the very end of sampling, v is ill-defined by this formula,
-                # but z should already be close to x.
-                # We can assume v_pred = x_pred - z (approx) or just skip the last tiny update.
-                # Here we clamp for safety.
-                denom = 1e-5
-
+            if denom < 1e-5: denom = 1e-5
             v_pred = (x_pred - z) / denom
 
-            # 3. Update z
+            # 4. Update z
             # z_next = z + (t_next - t) * v_pred
             dt = t_next - t_curr
             z = z + dt * v_pred

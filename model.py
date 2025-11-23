@@ -221,15 +221,16 @@ class GeneralizedHyperConnection2d(nn.Module):
     Implements the VWN connection mechanism for 2D feature maps.
     Compresses Over-Width state -> Backbone, runs backbone, Expands -> Over-Width state.
     """
+
     def __init__(self, virtual_dim, backbone_dim):
         super().__init__()
         self.virtual_dim = virtual_dim
         self.backbone_dim = backbone_dim
-        
+
         # 1x1 Convs act as the Projection Matrices (A and B from the paper)
         self.compressor = nn.Conv2d(virtual_dim, backbone_dim, kernel_size=1, bias=False)
         self.expander = nn.Conv2d(backbone_dim, virtual_dim, kernel_size=1, bias=False)
-        
+
         self._init_weights()
 
     def _init_weights(self):
@@ -248,10 +249,10 @@ class GeneralizedHyperConnection2d(nn.Module):
     def forward(self, h_virtual, backbone_block, t_emb, txt_emb, rope_func):
         # 1. Compress (Virtual -> Backbone)
         h_backbone = self.compressor(h_virtual)
-        
+
         # 2. Backbone Processing (Standard T2I Block)
         h_processed = backbone_block(h_backbone, t_emb, txt_emb, rope_func)
-        
+
         # 3. Expand (Backbone -> Virtual) and Add Residual
         out = self.expander(h_processed) + h_virtual
         return out
