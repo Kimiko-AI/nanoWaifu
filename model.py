@@ -216,6 +216,47 @@ class MinimalBlock(nn.Module):
         return x
 
 
+class GeneralizedHyperConnection2d(nn.Module):
+    """
+    Implements the VWN connection mechanism for 2D feature maps.
+    Compresses Over-Width state -> Backbone, runs backbone, Expands -> Over-Width state.
+    """
+    def __init__(self, virtual_dim, backbone_dim):
+        super().__init__()
+        self.virtual_dim = virtual_dim
+        self.backbone_dim = backbone_dim
+        
+        # 1x1 Convs act as the Projection Matrices (A and B from the paper)
+        self.compressor = nn.Conv2d(virtual_dim, backbone_dim, kernel_size=1, bias=False)
+        self.expander = nn.Conv2d(backbone_dim, virtual_dim, kernel_size=1, bias=False)
+        
+        self._init_weights()
+
+    def _init_weights(self):
+        # Initialize Compressor to partial Identity
+        nn.init.zeros_(self.compressor.weight)
+        with torch.no_grad():
+            min_dim = min(self.virtual_dim, self.backbone_dim)
+            # Set weights to make it an identity pass-through for the shared dimensions
+            for i in range(min_dim):
+                self.compressor.weight[i, i, 0, 0] = 1.0
+
+        # Initialize Expander to Zero
+        # This ensures the layer starts as a residual pass-through of the virtual state
+        nn.init.zeros_(self.expander.weight)
+
+    def forward(self, h_virtual, backbone_block, t_emb, txt_emb, rope_func):
+        # 1. Compress (Virtual -> Backbone)
+        h_backbone = self.compressor(h_virtual)
+        
+        # 2. Backbone Processing (Standard T2I Block)
+        h_processed = backbone_block(h_backbone, t_emb, txt_emb, rope_func)
+        
+        # 3. Expand (Backbone -> Virtual) and Add Residual
+        out = self.expander(h_processed) + h_virtual
+        return out
+
+
 # -----------------------------------------------------------------------------
 # 3. Main Model (Minimal T2I)
 # -----------------------------------------------------------------------------
@@ -249,22 +290,27 @@ class MinimalT2I(nn.Module):
             depth=12,
             num_heads=12,
             context_dim=768,
-            bottleneck_dim=128
+            virtual_expansion=1,  # Configurable VWN expansion (1 = disabled/standard)
     ):
         super().__init__()
         self.patch_size = patch_size
         self.hidden_size = hidden_size
+        self.virtual_expansion = virtual_expansion
+        self.use_vwn = virtual_expansion > 1
 
-        # 1. Input
-        # Bottleneck Patch Embed: (Cin -> Bottleneck) -> Norm -> (Bottleneck -> Hidden)
-        self.patch_embed = nn.Sequential(
-            nn.Conv2d(in_channels, bottleneck_dim, kernel_size=patch_size, stride=patch_size),
-            LayerNorm2d(bottleneck_dim),
-            nn.Conv2d(bottleneck_dim, hidden_size, kernel_size=1)
+        # Virtual Dimension (D' = r * D)
+        self.virtual_dim = hidden_size * virtual_expansion if self.use_vwn else hidden_size
+
+        # 1. Input: Direct projection
+        # Replaced bottleneck patch embed with direct projection as requested
+        self.patch_embed = nn.Conv2d(
+            in_channels,
+            self.virtual_dim,
+            kernel_size=patch_size,
+            stride=patch_size
         )
 
-        # REMOVED: self.pos_embed (Absolute position embedding)
-        # ADDED: Golden Gate RoPE
+        # Golden Gate RoPE
         head_dim = hidden_size // num_heads
         self.rope = GoldenGateRoPE2d(head_dim=head_dim)
 
@@ -272,50 +318,63 @@ class MinimalT2I(nn.Module):
         self.t_embedder = TimestepEmbedder(hidden_size)
         self.context_proj = nn.Linear(context_dim, hidden_size)
 
-        # 3. Backbone
-        self.blocks = nn.ModuleList([
-            MinimalBlock(hidden_size, num_heads) for _ in range(depth)
-        ])
+        # 3. Backbone (with optional VWN)
+        self.layers = nn.ModuleList()
+        for _ in range(depth):
+            backbone = MinimalBlock(hidden_size, num_heads)
+            if self.use_vwn:
+                ghc = GeneralizedHyperConnection2d(self.virtual_dim, hidden_size)
+                self.layers.append(nn.ModuleDict({'backbone': backbone, 'ghc': ghc}))
+            else:
+                self.layers.append(backbone)
 
         # 4. Output
-        self.final_norm = LayerNorm2d(hidden_size)
-        self.final_adaLN = nn.Sequential(nn.SiLU(), nn.Linear(hidden_size, 2 * hidden_size, bias=True))
-        self.final_proj = nn.ConvTranspose2d(hidden_size, in_channels, kernel_size=patch_size, stride=patch_size)
+        # Merged final_reduce into final_proj logic by operating on virtual_dim directly
+        self.final_norm = LayerNorm2d(self.virtual_dim)
+        self.final_adaLN = nn.Sequential(nn.SiLU(), nn.Linear(hidden_size, 2 * self.virtual_dim, bias=True))
+        self.final_proj = nn.ConvTranspose2d(self.virtual_dim, in_channels, kernel_size=patch_size, stride=patch_size)
 
         self.initialize_weights()
 
     def initialize_weights(self):
-        # Init patch embed modules
-        for m in self.patch_embed.modules():
-            if isinstance(m, nn.Conv2d):
-                nn.init.xavier_uniform_(m.weight)
-                if m.bias is not None:
-                    nn.init.zeros_(m.bias)
+        # Init patch embed
+        nn.init.xavier_uniform_(self.patch_embed.weight)
+        if self.patch_embed.bias is not None:
+            nn.init.zeros_(self.patch_embed.bias)
 
         nn.init.xavier_uniform_(self.final_proj.weight)
         nn.init.xavier_uniform_(self.context_proj.weight)
         nn.init.constant_(self.context_proj.bias, 0)
 
         # AdaLN Zero Init
-        for block in self.blocks:
-            nn.init.constant_(block.adaLN_modulation[-1].weight, 0)
-            nn.init.constant_(block.adaLN_modulation[-1].bias, 0)
-
         nn.init.constant_(self.final_adaLN[-1].weight, 0)
         nn.init.constant_(self.final_adaLN[-1].bias, 0)
 
+        for layer in self.layers:
+            if self.use_vwn:
+                block = layer['backbone']
+            else:
+                block = layer
+
+            nn.init.constant_(block.adaLN_modulation[-1].weight, 0)
+            nn.init.constant_(block.adaLN_modulation[-1].bias, 0)
+
     def forward(self, x, t, text_emb):
-        # x: (B, Cin, H, W)
+        # x: (B, Cin, H, W) -> (B, Virtual_Dim, H, W)
         x = self.patch_embed(x)
-        # Note: No absolute position addition here!
 
         t_emb = self.t_embedder(t)
         txt_emb = self.context_proj(text_emb)
 
-        for block in self.blocks:
-            # Pass the RoPE function down to the blocks
-            x = block(x, t_emb, txt_emb, rope_func=self.rope)
+        for layer in self.layers:
+            if self.use_vwn:
+                # GHC handles routing: x(wide) -> compress -> backbone(narrow) -> expand -> add -> x(wide)
+                x = layer['ghc'](x, layer['backbone'], t_emb, txt_emb, rope_func=self.rope)
+            else:
+                # Standard Backbone
+                x = layer(x, t_emb, txt_emb, rope_func=self.rope)
 
+        # Final output block operates directly on virtual_dim
         shift, scale = self.final_adaLN(t_emb).chunk(2, dim=1)
         x = modulate(self.final_norm(x), shift.unsqueeze(2).unsqueeze(3), scale.unsqueeze(2).unsqueeze(3))
         x = self.final_proj(x)

@@ -11,6 +11,7 @@ class Config:
         self.patch_size = 2
         self.in_channels = 3  # Pixel space (RGB)
         self.bottleneck_dim = 128 # Bottleneck dimension for patch embedding
+        self.virtual_expansion = 1 # Virtual Width Expansion (VWN). 1 = disabled.
         
         # Data Configuration
         self.data_path = "/teamspace/studios/this_studio/anime/train/{00001..00037}.tar"

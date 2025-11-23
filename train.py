@@ -20,6 +20,9 @@ from data import get_wds_loader
 from flow import xFlowMatching
 from config import Config
 
+# Optimize for Tensor Cores
+torch.set_float32_matmul_precision('high')
+
 def is_main_process():
     return not dist.is_initialized() or dist.get_rank() == 0
 
@@ -74,10 +77,14 @@ class Trainer:
 
         self.text_encoder = AutoModelForCausalLM.from_pretrained(
             self.config.text_encoder_path,
-            torch_dtype=torch.bfloat16
+            dtype=torch.bfloat16
         ).to(self.device)
         self.text_encoder.eval()
         self.text_encoder.requires_grad_(False)
+        
+        # Compile Text Encoder
+        print("Compiling Text Encoder...")
+        self.text_encoder = torch.compile(self.text_encoder)
 
         # Calculate Context Dimension
         text_hidden_dim = self.text_encoder.config.hidden_size * 4
@@ -95,8 +102,8 @@ class Trainer:
             depth=self.config.depth,
             num_heads=self.config.num_heads,
             context_dim=text_hidden_dim,
-            bottleneck_dim=self.config.bottleneck_dim
-        ).to(self.device)
+            virtual_expansion=self.config.virtual_expansion,
+        ).to(self.device).to(memory_format=torch.channels_last)
         
         # Wrap in DDP
         if self.world_size > 1:
@@ -109,7 +116,7 @@ class Trainer:
         # 3. Optimizer
         self.optimizer = optim.AdamW(self.model.parameters(), lr=self.config.learning_rate)
         # Disable scaler for bf16, enable only for fp16
-        self.scaler = torch.cuda.amp.GradScaler(enabled=(self.config.mixed_precision == 'fp16'))
+        self.scaler = torch.amp.GradScaler('cuda', enabled=(self.config.mixed_precision == 'fp16'))
         
         # 4. Flow Matching Helper
         # We pass the underlying model to the helper, or just the forward pass logic
@@ -146,7 +153,7 @@ class Trainer:
             captions,
             padding=True,
             pad_to_multiple_of=8,
-            max_length=256,
+            max_length=64,
             truncation=True,
             return_tensors="pt",
         )
@@ -154,7 +161,7 @@ class Trainer:
         text_input_ids = text_inputs.input_ids.to(self.target_device)
         prompt_masks = text_inputs.attention_mask.to(self.target_device)
         
-        with torch.no_grad():
+        with torch.no_grad(), torch.amp.autocast('cuda', enabled=(self.config.mixed_precision != 'no'), dtype=torch.bfloat16):
             prompt_embeds = self.text_encoder(
                 input_ids=text_input_ids,
                 attention_mask=prompt_masks,
@@ -199,7 +206,7 @@ class Trainer:
             H = W = self.config.image_size
             shape = (len(prompts), self.config.in_channels, H, W)
             
-            z = torch.randn(shape, device=self.device)
+            z = torch.randn(shape, device=self.device).to(memory_format=torch.channels_last)
             
             steps = self.config.eval_steps
             times = torch.linspace(0, 1, steps + 1, device=self.device)
@@ -287,6 +294,10 @@ class Trainer:
         else:
             progress_bar = None
         
+        # Loss averaging
+        running_loss = 0.0
+        running_steps = 0
+        
         while step < self.config.max_steps:
             try:
                 batch = next(data_iter)
@@ -299,7 +310,7 @@ class Trainer:
                 continue
 
             # Pixels: (B, 3, H, W)
-            pixels = batch["pixels"].to(self.device)
+            pixels = batch["pixels"].to(self.device, memory_format=torch.channels_last)
             prompts = batch["prompts"]
             
             # Encode Text
@@ -308,18 +319,21 @@ class Trainer:
                 proportion_empty_prompts=self.config.proportion_empty_prompts,
                 is_train=True
             )
-            
+
             # Mixed Precision
-            with torch.cuda.amp.autocast(enabled=(self.config.mixed_precision != 'no'), dtype=torch.bfloat16):
+            with torch.amp.autocast('cuda', enabled=(self.config.mixed_precision != 'no'), dtype=torch.bfloat16):
                 t = self.flow_helper.sample_t(pixels.shape[0], self.device)
                 e = torch.randn_like(pixels)
                 
                 t_reshaped = self.flow_helper.reshape_t(t, pixels)
                 z = t_reshaped * pixels + (1 - t_reshaped) * e
                 target_v = pixels - e
-                
+                text_emb = text_emb.to(memory_format=torch.channels_last)
+                t = t.to(memory_format=torch.channels_last)
+                z = z.to(memory_format=torch.channels_last)
+
                 x_pred = self.model(z, t, text_emb)
-                
+
                 epsilon = 1e-5
                 v_pred = (x_pred - z) / (1 - t_reshaped + epsilon)
                 
@@ -345,15 +359,25 @@ class Trainer:
                 else:
                     ema_loss = ema_loss * 0.99 + current_loss * 0.01
                 
+                # Accumulate for logging
+                running_loss += current_loss
+                running_steps += 1
+                
                 # Logging (Main process only)
                 if is_main_process():
                     if step % self.config.log_every == 0:
+                        avg_loss = running_loss / running_steps if running_steps > 0 else 0.0
+                        
                         wandb.log({
-                            "train/loss": current_loss, 
+                            "train/loss": avg_loss, 
                             "train/ema_loss": ema_loss,
                             "train/lr": self.optimizer.param_groups[0]['lr']
                         }, step=step)
-                        progress_bar.set_description(f"Loss: {current_loss:.4f} | EMA: {ema_loss:.4f}")
+                        progress_bar.set_description(f"Loss: {avg_loss:.4f} | EMA: {ema_loss:.4f}")
+                        
+                        # Reset running stats
+                        running_loss = 0.0
+                        running_steps = 0
                     
                     progress_bar.update(1)
                     

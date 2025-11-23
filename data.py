@@ -112,7 +112,8 @@ def get_wds_loader(url_pattern, batch_size, num_workers=4, is_train=True):
         url_pattern, 
         resampled=True, 
         handler=wds.warn_and_continue,
-        nodesplitter=wds.split_by_node
+        nodesplitter=wds.split_by_node,
+        shardshuffle=True
     )
 
     # B. Sharding for Workers
