@@ -1,0 +1,12 @@
+torch>=2.0.0
+torchvision
+transformers
+diffusers
+webdataset
+wandb
+tqdm
+Pillow
+numpy
+sentencepiece
+accelerate
+huggingface_hub
