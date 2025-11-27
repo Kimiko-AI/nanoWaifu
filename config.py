@@ -2,30 +2,40 @@ import torch
 
 class Config:
     def __init__(self):
-        # Model Configuration
-        self.model_name = "MinimalT2I-Pixel"
+        # Model Architecture
+        self.model_arch = "ZImage"
+        self.model_name = "ZImage-T2I"
+        
+        # VAE Configuration
+        self.use_vae = False
+        self.vae_path = "stabilityai/sd-vae-ft-mse"
+        self.vae_scale_factor = 0.18215
+        self.vae_shift_factor = 0.0
+        
+        # Model Params
         self.text_encoder_path = "Qwen/Qwen3-0.6B"
         self.hidden_size = 768
         self.depth = 12
         self.num_heads = 12
         self.patch_size = 2
-        self.in_channels = 3  # Pixel space (RGB)
-        self.bottleneck_dim = 128 # Bottleneck dimension for patch embedding
-        self.virtual_expansion = 1 # Virtual Width Expansion (VWN). 1 = disabled.
+        # in_channels will be set dynamically in train.py if VAE is used, else default here
+        self.in_channels = 3 
+        self.bottleneck_dim = 128 
+        self.virtual_expansion = 1 
         
         # Data Configuration
         self.data_path = "/teamspace/studios/this_studio/anime/train/{00001..00037}.tar"
         self.batch_size = 64
         self.num_workers = 8
-        self.image_size = 256 # Base size for bucketing reference
+        self.image_size = 256 
         
         # Training Configuration
         self.learning_rate = 1e-4
         self.max_steps = 100000
         self.grad_accum_steps = 1
-        self.mixed_precision = "bf16" # 'bf16', 'fp16', or 'no'
+        self.mixed_precision = "bf16" 
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
-        self.proportion_empty_prompts = 0.1 # Classifier-free guidance probability
+        self.proportion_empty_prompts = 0.1 
         
         # Logging & Saving
         self.wandb_project = "nanoWaifu-T2I"
@@ -39,5 +49,5 @@ class Config:
         
         # Generation/Eval
         self.num_eval_images = 4
-        self.eval_steps = 50 # Diffusion steps for sampling
-        self.cfg_scale = 4.0 # Classifier-free guidance scale
+        self.eval_steps = 50 
+        self.cfg_scale = 4.0

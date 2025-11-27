@@ -5,6 +5,7 @@ import torch.optim as optim
 import torch.distributed as dist
 from torch.nn.parallel import DistributedDataParallel as DDP
 from transformers import AutoModelForCausalLM, AutoTokenizer, get_cosine_schedule_with_warmup
+from diffusers import AutoencoderKL
 import os
 import numpy as np
 import random
@@ -13,9 +14,9 @@ from tqdm import tqdm
 from PIL import Image
 import torchvision.transforms as transforms
 import sys
+import importlib
 
 # Import from local files
-from model import MinimalT2I
 from data import get_wds_loader
 from flow import xFlowMatching
 from config import Config
@@ -58,6 +59,8 @@ class Trainer:
         self.device = torch.device(f"cuda:{local_rank}")
         self.target_device = self.device
         self.saved_checkpoints = []  # List of (loss, path)
+        
+        self.vae = None
 
         # Create output directory (only main process)
         if is_main_process():
@@ -70,6 +73,20 @@ class Trainer:
             )
 
     def setup(self):
+        # 0. Load VAE (Optional)
+        if self.config.use_vae:
+            if is_main_process():
+                print(f"Loading VAE: {self.config.vae_path}...")
+            
+            self.vae = AutoencoderKL.from_pretrained(self.config.vae_path).to(self.device)
+            self.vae.eval()
+            self.vae.requires_grad_(False)
+            
+            # Adjust in_channels for Latent Space
+            self.config.in_channels = self.vae.config.latent_channels
+            if is_main_process():
+                print(f"VAE Loaded. Input channels adjusted to: {self.config.in_channels}")
+        
         # 1. Load Text Encoder
         # We load this on every rank to encode prompts
         if is_main_process():
@@ -97,9 +114,23 @@ class Trainer:
 
         # 2. Initialize Model
         if is_main_process():
-            print("Initializing MinimalT2I Model...")
+            print(f"Initializing {self.config.model_arch} Model...")
 
-        model = MinimalT2I(
+        if self.config.model_arch == "Styx":
+            from models.styx import MinimalT2I
+            ModelClass = MinimalT2I
+        elif self.config.model_arch == "ZImage":
+            from models.zimage import MinimalT2I
+            ModelClass = MinimalT2I
+        else:
+             # Fallback or dynamic loading for other models
+            try:
+                module = importlib.import_module(f"models.{self.config.model_arch.lower()}")
+                ModelClass = getattr(module, "MinimalT2I") 
+            except (ImportError, AttributeError) as e:
+                raise ValueError(f"Unknown or invalid model architecture: {self.config.model_arch}") from e
+
+        model = ModelClass(
             patch_size=self.config.patch_size,
             in_channels=self.config.in_channels,
             hidden_size=self.config.hidden_size,
@@ -123,9 +154,41 @@ class Trainer:
         self.scaler = torch.amp.GradScaler('cuda', enabled=(self.config.mixed_precision == 'fp16'))
 
         # 4. Flow Matching Helper
-        # We pass the underlying model to the helper, or just the forward pass logic
-        # The helper just holds logic, not weights, so it's fine.
         self.flow_helper = xFlowMatching(self.model)
+        
+    def encode_data(self, pixels):
+        """Encodes pixels to latents if VAE is enabled, otherwise returns pixels."""
+        if self.vae is None:
+            return pixels
+        
+        with torch.no_grad():
+            # Input pixels are [-1, 1]. VAE expects that.
+            # VAE usually runs in float32 or same as weights. 
+            # We cast to VAE dtype.
+            latents = self.vae.encode(pixels.to(dtype=self.vae.dtype)).latent_dist.sample()
+            
+            # Scale and Shift
+            latents = latents * self.config.vae_scale_factor + self.config.vae_shift_factor
+            
+            # Cast back to model precision if needed (usually bf16 for training)
+            # We'll let mixed precision context handle it in training loop, 
+            # but explicit cast can be safer if VAE is fp32.
+            return latents
+            
+    def decode_latents(self, latents):
+        """Decodes latents to pixels if VAE is enabled."""
+        if self.vae is None:
+            # Un-normalize [-1, 1] -> [0, 1]
+            return ((latents / 2) + 0.5).clamp(0, 1)
+        
+        # Inverse Scale and Shift
+        latents = (latents - self.config.vae_shift_factor) / self.config.vae_scale_factor
+        
+        with torch.no_grad():
+            images = self.vae.decode(latents.to(dtype=self.vae.dtype)).sample
+            
+        # VAE outputs are [-1, 1] usually. Un-normalize to [0, 1]
+        return ((images / 2) + 0.5).clamp(0, 1)
 
     def encode_prompt(self, prompt_batch, proportion_empty_prompts, is_train=True):
         # Batch processing of captions
@@ -208,7 +271,13 @@ class Trainer:
             B, L, D = text_emb.shape  # L is the conditional sequence length
             uncond_emb = torch.zeros(B, 1, D, device=text_emb.device, dtype=text_emb.dtype)
 
-            H = W = self.config.image_size
+            # Latent Shape
+            if self.vae:
+                # Standard VAE reduces dim by 8
+                H = W = self.config.image_size // 8
+            else:
+                H = W = self.config.image_size
+                
             shape = (len(prompts), self.config.in_channels, H, W)
 
             z = torch.randn(shape, device=self.device).to(memory_format=torch.channels_last)
@@ -242,8 +311,8 @@ class Trainer:
                 dt = t_next - t_curr
                 z = z + dt * v_pred
 
-            # Un-normalize [-1, 1] -> [0, 1]
-            images = ((z / 2) + 0.5).clamp(0, 1).cpu()
+            # Decode latents/pixels
+            images = self.decode_latents(z).cpu()
 
             wandb_images = []
             for idx, img_tensor in enumerate(images):
@@ -317,6 +386,10 @@ class Trainer:
             # Pixels: (B, 3, H, W)
             pixels = batch["pixels"].to(self.device, memory_format=torch.channels_last)
             prompts = batch["prompts"]
+            
+            # Encode to Latents (if VAE)
+            latents = self.encode_data(pixels)
+            latents = latents.to(memory_format=torch.channels_last)
 
             # Encode Text
             text_emb, _ = self.encode_prompt(
@@ -327,24 +400,25 @@ class Trainer:
 
             # Mixed Precision
             with torch.amp.autocast('cuda', enabled=(self.config.mixed_precision != 'no'), dtype=torch.bfloat16):
-                t = self.flow_helper.sample_t(pixels.shape[0], self.device)
-                e = torch.randn_like(pixels)
+                # Flow Matching works on 'latents' now
+                t = self.flow_helper.sample_t(latents.shape[0], self.device)
+                e = torch.randn_like(latents)
 
-                t_reshaped = self.flow_helper.reshape_t(t, pixels)
-                z = t_reshaped * pixels + (1 - t_reshaped) * e
-                target_v = pixels - e
-                # text_emb = text_emb.to(memory_format=torch.channels_last)
-                # t = t.to(memory_format=torch.channels_last)
+                t_reshaped = self.flow_helper.reshape_t(t, latents)
+                z = t_reshaped * latents + (1 - t_reshaped) * e
+                # target_v = latents - e # Not used in loss calc currently, x_pred is predicted
+                
                 z = z.to(memory_format=torch.channels_last)
 
                 x_pred = self.model(z, t, text_emb)
                 snr_weights = 1.0 / (1.0 - t + 1e-4) ** 2
                 snr_weights = torch.clamp(snr_weights, max=5.0)
                 if hasattr(self.flow_helper, 'reshape_t'):
-                    snr_weights = self.flow_helper.reshape_t(snr_weights, pixels)
+                    snr_weights = self.flow_helper.reshape_t(snr_weights, latents)
                 else:
                     snr_weights = snr_weights.view(-1, 1, 1, 1)
-                loss_elementwise = F.mse_loss(x_pred, pixels, reduction='none')
+                
+                loss_elementwise = F.mse_loss(x_pred, latents, reduction='none')
                 loss = (loss_elementwise * snr_weights).mean()
 
                 loss = loss / self.config.grad_accum_steps

@@ -5,8 +5,10 @@ import torchvision.transforms as transforms
 from PIL import Image
 import random
 import numpy as np
+from functools import partial
 
 # --- Configuration ---
+# TODO: Make these configurable via arguments if needed
 BUCKET_SIZES = [
     (256, 256),
     (224, 288),
@@ -49,7 +51,7 @@ def transform_sample(sample):
     return {
         "image": image,
         "prompts": tag_str,
-        "key": sample["__key__"]  # Useful for debugging
+        "key": sample["__key__"]
     }
 
 
@@ -99,7 +101,7 @@ def bucket_batcher(data_stream, batch_size=16):
                 buckets[b_idx] = []
 
         except Exception as e:
-            print(f"Error processing sample {sample.get('key', 'unknown')}: {e}")
+            # print(f"Error processing sample {sample.get('key', 'unknown')}: {e}")
             continue
 
 
@@ -121,7 +123,6 @@ def get_wds_loader(url_pattern, batch_size, num_workers=4, is_train=True):
         dataset = dataset.shuffle(1000)
     
     # Split among workers on the same node
-    # Use functional composition for better compatibility
     dataset = dataset.compose(wds.split_by_worker)
 
     # C. Decoding and Mapping
@@ -132,12 +133,9 @@ def get_wds_loader(url_pattern, batch_size, num_workers=4, is_train=True):
     )
 
     # D. Apply Bucket Batching
-    # We use partial to pass the batch_size argument to our generator
-    from functools import partial
     dataset = dataset.compose(partial(bucket_batcher, batch_size=batch_size))
 
     # E. DataLoader
-    # batch_size is None because our pipeline already yields full batches
     loader = wds.WebLoader(
         dataset,
         batch_size=None,
@@ -147,61 +145,3 @@ def get_wds_loader(url_pattern, batch_size, num_workers=4, is_train=True):
     )
 
     return loader
-
-
-# --- 4. Verification Script ---
-if __name__ == "__main__":
-    import hashlib
-
-    # Path to your tar files (supports globs like brace expansion)
-    # Example: "/data/shards/shard-{000000..000099}.tar"
-    TAR_PATH = "/root/ChatError/Dan_dataset/shards/{00000..00010}.tar"
-
-    print(f"Initializing WebDataset from: {TAR_PATH}")
-
-    dataloader = get_wds_loader(
-        url_pattern=TAR_PATH,
-        batch_size=64,
-        num_workers=4,
-        is_train=True  # Set True to test infinite looping, False to test one pass
-    )
-
-    all_prompts = []
-    all_pixel_hashes = []
-
-
-    def tensor_hash(tensor):
-        return hashlib.md5(tensor.numpy().tobytes()).hexdigest()
-
-
-    NUM_BATCHES_TO_CHECK = 50
-
-    try:
-        # WebDataset is often infinite, so we just loop a set range
-        for i, batch in enumerate(dataloader):
-            if i >= NUM_BATCHES_TO_CHECK:
-                break
-
-            prompts = batch["prompts"]
-            pixels = batch["pixels"]
-
-            # Validate shapes
-            print(f"Batch {i}: Shape {pixels.shape}, Prompts {len(prompts)}")
-
-            all_prompts.extend(prompts)
-            all_pixel_hashes.extend([tensor_hash(p) for p in pixels])
-
-        # Check duplicates for prompts
-        duplicate_prompts = set([p for p in all_prompts if all_prompts.count(p) > 1])
-        print(f"\nChecked {len(all_prompts)} samples.")
-        if duplicate_prompts:
-            print(
-                f"Found {len(duplicate_prompts)} duplicate prompts (Expected if dataset < check size or resampling=True).")
-        else:
-            print("No duplicate prompts found.")
-
-    except Exception as e:
-        print(f"Error: {e}")
-        import traceback
-
-        traceback.print_exc()
