@@ -17,7 +17,7 @@ import sys
 import importlib
 
 # Import from local files
-from data import get_wds_loader
+from data import get_wds_loader, get_food101_loader # Import get_food101_loader
 from flow import xFlowMatching
 from config import Config
 
@@ -61,6 +61,11 @@ class Trainer:
         self.saved_checkpoints = []  # List of (loss, path)
         
         self.vae = None
+        self.tokenizer = None
+        self.text_encoder = None
+        self.class_embedding = None
+        self.null_class_embedding = None
+        self.context_dim = None
 
         # Create output directory (only main process)
         if is_main_process():
@@ -87,30 +92,37 @@ class Trainer:
             if is_main_process():
                 print(f"VAE Loaded. Input channels adjusted to: {self.config.in_channels}")
         
-        # 1. Load Text Encoder
-        # We load this on every rank to encode prompts
-        if is_main_process():
-            print(f"Loading Text Encoder: {self.config.text_encoder_path}...")
+        # 1. Initialize Conditioning Components
+        if self.config.conditioning_type == "text":
+            if is_main_process():
+                print(f"Loading Text Encoder: {self.config.text_encoder_path}...")
 
-        self.tokenizer = AutoTokenizer.from_pretrained(self.config.text_encoder_path)
-        if self.tokenizer.pad_token is None:
-            self.tokenizer.pad_token = self.tokenizer.eos_token
+            self.tokenizer = AutoTokenizer.from_pretrained(self.config.text_encoder_path)
+            if self.tokenizer.pad_token is None:
+                self.tokenizer.pad_token = self.tokenizer.eos_token
 
-        self.text_encoder = AutoModelForCausalLM.from_pretrained(
-            self.config.text_encoder_path,
-            dtype=torch.bfloat16
-        ).to(self.device)
-        self.text_encoder.eval()
-        self.text_encoder.requires_grad_(False)
+            self.text_encoder = AutoModelForCausalLM.from_pretrained(
+                self.config.text_encoder_path,
+                dtype=torch.bfloat16
+            ).to(self.device)
+            self.text_encoder.eval()
+            self.text_encoder.requires_grad_(False)
 
-        # Compile Text Encoder
-        print("Compiling Text Encoder...")
-        self.text_encoder = torch.compile(self.text_encoder)
+            if is_main_process():
+                print("Compiling Text Encoder...")
+            self.text_encoder = torch.compile(self.text_encoder)
+            self.context_dim = self.config.context_dim_text
 
-        # Calculate Context Dimension
-        text_hidden_dim = self.text_encoder.config.hidden_size * 4
-        if is_main_process():
-            print(f"Calculated Context Dimension: {text_hidden_dim}")
+        elif self.config.conditioning_type == "class":
+            if is_main_process():
+                print(f"Initializing Class Embeddings for {self.config.num_classes} classes...")
+            # +1 for a learnable null embedding for classifier-free guidance
+            self.class_embedding = nn.Embedding(self.config.num_classes + 1, self.config.context_dim_class).to(self.device)
+            self.null_class_embedding = nn.Parameter(torch.randn(1, 1, self.config.context_dim_class)).to(self.device)
+            self.context_dim = self.config.context_dim_class
+
+        else:
+            raise ValueError(f"Unknown conditioning_type: {self.config.conditioning_type}")
 
         # 2. Initialize Model
         if is_main_process():
@@ -136,7 +148,7 @@ class Trainer:
             hidden_size=self.config.hidden_size,
             depth=self.config.depth,
             num_heads=self.config.num_heads,
-            context_dim=text_hidden_dim,
+            context_dim=self.context_dim, # Use the dynamically set context_dim
             virtual_expansion=self.config.virtual_expansion,
         ).to(self.device).to(memory_format=torch.channels_last)
 
@@ -190,7 +202,7 @@ class Trainer:
         # VAE outputs are [-1, 1] usually. Un-normalize to [0, 1]
         return ((images / 2) + 0.5).clamp(0, 1)
 
-    def encode_prompt(self, prompt_batch, proportion_empty_prompts, is_train=True):
+    def _encode_prompt(self, prompt_batch, proportion_empty_prompts, is_train=True):
         # Batch processing of captions
         if isinstance(prompt_batch[0], (list, np.ndarray)):
             if is_train:
@@ -204,8 +216,7 @@ class Trainer:
         if is_train and random.random() < proportion_empty_prompts:
             # Create zeros directly - skipping text encoder
             B = len(captions)
-            # Calculate Context Dimension: text_encoder.hidden_size * 4
-            D = self.text_encoder.config.hidden_size * 4
+            D = self.context_dim # Use the dynamically set context_dim
 
             # Robust dtype fetching
             try:
@@ -214,7 +225,7 @@ class Trainer:
                 dtype = torch.bfloat16
 
             # Return (B, 1, D) - L=1 is sufficient for zero-attention
-            return torch.zeros(B, 1, D, device=self.target_device, dtype=dtype), None
+            return torch.zeros(B, 1, D, device=self.target_device, dtype=dtype)
 
         text_inputs = self.tokenizer(
             captions,
@@ -249,9 +260,28 @@ class Trainer:
             # Cast to model dtype
             prompt_embeds = prompt_embeds.to(dtype=self.raw_model.patch_embed.weight.dtype)
 
-        return prompt_embeds, prompt_masks
+        return prompt_embeds
 
-    def sample_images(self, prompts, step):
+
+    def _get_class_conditioning(self, class_labels, proportion_empty_prompts, is_train=True):
+        if is_train and random.random() < proportion_empty_prompts:
+            # Use null class embedding
+            class_emb = self.null_class_embedding.repeat(len(class_labels), 1, 1)
+        else:
+            # +1 to class_labels for the null embedding index (assuming class_labels are 0 to num_classes-1)
+            # The last embedding (num_classes) will be reserved for null_class_embedding or special tokens
+            class_emb = self.class_embedding(class_labels).unsqueeze(1) # Unsqueeze for sequence length of 1
+        return class_emb
+
+    def get_conditioning(self, conditioning_input, proportion_empty_prompts=0.1, is_train=True):
+        if self.config.conditioning_type == "text":
+            return self._encode_prompt(conditioning_input, proportion_empty_prompts, is_train)
+        elif self.config.conditioning_type == "class":
+            return self._get_class_conditioning(conditioning_input, proportion_empty_prompts, is_train)
+        else:
+            raise ValueError(f"Unknown conditioning_type: {self.config.conditioning_type}")
+
+    def sample_images(self, conditioning_input, step):
         """
         Evaluation/Sampling - Only run on Main Process
         """
@@ -265,11 +295,23 @@ class Trainer:
 
         with torch.no_grad():
             # Conditional Embeddings
-            text_emb, _ = self.encode_prompt(prompts, proportion_empty_prompts=0.0, is_train=False)
+            # Ensure conditioning_input is a tensor for class conditioning
+            if self.config.conditioning_type == "class":
+                conditioning_input_tensor = torch.tensor(conditioning_input, device=self.device, dtype=torch.long)
+            else: # text conditioning_input is already a list of strings
+                conditioning_input_tensor = conditioning_input 
 
-            # Unconditional Embeddings (zeros for CFG, fixed length 1)
-            B, L, D = text_emb.shape  # L is the conditional sequence length
-            uncond_emb = torch.zeros(B, 1, D, device=text_emb.device, dtype=text_emb.dtype)
+            cond_emb = self.get_conditioning(conditioning_input_tensor, proportion_empty_prompts=0.0, is_train=False)
+
+            # Unconditional Embeddings
+            if self.config.conditioning_type == "text":
+                B = len(conditioning_input)
+                D = self.context_dim
+                uncond_emb = torch.zeros(B, 1, D, device=self.target_device, dtype=cond_emb.dtype) # Assuming L=1 for uncond
+            elif self.config.conditioning_type == "class":
+                uncond_emb = self.null_class_embedding.repeat(len(conditioning_input), 1, 1)
+            else:
+                raise ValueError(f"Unknown conditioning_type: {self.config.conditioning_type}")
 
             # Latent Shape
             if self.vae:
@@ -278,7 +320,7 @@ class Trainer:
             else:
                 H = W = self.config.image_size
                 
-            shape = (len(prompts), self.config.in_channels, H, W)
+            shape = (len(conditioning_input), self.config.in_channels, H, W)
 
             z = torch.randn(shape, device=self.device).to(memory_format=torch.channels_last)
 
@@ -297,7 +339,7 @@ class Trainer:
                 x_pred_uncond = self.model(z, t_curr_expanded, uncond_emb)
 
                 # Predict Conditional
-                x_pred_cond = self.model(z, t_curr_expanded, text_emb)
+                x_pred_cond = self.model(z, t_curr_expanded, cond_emb)
 
                 # Apply Guidance
                 # pred = uncond + scale * (cond - uncond)
@@ -317,7 +359,8 @@ class Trainer:
             wandb_images = []
             for idx, img_tensor in enumerate(images):
                 pil_img = transforms.ToPILImage()(img_tensor)
-                wandb_images.append(wandb.Image(pil_img, caption=prompts[idx][:100]))
+                caption_text = f"Class: {conditioning_input[idx]}" if self.config.conditioning_type == "class" else conditioning_input[idx][:100]
+                wandb_images.append(wandb.Image(pil_img, caption=caption_text))
 
             wandb.log({"eval/images": wandb_images, "global_step": step})
 
@@ -325,12 +368,20 @@ class Trainer:
 
     def train(self):
         # DDP: Each process gets its own slice via split_by_node internally
-        dataloader = get_wds_loader(
-            url_pattern=self.config.data_path,
-            batch_size=self.config.batch_size,
-            num_workers=self.config.num_workers,
-            is_train=True
-        )
+        if self.config.dataset_name == "webdataset":
+            dataloader = get_wds_loader(
+                url_pattern=self.config.data_path,
+                batch_size=self.config.batch_size,
+                num_workers=self.config.num_workers,
+                is_train=True
+            )
+        elif self.config.dataset_name == "food101":
+            dataloader = get_food101_loader( # Already imported, no need for `from data import`
+                config=self.config,
+                is_train=True
+            )
+        else:
+            raise ValueError(f"Unknown dataset_name: {self.config.dataset_name}")
 
         if is_main_process():
             print("Starting Training Loop...")
@@ -383,17 +434,46 @@ class Trainer:
                     print(f"Data loading error: {e}")
                 continue
 
-            # Pixels: (B, 3, H, W)
-            pixels = batch["pixels"].to(self.device, memory_format=torch.channels_last)
-            prompts = batch["prompts"]
+            # Handle batch differently based on dataset and conditioning type
+            pixels = None
+            conditioning_input = None
+
+            if self.config.dataset_name == "webdataset":
+                pixels = batch["pixels"].to(self.device, memory_format=torch.channels_last)
+                if self.config.conditioning_type == "text":
+                    conditioning_input = batch["prompts"]
+                elif self.config.conditioning_type == "class":
+                    # If webdataset is used with class conditioning, we need class labels.
+                    # This case is currently not directly supported by webdataset loader for class_labels.
+                    # For now, generate random class labels for demonstration/testing purposes.
+                    # A proper solution would involve modifying webdataset to yield class labels.
+                    print("Warning: Webdataset used with class conditioning. Generating random class labels.")
+                    conditioning_input = torch.randint(0, self.config.num_classes, (pixels.shape[0],), device=self.device)
+                else:
+                    raise ValueError(f"Unknown conditioning_type for webdataset: {self.config.conditioning_type}")
+                    
+            elif self.config.dataset_name == "food101":
+                pixels = batch[0].to(self.device, memory_format=torch.channels_last)
+                if self.config.conditioning_type == "class":
+                    conditioning_input = batch[1].to(self.device)
+                elif self.config.conditioning_type == "text":
+                    # If food101 is used with text conditioning, we need prompts.
+                    # This case is not currently supported by food101 loader for text prompts.
+                    # For now, generate dummy prompts for demonstration/testing purposes.
+                    print("Warning: Food101 used with text conditioning. Generating dummy text prompts.")
+                    conditioning_input = ["dummy prompt"] * pixels.shape[0]
+                else:
+                    raise ValueError(f"Unknown conditioning_type for food101: {self.config.conditioning_type}")
+            else:
+                raise ValueError(f"Unknown dataset_name: {self.config.dataset_name}")
             
             # Encode to Latents (if VAE)
             latents = self.encode_data(pixels)
             latents = latents.to(memory_format=torch.channels_last)
 
-            # Encode Text
-            text_emb, _ = self.encode_prompt(
-                prompts,
+            # Get Conditioning
+            cond_emb = self.get_conditioning(
+                conditioning_input,
                 proportion_empty_prompts=self.config.proportion_empty_prompts,
                 is_train=True
             )
@@ -410,7 +490,7 @@ class Trainer:
                 
                 z = z.to(memory_format=torch.channels_last)
 
-                x_pred = self.model(z, t, text_emb)
+                x_pred = self.model(z, t, cond_emb)
                 snr_weights = 1.0 / (1.0 - t + 1e-4) ** 2
                 snr_weights = torch.clamp(snr_weights, max=5.0)
                 if hasattr(self.flow_helper, 'reshape_t'):
@@ -466,10 +546,13 @@ class Trainer:
 
                     # Evaluation
                     if step > 0 and step % self.config.eval_every == 0:
-                        eval_prompts = prompts[:self.config.num_eval_images]
-                        if len(eval_prompts) < self.config.num_eval_images:
-                            eval_prompts += ["anime girl"] * (self.config.num_eval_images - len(eval_prompts))
-                        self.sample_images(eval_prompts, step)
+                        # For eval, sample num_eval_images from 0 to num_classes-1
+                        eval_conditioning_input = list(range(min(self.config.num_eval_images, self.config.num_classes)))
+                        # If more eval images requested than classes, repeat some classes
+                        while len(eval_conditioning_input) < self.config.num_eval_images:
+                            eval_conditioning_input.append(random.randint(0, self.config.num_classes - 1))
+                        self.sample_images(eval_conditioning_input, step)
+                        self.calculate_fid(step) # Call FID calculation here
 
                     # Saving (Use raw_model to avoid 'module.' prefix)
                     if step > 0 and step % self.config.save_every == 0:
@@ -498,6 +581,124 @@ class Trainer:
                                 print(f"Error removing checkpoint: {e}")
 
                 step += 1
+
+    def calculate_fid(self, step):
+        if not is_main_process():
+            return
+        
+        self.model.eval()
+        print(f"\nCalculating FID at step {step}...")
+
+        # Create a temporary directory for generated images
+        gen_dir = os.path.join(self.config.output_dir, f"fid_gen_step_{step}")
+        os.makedirs(gen_dir, exist_ok=True)
+
+        num_generated_images = 0
+        total_fid_samples = self.config.fid_num_samples
+        fid_batch_size = self.config.fid_batch_size
+
+        with torch.no_grad():
+            while num_generated_images < total_fid_samples:
+                batch_size = min(fid_batch_size, total_fid_samples - num_generated_images)
+                
+                # Generate random class labels for the batch
+                # Assuming class conditioning is active for FID
+                if self.config.conditioning_type == "class":
+                    # Generate a diverse set of class labels for FID
+                    # This ensures coverage across different classes
+                    if self.config.num_classes > 0:
+                        class_indices = list(range(self.config.num_classes))
+                        random.shuffle(class_indices)
+                        current_class_labels = class_indices[:batch_size]
+                        # If batch_size > num_classes, repeat classes
+                        while len(current_class_labels) < batch_size:
+                            current_class_labels.append(random.choice(class_indices))
+                    else:
+                        raise ValueError("num_classes must be greater than 0 for class-conditional FID.")
+                    
+                    random_class_labels = torch.tensor(current_class_labels, device=self.device, dtype=torch.long)
+                else:
+                    # If text conditioning, we would need to generate diverse prompts.
+                    # This is more complex and depends on the project's text generation capabilities.
+                    # For now, raise an error or use dummy prompts if text conditioning is attempted with FID.
+                    raise NotImplementedError("FID calculation with text conditioning requires generating diverse prompts, which is not implemented yet.")
+
+                # Get conditional embeddings
+                cond_emb = self.get_conditioning(random_class_labels, proportion_empty_prompts=0.0, is_train=False)
+                
+                # Latent Shape
+                if self.vae:
+                    H = W = self.config.image_size // 8
+                else:
+                    H = W = self.config.image_size
+                    
+                shape = (batch_size, self.config.in_channels, H, W)
+
+                z = torch.randn(shape, device=self.device).to(memory_format=torch.channels_last)
+
+                # Simplified sampling for FID (no CFG, fewer steps)
+                # This could be made configurable
+                steps = 10 # Fewer steps for faster generation, potentially lower FID but faster eval
+                times = torch.linspace(0, 1, steps + 1, device=self.device)
+
+                for i in range(steps):
+                    t_curr = times[i]
+                    t_next = times[i + 1]
+
+                    t_curr_expanded = t_curr.repeat(shape[0])
+
+                    # No CFG for FID generation for simplicity, use conditional only
+                    x_pred = self.model(z, t_curr_expanded, cond_emb)
+
+                    denom = 1 - t_curr
+                    if denom < 1e-5: denom = 1e-5
+                    v_pred = (x_pred - z) / denom
+
+                    dt = t_next - t_curr
+                    z = z + dt * v_pred
+
+                images = self.decode_latents(z).cpu()
+                
+                # Save generated images
+                for img_idx, img_tensor in enumerate(images):
+                    pil_img = transforms.ToPILImage()(img_tensor)
+                    pil_img.save(os.path.join(gen_dir, f"img_{num_generated_images + img_idx:05d}.png"))
+                
+                num_generated_images += batch_size
+                print(f"Generated {num_generated_images}/{total_fid_samples} images for FID.")
+            
+            # Compute FID
+            # torch-fidelity expects a path to a directory of images or pre-calculated stats
+            # For reference, use the pre-calculated stats provided in config
+            try:
+                from torch_fidelity import calculate_metrics
+                metrics = calculate_metrics(
+                    input1=gen_dir,
+                    input2=self.config.fid_reference_stats_path,
+                    cuda=True,
+                    batch_size=fid_batch_size,
+                    fid=True,
+                    verbose=False,
+                    samples_shuffle=True, # Shuffle samples to avoid order bias
+                    datasets_root=self.config.food101_dataset_path # Pass the dataset path for internal FID calculation if needed
+                )
+                fid_score = metrics['fidelity/fid_full']
+                print(f"FID Score at step {step}: {fid_score:.2f}")
+                wandb.log({"eval/fid": fid_score, "global_step": step})
+            except Exception as e:
+                print(f"Error calculating FID: {e}")
+                fid_score = -1 # Indicate failure
+
+        # Clean up generated images
+        import shutil
+        try:
+            shutil.rmtree(gen_dir)
+            print(f"Cleaned up temporary directory: {gen_dir}")
+        except OSError as e:
+            print(f"Error removing temporary directory {gen_dir}: {e}")
+
+        self.model.train()
+        return fid_score
 
 
 if __name__ == "__main__":

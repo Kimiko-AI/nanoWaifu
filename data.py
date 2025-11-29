@@ -2,6 +2,7 @@ import torch
 import webdataset as wds
 from torch.utils.data import DataLoader
 import torchvision.transforms as transforms
+import torchvision.datasets as datasets 
 from PIL import Image
 import random
 import numpy as np
@@ -32,7 +33,7 @@ def resize_to_bucket(image, bucket_idx):
     return image.resize((target_w, target_h), Image.BICUBIC)
 
 
-# --- 1. Preprocessing Function ---
+# --- 1. Preprocessing Function (for WebDataset) ---
 def transform_sample(sample):
     """
     Extracts data from the raw WebDataset dictionary and prepares it.
@@ -55,7 +56,7 @@ def transform_sample(sample):
     }
 
 
-# --- 2. The Bucket Batcher (The Core Logic) ---
+# --- 2. The Bucket Batcher (The Core Logic for WebDataset) ---
 def bucket_batcher(data_stream, batch_size=16):
     """
     A generator that consumes the stream, groups by bucket,
@@ -105,7 +106,7 @@ def bucket_batcher(data_stream, batch_size=16):
             continue
 
 
-# --- 3. The Pipeline Builder ---
+# --- 3. The WebDataset Pipeline Builder ---
 def get_wds_loader(url_pattern, batch_size, num_workers=4, is_train=True):
     # A. Basic Pipeline
     # handler=wds.warn_and_continue catches errors during decoding/reading and skips them
@@ -144,4 +145,29 @@ def get_wds_loader(url_pattern, batch_size, num_workers=4, is_train=True):
         prefetch_factor=2
     )
 
+    return loader
+
+
+# --- 4. Food-101 Dataset Loader ---
+def get_food101_loader(config, is_train=True):
+    transform = transforms.Compose([
+        transforms.Resize((config.image_size, config.image_size)),
+        transforms.ToTensor(),
+        transforms.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5])
+    ])
+
+    dataset = datasets.Food101(
+        root=config.food101_dataset_path,
+        split='train' if is_train else 'test',
+        download=True,
+        transform=transform
+    )
+
+    loader = DataLoader(
+        dataset,
+        batch_size=config.batch_size,
+        shuffle=is_train,
+        num_workers=config.num_workers,
+        pin_memory=True
+    )
     return loader

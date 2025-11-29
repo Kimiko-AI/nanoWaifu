@@ -10,3 +10,5 @@ numpy
 sentencepiece
 accelerate
 huggingface_hub
+timm
+torch-fidelity
