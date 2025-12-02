@@ -1,7 +1,5 @@
 import torch
-import torch.nn as nn
 import torch.nn.functional as F
-import torch.optim as optim
 import torch.distributed as dist
 from torch.nn.parallel import DistributedDataParallel as DDP
 from transformers import AutoModelForCausalLM, AutoTokenizer, get_cosine_schedule_with_warmup
@@ -11,9 +9,8 @@ import numpy as np
 import random
 import wandb
 from tqdm import tqdm
-from PIL import Image
 import torchvision.transforms as transforms
-import sys
+import timm
 import importlib
 
 # Import from local files
@@ -149,7 +146,7 @@ class Trainer:
             self.raw_model = model
 
         # 3. Optimizer
-        self.optimizer = optim.AdamW(self.model.parameters(), lr=self.config.learning_rate)
+        self.optimizer = timm.optim.Muon(self.model.parameters(), lr=self.config.learning_rate)
         # Disable scaler for bf16, enable only for fp16
         self.scaler = torch.amp.GradScaler('cuda', enabled=(self.config.mixed_precision == 'fp16'))
 

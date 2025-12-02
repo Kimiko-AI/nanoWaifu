@@ -95,7 +95,7 @@ def modulate(x, shift, scale):
 class LayerNorm2d(nn.Module):
     def __init__(self, dim, eps=1e-6):
         super().__init__()
-        self.norm = nn.LayerNorm(dim, eps=eps)
+        self.norm = nn.RMSNorm(dim, eps=eps)
 
     def forward(self, x):
         x = x.permute(0, 2, 3, 1)
@@ -105,13 +105,14 @@ class LayerNorm2d(nn.Module):
 
 
 class ConvAttention(nn.Module):
-    def __init__(self, dim, num_heads=8, is_cross_attention=False):
+    def __init__(self, dim, num_heads=8, is_cross_attention=False, qk_norm=True):
         super().__init__()
         self.num_heads = num_heads
         self.dim = dim
         self.head_dim = dim // num_heads
         self.scale = self.head_dim ** -0.5
         self.is_cross_attention = is_cross_attention
+        self.use_qk_norm = qk_norm
 
         self.q_proj = nn.Conv2d(dim, dim, 1)
 
@@ -124,12 +125,23 @@ class ConvAttention(nn.Module):
 
         self.out_proj = nn.Conv2d(dim, dim, 1)
 
+        # --- QK Norm Layers ---
+        if self.use_qk_norm:
+            # Norm is applied over the head_dim
+            self.q_norm = nn.RMSNorm(self.head_dim)
+            self.k_norm = nn.RMSNorm(self.head_dim)
+
     def forward(self, x, context=None, rope_func=None):
         B, C, H, W = x.shape
 
         # 1. Project Queries
         # (B, C, H, W) -> (B, nH, hD, H, W) -> (B, nH, H, W, hD)
+        # Note: We put hD at the end so LayerNorm works automatically
         q = self.q_proj(x).view(B, self.num_heads, self.head_dim, H, W).permute(0, 1, 3, 4, 2)
+
+        # --- Apply Q Norm ---
+        if self.use_qk_norm:
+            q = self.q_norm(q)
 
         if self.is_cross_attention:
             # Cross Attn: Keys/Values from Context (Text)
@@ -137,7 +149,10 @@ class ConvAttention(nn.Module):
             k = self.k_proj(context).view(B, -1, self.num_heads, self.head_dim).transpose(1, 2)
             v = self.v_proj(context).view(B, -1, self.num_heads, self.head_dim).transpose(1, 2)
 
-            # No RoPE for Cross Attention (Image Q vs Text K has no 2D geometric relation)
+            # --- Apply K Norm (Cross) ---
+            if self.use_qk_norm:
+                k = self.k_norm(k)
+
             # Flatten Q spatial dims: (B, nH, H, W, hD) -> (B, nH, HW, hD)
             q = q.flatten(2, 3)
 
@@ -145,6 +160,11 @@ class ConvAttention(nn.Module):
             # Self Attn: Keys/Values from Image
             k = self.k_proj(x).view(B, self.num_heads, self.head_dim, H, W).permute(0, 1, 3, 4, 2)
             v = self.v_proj(x).view(B, self.num_heads, self.head_dim, H, W).permute(0, 1, 3, 4, 2)
+
+            # --- Apply K Norm (Self) ---
+            # Important: Apply Norm BEFORE RoPE
+            if self.use_qk_norm:
+                k = self.k_norm(k)
 
             # --- Apply Golden Gate RoPE ---
             if rope_func is not None:
@@ -155,13 +175,12 @@ class ConvAttention(nn.Module):
             # Flatten spatial dims for attention: (B, nH, HW, hD)
             q = q.flatten(2, 3)
             k = k.flatten(2, 3)
-            v = v.flatten(2, 3).contiguous()  # Contiguous often helps compile
+            v = v.flatten(2, 3).contiguous()
 
         # 2. Attention
         out = F.scaled_dot_product_attention(q, k, v, dropout_p=0.0)
 
         # 3. Reshape Back
-        # (B, nH, HW, hD) -> (B, nH, H, W, hD) -> (B, C, H, W)
         out = out.view(B, self.num_heads, H, W, self.head_dim).permute(0, 1, 4, 2, 3).reshape(B, C, H, W)
 
         return self.out_proj(out)
@@ -171,15 +190,14 @@ class ConvFeedForward(nn.Module):
     def __init__(self, dim, hidden_dim, kernel_size=3):
         super().__init__()
         self.dw1 = nn.Conv2d(dim, dim, kernel_size, padding=kernel_size // 2, groups=dim)
-        self.proj_up = nn.Conv2d(dim, hidden_dim * 2, 1)
+        self.proj_up = nn.Conv2d(dim, hidden_dim, 1)
         self.dw2 = nn.Conv2d(hidden_dim, hidden_dim, kernel_size, padding=kernel_size // 2, groups=hidden_dim)
         self.proj_down = nn.Conv2d(hidden_dim, dim, 1)
 
     def forward(self, x):
         x = self.dw1(x)
         x = self.proj_up(x)
-        x1, x2 = x.chunk(2, dim=1)
-        x = F.silu(x1) * x2
+        x = F.relu(x).square()
         x = self.dw2(x)
         x = self.proj_down(x)
         return x
