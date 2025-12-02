@@ -10,3 +10,6 @@ numpy
 sentencepiece
 accelerate
 huggingface_hub
+timm
+safetensors
+einops

@@ -14,14 +14,15 @@ class Config:
         
         # Model Params
         self.text_encoder_path = "Qwen/Qwen3-0.6B"
-        self.hidden_size = 768
-        self.depth = 12
-        self.num_heads = 12
+        self.hidden_size = 1280
+        self.depth = 32
+        self.num_heads = 16
         self.patch_size = 2
         # in_channels will be set dynamically in train.py if VAE is used, else default here
         self.in_channels = 3 
         self.bottleneck_dim = 128 
         self.virtual_expansion = 1 
+        self.gradient_checkpointing = True 
         
         # Data Configuration
         self.data_path = "/teamspace/studios/this_studio/anime/train/{00001..00037}.tar"

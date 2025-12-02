@@ -135,6 +135,7 @@ class Trainer:
             num_heads=self.config.num_heads,
             context_dim=text_hidden_dim,
             virtual_expansion=self.config.virtual_expansion,
+            gradient_checkpointing=self.config.gradient_checkpointing,
         ).to(self.device).to(memory_format=torch.channels_last)
 
         # Wrap in DDP

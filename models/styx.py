@@ -1,6 +1,7 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+import torch.utils.checkpoint as checkpoint
 import math
 import time
 
@@ -310,12 +311,14 @@ class MinimalT2I(nn.Module):
             num_heads=12,
             context_dim=768,
             virtual_expansion=1,  # Configurable VWN expansion (1 = disabled/standard)
+            gradient_checkpointing=False,
     ):
         super().__init__()
         self.patch_size = patch_size
         self.hidden_size = hidden_size
         self.virtual_expansion = virtual_expansion
         self.use_vwn = virtual_expansion > 1
+        self.gradient_checkpointing = gradient_checkpointing
 
         # Virtual Dimension (D' = r * D)
         self.virtual_dim = hidden_size * virtual_expansion if self.use_vwn else hidden_size
@@ -388,10 +391,16 @@ class MinimalT2I(nn.Module):
         for layer in self.layers:
             if self.use_vwn:
                 # GHC handles routing: x(wide) -> compress -> backbone(narrow) -> expand -> add -> x(wide)
-                x = layer['ghc'](x, layer['backbone'], t_emb, txt_emb, rope_func=self.rope)
+                if self.gradient_checkpointing and self.training:
+                    x = checkpoint.checkpoint(layer['ghc'], x, layer['backbone'], t_emb, txt_emb, self.rope, use_reentrant=False)
+                else:
+                    x = layer['ghc'](x, layer['backbone'], t_emb, txt_emb, rope_func=self.rope)
             else:
                 # Standard Backbone
-                x = layer(x, t_emb, txt_emb, rope_func=self.rope)
+                if self.gradient_checkpointing and self.training:
+                     x = checkpoint.checkpoint(layer, x, t_emb, txt_emb, self.rope, use_reentrant=False)
+                else:
+                    x = layer(x, t_emb, txt_emb, rope_func=self.rope)
 
         # Final output block operates directly on virtual_dim
         shift, scale = self.final_adaLN(t_emb).chunk(2, dim=1)
