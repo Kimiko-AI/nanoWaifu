@@ -1,6 +1,6 @@
 import torch
 import torch.nn as nn
-import torch.optim as optim
+from pytorch_optimizer.optimizer import ScheduleFreeAdamW
 import torch.distributed as dist
 from torch.nn.parallel import DistributedDataParallel as DDP
 from torch.utils.data.distributed import DistributedSampler
@@ -136,7 +136,7 @@ def train(config_path):
         class_dropout_prob=config['training']['class_dropout_prob']
     ).to(device)
 
-    optimizer = optim.AdamW(model.parameters(), lr=config['training']['learning_rate'])
+    optimizer = ScheduleFreeAdamW(model.parameters(), lr=config['training']['learning_rate'], weight_decay=1e-2)
 
     if config['training'].get('gradient_checkpointing', False):
         model.enable_gradient_checkpointing()
@@ -197,6 +197,7 @@ def train(config_path):
     # Training Loop
     while global_step < max_train_steps:
         model.train()
+        optimizer.train()
 
         try:
             batch = next(data_iter)
@@ -216,8 +217,9 @@ def train(config_path):
         xt = (1 - t_reshaped) * x0 + t_reshaped * x1
         ut = x1 - x0
 
-        vt = model(xt, t * 1000, class_ids, coords)
-        loss = torch.mean((vt - ut) ** 2)
+        with torch.cuda.amp.autocast(dtype=torch.bfloat16):
+            vt = model(xt, t * 1000, class_ids, coords)
+            loss = torch.mean((vt - ut) ** 2)
 
         optimizer.zero_grad()
         loss.backward()
@@ -270,6 +272,7 @@ def train(config_path):
 
                     # Sample
                     model.eval()
+                    optimizer.eval()
                     with torch.no_grad():
                         sample_classes = torch.randint(0, num_classes, (4,), device=device)
                         sample_coords = torch.tensor([[0.0, 0.0, 1.0, 1.0]] * 4, device=device)
@@ -282,6 +285,7 @@ def train(config_path):
                         wandb.log({"samples": wandb_image}, step=global_step)
 
                     model.train()
+                    optimizer.train()
                     print("Checkpoint and sampling complete.\n")
 
                 # Synchronize again after checkpoint
