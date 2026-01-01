@@ -23,7 +23,8 @@ class WDSLoader:
         self.ratio = (3. / 4., 4. / 3.)
 
     def load_class_map(self, csv_path):
-        df = pd.read_csv(csv_path)
+        # Using latin-1 encoding to avoid UnicodeDecodeError on special characters
+        df = pd.read_csv(csv_path, encoding='latin-1')
         return dict(zip(df['character'], df['id']))
 
     def preprocess(self, sample):
