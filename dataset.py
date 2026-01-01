@@ -9,6 +9,10 @@ import io
 from PIL import Image
 import json
 
+def warn_and_continue(exn):
+    print(f"Warning: {exn}")
+    return True
+
 class WDSLoader:
     def __init__(self, url, csv_path, image_size=64, batch_size=16, num_workers=4):
         self.url = url
