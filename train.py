@@ -1,515 +1,200 @@
 import torch
-import torch.nn.functional as F
-import torch.distributed as dist
-from torch.nn.parallel import DistributedDataParallel as DDP
-from transformers import AutoModelForCausalLM, AutoTokenizer, get_cosine_schedule_with_warmup
-from diffusers import AutoencoderKL
+import torch.nn as nn
+import torch.optim as optim
+import yaml
 import os
+import argparse
 import numpy as np
-import random
-import wandb
+from torchvision.utils import make_grid
 from tqdm import tqdm
-import torchvision.transforms as transforms
-import timm
-import importlib
+import wandb
+import glob
 
-# Import from local files
-from data import get_wds_loader
-from flow import xFlowMatching
-from config import Config
+from model import DiT
+from dataset import WDSLoader
 
-# Optimize for Tensor Cores
-torch.set_float32_matmul_precision('high')
-
-
-def is_main_process():
-    return not dist.is_initialized() or dist.get_rank() == 0
-
-
-def setup_ddp():
-    if "RANK" in os.environ and "WORLD_SIZE" in os.environ:
-        rank = int(os.environ["RANK"])
-        world_size = int(os.environ["WORLD_SIZE"])
-        local_rank = int(os.environ["LOCAL_RANK"])
-
-        torch.cuda.set_device(local_rank)
-        dist.init_process_group(backend="nccl", rank=rank, world_size=world_size)
-        print(f"[DDP] Initialized Process {rank}/{world_size} (Local: {local_rank})")
-        return rank, local_rank, world_size
-    else:
-        print("[DDP] Not detected. Running in single-process mode.")
-        return 0, 0, 1
-
-
-def cleanup_ddp():
-    if dist.is_initialized():
-        dist.destroy_process_group()
-
-
-class Trainer:
-    def __init__(self, config: Config, rank=0, local_rank=0, world_size=1):
-        self.config = config
-        self.rank = rank
-        self.local_rank = local_rank
-        self.world_size = world_size
-
-        self.device = torch.device(f"cuda:{local_rank}")
-        self.target_device = self.device
-        self.saved_checkpoints = []  # List of (loss, path)
-        
-        self.vae = None
-
-        # Create output directory (only main process)
-        if is_main_process():
-            os.makedirs(self.config.output_dir, exist_ok=True)
-            # Initialize WandB
-            wandb.init(
-                project=self.config.wandb_project,
-                name=self.config.wandb_run_name,
-                config=self.config.__dict__
-            )
-
-    def setup(self):
-        # 0. Load VAE (Optional)
-        if self.config.use_vae:
-            if is_main_process():
-                print(f"Loading VAE: {self.config.vae_path}...")
-            
-            self.vae = AutoencoderKL.from_pretrained(self.config.vae_path).to(self.device)
-            self.vae.eval()
-            self.vae.requires_grad_(False)
-            
-            # Adjust in_channels for Latent Space
-            self.config.in_channels = self.vae.config.latent_channels
-            if is_main_process():
-                print(f"VAE Loaded. Input channels adjusted to: {self.config.in_channels}")
-        
-        # 1. Load Text Encoder
-        # We load this on every rank to encode prompts
-        if is_main_process():
-            print(f"Loading Text Encoder: {self.config.text_encoder_path}...")
-
-        self.tokenizer = AutoTokenizer.from_pretrained(self.config.text_encoder_path)
-        if self.tokenizer.pad_token is None:
-            self.tokenizer.pad_token = self.tokenizer.eos_token
-
-        self.text_encoder = AutoModelForCausalLM.from_pretrained(
-            self.config.text_encoder_path,
-            dtype=torch.bfloat16
-        ).to(self.device)
-        self.text_encoder.eval()
-        self.text_encoder.requires_grad_(False)
-
-        # Compile Text Encoder
-        print("Compiling Text Encoder...")
-        self.text_encoder = torch.compile(self.text_encoder)
-
-        # Calculate Context Dimension
-        text_hidden_dim = self.text_encoder.config.hidden_size * 4
-        if is_main_process():
-            print(f"Calculated Context Dimension: {text_hidden_dim}")
-
-        # 2. Initialize Model
-        if is_main_process():
-            print(f"Initializing {self.config.model_arch} Model...")
-
-        if self.config.model_arch == "Styx":
-            from models.styx import MinimalT2I
-            ModelClass = MinimalT2I
-        elif self.config.model_arch == "ZImage":
-            from models.zimage import MinimalT2I
-            ModelClass = MinimalT2I
-        else:
-             # Fallback or dynamic loading for other models
+def cleanup_checkpoints(output_dir, max_checkpoints):
+    # Find all checkpoints
+    checkpoints = glob.glob(os.path.join(output_dir, "ckpt_step_*.pth"))
+    # Sort by step number (extracted from filename)
+    checkpoints.sort(key=lambda x: int(x.split('_')[-1].split('.')[0]))
+    
+    # Remove older checkpoints if we have more than max_checkpoints
+    if len(checkpoints) > max_checkpoints:
+        checkpoints_to_remove = checkpoints[:-max_checkpoints]
+        for ckpt in checkpoints_to_remove:
             try:
-                module = importlib.import_module(f"models.{self.config.model_arch.lower()}")
-                ModelClass = getattr(module, "MinimalT2I") 
-            except (ImportError, AttributeError) as e:
-                raise ValueError(f"Unknown or invalid model architecture: {self.config.model_arch}") from e
+                os.remove(ckpt)
+                print(f"Removed old checkpoint: {ckpt}")
+            except OSError as e:
+                print(f"Error removing {ckpt}: {e}")
 
-        model = ModelClass(
-            patch_size=self.config.patch_size,
-            in_channels=self.config.in_channels,
-            hidden_size=self.config.hidden_size,
-            depth=self.config.depth,
-            num_heads=self.config.num_heads,
-            context_dim=text_hidden_dim,
-            virtual_expansion=self.config.virtual_expansion,
-            gradient_checkpointing=self.config.gradient_checkpointing,
-        ).to(self.device).to(memory_format=torch.channels_last)
-
-        # Wrap in DDP
-        if self.world_size > 1:
-            self.model = DDP(model, device_ids=[self.local_rank], output_device=self.local_rank)
-            self.raw_model = model  # Access to original model for saving
-        else:
-            self.model = model
-            self.raw_model = model
-
-        # 3. Optimizer
-        self.optimizer = timm.optim.Muon(self.model.parameters(), lr=self.config.learning_rate)
-        # Disable scaler for bf16, enable only for fp16
-        self.scaler = torch.amp.GradScaler('cuda', enabled=(self.config.mixed_precision == 'fp16'))
-
-        # 4. Flow Matching Helper
-        self.flow_helper = xFlowMatching(self.model)
+@torch.no_grad()
+def sample_flow(model, image_size, batch_size, classes, coords, device, steps=50, cfg_scale=4.0):
+    """
+    Sample using Euler integration of the flow ODE with Classifier-Free Guidance.
+    dx/dt = v(x, t)
+    x_1 = x_0 + int_0^1 v(x_t, t) dt
+    
+    v_cfg = v_uncond + cfg_scale * (v_cond - v_uncond)
+    """
+    # Start from noise x_0
+    x = torch.randn((batch_size, 3, image_size, image_size), device=device)
+    
+    dt = 1.0 / steps
+    indices = torch.linspace(0, 1, steps, device=device)
+    
+    # Pre-prepare null classes for unconditioned pass (index = num_classes)
+    # We can assume model.num_classes is available or pass it. 
+    # model.num_classes corresponds to the unconditioned token index.
+    null_classes = torch.full_like(classes, model.num_classes, device=device)
+    
+    for i in tqdm(range(steps), desc='Sampling', leave=False):
+        t = indices[i]
         
-    def encode_data(self, pixels):
-        """Encodes pixels to latents if VAE is enabled, otherwise returns pixels."""
-        if self.vae is None:
-            return pixels
+        # Prepare inputs for batch (cond + uncond)
+        x_in = torch.cat([x, x])
+        t_batch = torch.full((batch_size * 2,), t.item(), device=device, dtype=torch.float)
+        c_in = torch.cat([classes, null_classes])
+        coords_in = torch.cat([coords, coords])
         
-        with torch.no_grad():
-            # Input pixels are [-1, 1]. VAE expects that.
-            # VAE usually runs in float32 or same as weights. 
-            # We cast to VAE dtype.
-            latents = self.vae.encode(pixels.to(dtype=self.vae.dtype)).latent_dist.sample()
-            
-            # Scale and Shift
-            latents = latents * self.config.vae_scale_factor + self.config.vae_shift_factor
-            
-            # Cast back to model precision if needed (usually bf16 for training)
-            # We'll let mixed precision context handle it in training loop, 
-            # but explicit cast can be safer if VAE is fp32.
-            return latents
-            
-    def decode_latents(self, latents):
-        """Decodes latents to pixels if VAE is enabled."""
-        if self.vae is None:
-            # Un-normalize [-1, 1] -> [0, 1]
-            return ((latents / 2) + 0.5).clamp(0, 1)
+        # Predict velocity field v_t
+        # Scale t by 1000 to match the frequency range expected by the embedder
+        v_pred = model(x_in, t_batch * 1000, c_in, coords_in)
         
-        # Inverse Scale and Shift
-        latents = (latents - self.config.vae_shift_factor) / self.config.vae_scale_factor
+        v_cond, v_uncond = v_pred.chunk(2)
+        v = v_uncond + cfg_scale * (v_cond - v_uncond)
         
-        with torch.no_grad():
-            images = self.vae.decode(latents.to(dtype=self.vae.dtype)).sample
+        # Euler step: x_{t+dt} = x_t + v_t * dt
+        x = x + v * dt
+        
+    return x
+
+def train(config_path):
+    with open(config_path, 'r') as f:
+        config = yaml.safe_load(f)
+
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    print(f"Using device: {device}")
+    
+    # Initialize WandB
+    wandb.init(project=config.get('wandb_project', 'nanoWaifu-DiT'), config=config)
+    
+    # Load Data
+    wds_loader = WDSLoader(
+        url=config['data']['webdataset_url'],
+        csv_path=config['data']['csv_path'],
+        image_size=config['training']['image_size'],
+        batch_size=config['training']['batch_size'],
+        num_workers=config['training']['num_workers']
+    )
+    dataloader = wds_loader.make_loader()
+    
+    # Init Model
+    num_classes = wds_loader.num_classes
+    
+    model = DiT(
+        input_size=config['training']['image_size'],
+        patch_size=config['training']['patch_size'],
+        in_channels=config['model']['in_channels'],
+        hidden_size=config['model']['dim'],
+        depth=config['model']['depth'],
+        num_heads=config['model']['heads'],
+        mlp_ratio=config['model']['mlp_dim'] / config['model']['dim'],
+        num_classes=num_classes,
+        class_dropout_prob=config['training']['class_dropout_prob']
+    ).to(device)
+    
+    # Resume from checkpoint if specified
+    resume_path = config.get('resume_from', "")
+    if resume_path and os.path.exists(resume_path):
+        print(f"Resuming from checkpoint: {resume_path}")
+        try:
+            state_dict = torch.load(resume_path, map_location=device)
+            model.load_state_dict(state_dict)
+            print("Successfully loaded model weights.")
+        except Exception as e:
+            print(f"Error loading checkpoint: {e}")
+    
+    optimizer = optim.AdamW(model.parameters(), lr=config['training']['learning_rate'])
+    
+    os.makedirs(config['training']['output_dir'], exist_ok=True)
+    
+    global_step = 0
+    cfg_scale = config['training'].get('cfg_scale', 4.0)
+
+    for epoch in range(config['training']['num_epochs']):
+        print(f"Epoch {epoch+1}/{config['training']['num_epochs']}")
+        for batch in dataloader:
+            x1, class_ids, coords = batch
+            x1 = x1.to(device)
+            class_ids = class_ids.to(device)
+            coords = coords.to(device)
             
-        # VAE outputs are [-1, 1] usually. Un-normalize to [0, 1]
-        return ((images / 2) + 0.5).clamp(0, 1)
-
-    def encode_prompt(self, prompt_batch, proportion_empty_prompts, is_train=True):
-        # Batch processing of captions
-        if isinstance(prompt_batch[0], (list, np.ndarray)):
-            if is_train:
-                captions = [random.choice(p) for p in prompt_batch]
-            else:
-                captions = [p[0] for p in prompt_batch]
-        else:
-            captions = list(prompt_batch)
-
-        # Whole batch dropout
-        if is_train and random.random() < proportion_empty_prompts:
-            # Create zeros directly - skipping text encoder
-            B = len(captions)
-            # Calculate Context Dimension: text_encoder.hidden_size * 4
-            D = self.text_encoder.config.hidden_size * 4
-
-            # Robust dtype fetching
-            try:
-                dtype = self.raw_model.patch_embed.weight.dtype
-            except:
-                dtype = torch.bfloat16
-
-            # Return (B, 1, D) - L=1 is sufficient for zero-attention
-            return torch.zeros(B, 1, D, device=self.target_device, dtype=dtype), None
-
-        text_inputs = self.tokenizer(
-            captions,
-            padding=True,
-            pad_to_multiple_of=8,
-            max_length=64,
-            truncation=True,
-            return_tensors="pt",
-        )
-
-        text_input_ids = text_inputs.input_ids.to(self.target_device)
-        prompt_masks = text_inputs.attention_mask.to(self.target_device)
-
-        with torch.no_grad(), torch.amp.autocast('cuda', enabled=(self.config.mixed_precision != 'no'),
-                                                 dtype=torch.bfloat16):
-            prompt_embeds = self.text_encoder(
-                input_ids=text_input_ids,
-                attention_mask=prompt_masks,
-                output_hidden_states=True,
-            ).hidden_states
-
-            # Stack hidden states
-            prompt_embeds = torch.stack(prompt_embeds, dim=0)
-
-            # Select 4 layers
-            indices = torch.linspace(0, len(prompt_embeds) - 1, 5, dtype=torch.long)[1:]
-            prompt_embeds = prompt_embeds[indices]
-
-            # Permute and Reshape
-            prompt_embeds = prompt_embeds.permute(1, 2, 0, 3).reshape(prompt_embeds.size(1), prompt_embeds.size(2), -1)
-
-            # Cast to model dtype
-            prompt_embeds = prompt_embeds.to(dtype=self.raw_model.patch_embed.weight.dtype)
-
-        return prompt_embeds, prompt_masks
-
-    def sample_images(self, prompts, step):
-        """
-        Evaluation/Sampling - Only run on Main Process
-        """
-        if not is_main_process():
-            return
-
-        self.model.eval()
-        print(f"\nGenerating evaluation images at step {step}...")
-
-        cfg_scale = self.config.cfg_scale
-
-        with torch.no_grad():
-            # Conditional Embeddings
-            text_emb, _ = self.encode_prompt(prompts, proportion_empty_prompts=0.0, is_train=False)
-
-            # Unconditional Embeddings (zeros for CFG, fixed length 1)
-            B, L, D = text_emb.shape  # L is the conditional sequence length
-            uncond_emb = torch.zeros(B, 1, D, device=text_emb.device, dtype=text_emb.dtype)
-
-            # Latent Shape
-            if self.vae:
-                # Standard VAE reduces dim by 8
-                H = W = self.config.image_size // 8
-            else:
-                H = W = self.config.image_size
+            # Flow Matching Training
+            # 1. Sample t uniform [0, 1]
+            t = torch.rand((x1.shape[0],), device=device)
+            
+            # 2. Sample noise x0
+            x0 = torch.randn_like(x1)
+            
+            # 3. Compute x_t (Linear interpolation / Optimal Transport path)
+            # x_t = (1 - t) * x0 + t * x1
+            t_reshaped = t.view(-1, 1, 1, 1)
+            xt = (1 - t_reshaped) * x0 + t_reshaped * x1
+            
+            # 4. Target vector field v_t = dx_t/dt = x1 - x0
+            ut = x1 - x0
+            
+            # 5. Predict vector field
+            # Scale t by 1000 for embedding frequency compatibility
+            vt = model(xt, t * 1000, class_ids, coords)
+            
+            loss = torch.mean((vt - ut) ** 2)
+            
+            optimizer.zero_grad()
+            loss.backward()
+            optimizer.step()
+            
+            global_step += 1
+            
+            if global_step % config['training']['log_every_steps'] == 0:
+                print(f"Step {global_step}, Loss: {loss.item():.4f}")
+                wandb.log({"train/loss": loss.item()}, step=global_step)
+            
+            if global_step % config['training']['save_image_every_steps'] == 0:
+                print("Sampling and Saving Checkpoint...")
                 
-            shape = (len(prompts), self.config.in_channels, H, W)
-
-            z = torch.randn(shape, device=self.device).to(memory_format=torch.channels_last)
-
-            steps = self.config.eval_steps
-            times = torch.linspace(0, 1, steps + 1, device=self.device)
-
-            for i in range(steps):
-                t_curr = times[i]
-                t_next = times[i + 1]
-
-                # Expand t for batch
-                t_curr_expanded = t_curr.repeat(shape[0])
-
-                # --- CFG (No Batching) ---
-                # Predict Unconditional
-                x_pred_uncond = self.model(z, t_curr_expanded, uncond_emb)
-
-                # Predict Conditional
-                x_pred_cond = self.model(z, t_curr_expanded, text_emb)
-
-                # Apply Guidance
-                # pred = uncond + scale * (cond - uncond)
-                x_pred = x_pred_uncond + cfg_scale * (x_pred_cond - x_pred_uncond)
-
-                # Derive v_pred
-                denom = 1 - t_curr
-                if denom < 1e-5: denom = 1e-5
-                v_pred = (x_pred - z) / denom
-
-                dt = t_next - t_curr
-                z = z + dt * v_pred
-
-            # Decode latents/pixels
-            images = self.decode_latents(z).cpu()
-
-            wandb_images = []
-            for idx, img_tensor in enumerate(images):
-                pil_img = transforms.ToPILImage()(img_tensor)
-                wandb_images.append(wandb.Image(pil_img, caption=prompts[idx][:100]))
-
-            wandb.log({"eval/images": wandb_images, "global_step": step})
-
-        self.model.train()
-
-    def train(self):
-        # DDP: Each process gets its own slice via split_by_node internally
-        dataloader = get_wds_loader(
-            url_pattern=self.config.data_path,
-            batch_size=self.config.batch_size,
-            num_workers=self.config.num_workers,
-            is_train=True
-        )
-
-        if is_main_process():
-            print("Starting Training Loop...")
-
-        # Scheduler
-        num_warmup_steps = int(0.01 * self.config.max_steps)
-        scheduler = get_cosine_schedule_with_warmup(
-            self.optimizer,
-            num_warmup_steps=num_warmup_steps,
-            num_training_steps=self.config.max_steps
-        )
-
-        # Resume Logic
-        start_step = 0
-        ema_loss = None
-        if self.config.resume_from:
-            if is_main_process():
-                print(f"Resuming from {self.config.resume_from}...")
-            ckpt = torch.load(self.config.resume_from, map_location=self.device)
-            self.raw_model.load_state_dict(ckpt['model_state_dict'])
-            self.optimizer.load_state_dict(ckpt['optimizer_state_dict'])
-            if 'scheduler_state_dict' in ckpt:
-                scheduler.load_state_dict(ckpt['scheduler_state_dict'])
-            start_step = ckpt['step'] + 1
-            if 'ema_loss' in ckpt:
-                ema_loss = ckpt['ema_loss']
-
-        self.model.train()
-        step = start_step
-        data_iter = iter(dataloader)
-
-        # Tqdm only on main process
-        if is_main_process():
-            progress_bar = tqdm(total=self.config.max_steps)
-        else:
-            progress_bar = None
-
-        # Loss averaging
-        running_loss = 0.0
-        running_steps = 0
-
-        while step < self.config.max_steps:
-            try:
-                batch = next(data_iter)
-            except StopIteration:
-                data_iter = iter(dataloader)
-                batch = next(data_iter)
-            except Exception as e:
-                if is_main_process():
-                    print(f"Data loading error: {e}")
-                continue
-
-            # Pixels: (B, 3, H, W)
-            pixels = batch["pixels"].to(self.device, memory_format=torch.channels_last)
-            prompts = batch["prompts"]
-            
-            # Encode to Latents (if VAE)
-            latents = self.encode_data(pixels)
-            latents = latents.to(memory_format=torch.channels_last)
-
-            # Encode Text
-            text_emb, _ = self.encode_prompt(
-                prompts,
-                proportion_empty_prompts=self.config.proportion_empty_prompts,
-                is_train=True
-            )
-
-            # Mixed Precision
-            with torch.amp.autocast('cuda', enabled=(self.config.mixed_precision != 'no'), dtype=torch.bfloat16):
-                # Flow Matching works on 'latents' now
-                t = self.flow_helper.sample_t(latents.shape[0], self.device)
-                e = torch.randn_like(latents)
-
-                t_reshaped = self.flow_helper.reshape_t(t, latents)
-                z = t_reshaped * latents + (1 - t_reshaped) * e
-                # target_v = latents - e # Not used in loss calc currently, x_pred is predicted
+                # Save Checkpoint
+                ckpt_path = os.path.join(config['training']['output_dir'], f'ckpt_step_{global_step}.pth')
+                torch.save(model.state_dict(), ckpt_path)
+                cleanup_checkpoints(config['training']['output_dir'], config.get('max_checkpoints', 3))
                 
-                z = z.to(memory_format=torch.channels_last)
-
-                x_pred = self.model(z, t, text_emb)
-                snr_weights = 1.0 / (1.0 - t + 1e-4) ** 2
-                snr_weights = torch.clamp(snr_weights, max=5.0)
-                if hasattr(self.flow_helper, 'reshape_t'):
-                    snr_weights = self.flow_helper.reshape_t(snr_weights, latents)
-                else:
-                    snr_weights = snr_weights.view(-1, 1, 1, 1)
+                # Sample
+                model.eval()
+                sample_classes = torch.randint(0, num_classes, (4,), device=device)
+                sample_coords = torch.tensor([[0.0, 0.0, 1.0, 1.0]] * 4, device=device)
                 
-                loss_elementwise = F.mse_loss(x_pred, latents, reduction='none')
-                loss = (loss_elementwise * snr_weights).mean()
+                samples = sample_flow(model, config['training']['image_size'], 4, sample_classes, sample_coords, device, cfg_scale=cfg_scale)
+                
+                samples = (samples + 1) / 2.0
+                samples = torch.clamp(samples, 0, 1)
+                
+                grid = make_grid(samples, nrow=2)
+                # Log image to wandb
+                wandb_image = wandb.Image(grid, caption=f"Sample Step {global_step} (CFG={cfg_scale})")
+                wandb.log({"samples": wandb_image}, step=global_step)
+                
+                model.train()
 
-                loss = loss / self.config.grad_accum_steps
-
-            self.scaler.scale(loss).backward()
-
-            if (step + 1) % self.config.grad_accum_steps == 0:
-                # Gradient Clipping
-                self.scaler.unscale_(self.optimizer)
-                torch.nn.utils.clip_grad_norm_(self.model.parameters(), 1.0)
-
-                self.scaler.step(self.optimizer)
-                self.scaler.update()
-                self.optimizer.zero_grad()
-                scheduler.step()
-
-                # EMA Loss
-                current_loss = loss.item() * self.config.grad_accum_steps
-                if ema_loss is None:
-                    ema_loss = current_loss
-                else:
-                    ema_loss = ema_loss * 0.99 + current_loss * 0.01
-
-                # Accumulate for logging
-                running_loss += current_loss
-                running_steps += 1
-
-                # Logging (Main process only)
-                if is_main_process():
-                    if step % self.config.log_every == 0:
-                        avg_loss = running_loss / running_steps if running_steps > 0 else 0.0
-
-                        wandb.log({
-                            "train/loss": avg_loss,
-                            "train/ema_loss": ema_loss,
-                            "train/lr": self.optimizer.param_groups[0]['lr']
-                        }, step=step)
-                        progress_bar.set_description(f"Loss: {avg_loss:.4f} | EMA: {ema_loss:.4f}")
-
-                        # Reset running stats
-                        running_loss = 0.0
-                        running_steps = 0
-
-                    progress_bar.update(1)
-
-                    # Evaluation
-                    if step > 0 and step % self.config.eval_every == 0:
-                        eval_prompts = prompts[:self.config.num_eval_images]
-                        if len(eval_prompts) < self.config.num_eval_images:
-                            eval_prompts += ["anime girl"] * (self.config.num_eval_images - len(eval_prompts))
-                        self.sample_images(eval_prompts, step)
-
-                    # Saving (Use raw_model to avoid 'module.' prefix)
-                    if step > 0 and step % self.config.save_every == 0:
-                        save_path = os.path.join(self.config.output_dir, f"checkpoint_{step}.pt")
-                        torch.save({
-                            'step': step,
-                            'model_state_dict': self.raw_model.state_dict(),
-                            'optimizer_state_dict': self.optimizer.state_dict(),
-                            'scheduler_state_dict': scheduler.state_dict(),
-                            'config': self.config.__dict__,
-                            'ema_loss': ema_loss
-                        }, save_path)
-                        print(f"Saved checkpoint: {save_path}")
-
-                        # Top K Logic (Lowest EMA Loss)
-                        self.saved_checkpoints.append((ema_loss, save_path))
-                        self.saved_checkpoints.sort(key=lambda x: x[0])  # Ascending sort
-
-                        while len(self.saved_checkpoints) > self.config.save_top_k:
-                            to_remove = self.saved_checkpoints.pop(-1)  # Remove highest loss
-                            try:
-                                if os.path.exists(to_remove[1]):
-                                    os.remove(to_remove[1])
-                                    print(f"Removed old checkpoint: {to_remove[1]}")
-                            except OSError as e:
-                                print(f"Error removing checkpoint: {e}")
-
-                step += 1
-
+    print("Training Complete.")
+    final_path = os.path.join(config['training']['output_dir'], 'dit_model_final.pth')
+    torch.save(model.state_dict(), final_path)
+    wandb.finish()
 
 if __name__ == "__main__":
-    rank, local_rank, world_size = setup_ddp()
-    config = Config()
-
-    # Adjust learning rate for DDP (optional but recommended: scale with world size)
-    # config.learning_rate *= world_size
-
-    trainer = Trainer(config, rank=rank, local_rank=local_rank, world_size=world_size)
-    trainer.setup()
-    try:
-        trainer.train()
-    except KeyboardInterrupt:
-        print("Training interrupted.")
-    finally:
-        cleanup_ddp()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--config", type=str, default="config.yaml", help="Path to config file")
+    args = parser.parse_args()
+    
+    train(args.config)
