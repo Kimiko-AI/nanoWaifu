@@ -2,6 +2,7 @@ training:
   batch_size: 16
   learning_rate: 1.0e-4
   num_epochs: 100
+  max_train_steps: 100000
   log_every_steps: 10
   save_image_every_steps: 500
   image_size: 64  # Small for testing/raw pixel speed

@@ -9,13 +9,14 @@ import os
 import argparse
 import numpy as np
 from torchvision.utils import make_grid
-from tqdm import tqdm
+from tqdm.auto import tqdm
 import wandb
 import glob
 import builtins
 
 from model import DiT
 from dataset import WDSLoader
+
 
 def setup_ddp():
     if "RANK" in os.environ and "WORLD_SIZE" in os.environ:
@@ -29,9 +30,11 @@ def setup_ddp():
     else:
         return False, 0, 0, 1, torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
+
 def cleanup_ddp():
     if dist.is_initialized():
         dist.destroy_process_group()
+
 
 def cleanup_checkpoints(output_dir, max_checkpoints, rank):
     if rank != 0: return
@@ -39,7 +42,7 @@ def cleanup_checkpoints(output_dir, max_checkpoints, rank):
     checkpoints = glob.glob(os.path.join(output_dir, "ckpt_step_*.pth"))
     # Sort by step number (extracted from filename)
     checkpoints.sort(key=lambda x: int(x.split('_')[-1].split('.')[0]))
-    
+
     # Remove older checkpoints if we have more than max_checkpoints
     if len(checkpoints) > max_checkpoints:
         checkpoints_to_remove = checkpoints[:-max_checkpoints]
@@ -50,6 +53,7 @@ def cleanup_checkpoints(output_dir, max_checkpoints, rank):
             except OSError as e:
                 print(f"Error removing {ckpt}: {e}")
 
+
 @torch.no_grad()
 def sample_flow(model, image_size, batch_size, classes, coords, device, steps=50, cfg_scale=4.0):
     """
@@ -57,54 +61,56 @@ def sample_flow(model, image_size, batch_size, classes, coords, device, steps=50
     """
     # Handle DDP model wrapper
     model_engine = model.module if isinstance(model, DDP) else model
-    
+
     # Start from noise x_0
     x = torch.randn((batch_size, 3, image_size, image_size), device=device)
-    
+
     dt = 1.0 / steps
     indices = torch.linspace(0, 1, steps, device=device)
-    
+
     # Pre-prepare null classes for unconditioned pass
     null_classes = torch.full_like(classes, model_engine.num_classes, device=device)
-    
+
     for i in tqdm(range(steps), desc='Sampling', leave=False):
         t = indices[i]
-        
+
         # Prepare inputs for batch (cond + uncond)
         x_in = torch.cat([x, x])
         t_batch = torch.full((batch_size * 2,), t.item(), device=device, dtype=torch.float)
         c_in = torch.cat([classes, null_classes])
         coords_in = torch.cat([coords, coords])
-        
+
         # Predict velocity field v_t
         v_pred = model(x_in, t_batch * 1000, c_in, coords_in)
-        
+
         v_cond, v_uncond = v_pred.chunk(2)
         v = v_uncond + cfg_scale * (v_cond - v_uncond)
-        
+
         # Euler step: x_{t+dt} = x_t + v_t * dt
         x = x + v * dt
-        
+
     return x
+
 
 def train(config_path):
     is_ddp, rank, local_rank, world_size, device = setup_ddp()
-    
+
     # Suppress printing on non-master ranks
     if rank != 0:
         def print_pass(*args, **kwargs):
             pass
+
         builtins.print = print_pass
 
     with open(config_path, 'r') as f:
         config = yaml.safe_load(f)
 
     print(f"Using device: {device}, Rank: {rank}, World Size: {world_size}")
-    
+
     # Initialize WandB only on rank 0
     if rank == 0:
         wandb.init(project=config.get('wandb_project', 'nanoWaifu-DiT'), config=config)
-    
+
     # Load Data
     wds_loader = WDSLoader(
         url=config['data']['webdataset_url'],
@@ -114,10 +120,10 @@ def train(config_path):
         num_workers=config['training']['num_workers']
     )
     dataloader = wds_loader.make_loader()
-    
+
     # Init Model
     num_classes = wds_loader.num_classes
-    
+
     model = DiT(
         input_size=config['training']['image_size'],
         patch_size=config['training']['patch_size'],
@@ -129,30 +135,30 @@ def train(config_path):
         num_classes=num_classes,
         class_dropout_prob=config['training']['class_dropout_prob']
     ).to(device)
-    
+
     optimizer = optim.AdamW(model.parameters(), lr=config['training']['learning_rate'])
-    
+
     # Resume from checkpoint if specified
     start_epoch = 0
     global_step = 0
     resume_path = config.get('resume_from', "")
-    
+
     if resume_path and os.path.exists(resume_path):
         print(f"Resuming from checkpoint: {resume_path}")
         try:
             state_dict = torch.load(resume_path, map_location=device)
-            
+
             # Load model weights
             if "model_state_dict" in state_dict:
                 model.load_state_dict(state_dict["model_state_dict"])
             else:
-                model.load_state_dict(state_dict) # Legacy support
-            
+                model.load_state_dict(state_dict)  # Legacy support
+
             # Load optimizer state
             if "optimizer_state_dict" in state_dict:
                 optimizer.load_state_dict(state_dict["optimizer_state_dict"])
                 print("Loaded optimizer state.")
-                
+
             # Load global step
             if "global_step" in state_dict:
                 global_step = state_dict["global_step"]
@@ -165,92 +171,132 @@ def train(config_path):
     # Wrap model in DDP
     if is_ddp:
         model = DDP(model, device_ids=[local_rank])
-    
+
     os.makedirs(config['training']['output_dir'], exist_ok=True)
-    
+
     cfg_scale = config['training'].get('cfg_scale', 4.0)
-    
+
+    # Training Loop
+    # Calculate max_train_steps if not explicitly provided
+    # Default to 1000 steps per epoch as a placeholder if not specified
+    max_train_steps = config['training'].get('max_train_steps', config['training']['num_epochs'] * 1000)
+
+    # Create progress bar only on rank 0
+    if rank == 0:
+        pbar = tqdm(range(global_step, max_train_steps), desc="Steps", dynamic_ncols=True)
+    else:
+        pbar = None
+
     # Training Loop
     for epoch in range(start_epoch, config['training']['num_epochs']):
-        print(f"Epoch {epoch+1}/{config['training']['num_epochs']}")
-        
-        # Create progress bar only on rank 0
-        if rank == 0:
-            pbar = tqdm(dataloader, desc=f"Epoch {epoch+1}", dynamic_ncols=True)
-            batch_iterator = pbar
-        else:
-            batch_iterator = dataloader
+        if global_step >= max_train_steps:
+            break
 
-        for batch in batch_iterator:
+        print(f"Epoch {epoch + 1}/{config['training']['num_epochs']}")
+        model.train()
+
+        for batch in dataloader:
+            if global_step >= max_train_steps:
+                break
+
             x1, class_ids, coords = batch
             x1 = x1.to(device)
             class_ids = class_ids.to(device)
             coords = coords.to(device)
-            
+
             # Flow Matching Training
             t = torch.rand((x1.shape[0],), device=device)
             x0 = torch.randn_like(x1)
             t_reshaped = t.view(-1, 1, 1, 1)
             xt = (1 - t_reshaped) * x0 + t_reshaped * x1
             ut = x1 - x0
-            
+
             vt = model(xt, t * 1000, class_ids, coords)
             loss = torch.mean((vt - ut) ** 2)
-            
+
             optimizer.zero_grad()
             loss.backward()
+
+            # Add gradient clipping for stability and get norm for logging
+            grad_norm = torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
+
             optimizer.step()
-            
+
             global_step += 1
-            
+
+            # Update progress bar and logs
             if rank == 0:
-                if global_step % config['training']['log_every_steps'] == 0:
-                    pbar.set_postfix({"loss": f"{loss.item():.4f}"})
-                    wandb.log({"train/loss": loss.item()}, step=global_step)
+                pbar.update(1)
                 
-                if global_step % config['training']['save_image_every_steps'] == 0:
-                    print("Sampling and Saving Checkpoint...")
-                    
+                current_lr = optimizer.param_groups[0]['lr']
+                logs = {
+                    "loss": loss.item(),
+                    "lr": current_lr,
+                    "grad_norm": grad_norm.item() if torch.is_tensor(grad_norm) else grad_norm,
+                }
+                pbar.set_postfix(**logs)
+
+                # Log to W&B (only on rank 0)
+                if global_step % config['training']['log_every_steps'] == 0:
+                    wandb_log = {f"train/{k}": v for k, v in logs.items()}
+                    wandb.log(wandb_log, step=global_step)
+
+            # Sample and save checkpoint (only on rank 0)
+            if global_step % config['training']['save_image_every_steps'] == 0:
+                # Synchronize all processes before checkpoint
+                if is_ddp:
+                    dist.barrier()
+
+                if rank == 0:
+                    print("\nSampling and Saving Checkpoint...")
+
                     # Save Checkpoint (Unwrap DDP)
                     model_to_save = model.module if is_ddp else model
                     ckpt_state = {
                         "model_state_dict": model_to_save.state_dict(),
                         "optimizer_state_dict": optimizer.state_dict(),
                         "global_step": global_step,
+                        "epoch": epoch,
                         "config": config
                     }
                     ckpt_path = os.path.join(config['training']['output_dir'], f'ckpt_step_{global_step}.pth')
                     torch.save(ckpt_state, ckpt_path)
                     cleanup_checkpoints(config['training']['output_dir'], config.get('max_checkpoints', 3), rank)
-                    
+
                     # Sample
                     model.eval()
-                    sample_classes = torch.randint(0, num_classes, (4,), device=device)
-                    sample_coords = torch.tensor([[0.0, 0.0, 1.0, 1.0]] * 4, device=device)
-                    
-                    samples = sample_flow(model, config['training']['image_size'], 4, sample_classes, sample_coords, device, cfg_scale=cfg_scale)
-                    
-                    samples = (samples + 1) / 2.0
-                    samples = torch.clamp(samples, 0, 1)
-                    
-                    grid = make_grid(samples, nrow=2)
-                    wandb_image = wandb.Image(grid, caption=f"Sample Step {global_step} (CFG={cfg_scale})")
-                    wandb.log({"samples": wandb_image}, step=global_step)
-                    
+                    with torch.no_grad():
+                        sample_classes = torch.randint(0, num_classes, (4,), device=device)
+                        sample_coords = torch.tensor([[0.0, 0.0, 1.0, 1.0]] * 4, device=device)
+                        samples = sample_flow(model, config['training']['image_size'], 4,
+                                              sample_classes, sample_coords, device, cfg_scale=cfg_scale)
+                        samples = (samples + 1) / 2.0
+                        samples = torch.clamp(samples, 0, 1)
+                        grid = make_grid(samples, nrow=2)
+                        wandb_image = wandb.Image(grid, caption=f"Sample Step {global_step} (CFG={cfg_scale})")
+                        wandb.log({"samples": wandb_image}, step=global_step)
+
                     model.train()
+                    print("Checkpoint and sampling complete.\n")
+
+                # Synchronize again after checkpoint
+                if is_ddp:
+                    dist.barrier()
 
     print("Training Complete.")
     if rank == 0:
+        pbar.close()
         final_path = os.path.join(config['training']['output_dir'], 'dit_model_final.pth')
         model_to_save = model.module if is_ddp else model
         torch.save(model_to_save.state_dict(), final_path)
         wandb.finish()
-    
+
     cleanup_ddp()
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", type=str, default="config.yaml", help="Path to config file")
     args = parser.parse_args()
-    
-        train(args.config)
+
+    train(args.config)

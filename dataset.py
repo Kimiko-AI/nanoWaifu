@@ -32,21 +32,43 @@ class WDSLoader:
         return dict(zip(df['character'], df['id']))
 
     def preprocess(self, sample):
+        # Find image key
+        image_key = None
+        for key in ["image", "jpg", "jpeg", "png", "webp"]:
+            if key in sample:
+                image_key = key
+                break
+        
+        if image_key is None:
+            # Debug: Print keys if image not found (first few times)
+            if not hasattr(self, "_log_missing_key_count"): self._log_missing_key_count = 0
+            if self._log_missing_key_count < 5:
+                print(f"Skipping sample: No image key found. Available keys: {list(sample.keys())}")
+                self._log_missing_key_count += 1
+            return None
+
         # Decode image
         try:
-            image_bytes = sample["image"]
+            image_bytes = sample[image_key]
             image = Image.open(io.BytesIO(image_bytes)).convert("RGB")
         except Exception as e:
+            print(f"Error decoding image: {e}")
             return None # Skip broken images
 
         # Decode JSON for class
+        # If 'json' key missing, treat as unknown/unconditioned
         try:
-            meta = json.loads(sample["json"])
+            if "json" in sample:
+                meta = json.loads(sample["json"])
+            else:
+                meta = {} # Empty meta implies unknown character
+            
             char_name = meta.get("character", "unknown")
             # Map to self.num_classes if not found. This aligns with the DiT null token index,
             # effectively treating unknown characters as "unconditioned" samples.
             class_id = self.class_map.get(char_name, self.num_classes)
         except Exception as e:
+            print(f"Error parsing metadata: {e}")
             return None
 
         # Random Resized Crop logic
