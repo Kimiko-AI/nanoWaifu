@@ -138,6 +138,10 @@ def train(config_path):
 
     optimizer = optim.AdamW(model.parameters(), lr=config['training']['learning_rate'])
 
+    if config['training'].get('gradient_checkpointing', False):
+        model.enable_gradient_checkpointing()
+        print("Gradient checkpointing enabled.")
+
     # Resume from checkpoint if specified
     start_epoch = 0
     global_step = 0
@@ -171,7 +175,7 @@ def train(config_path):
     # Wrap model in DDP
     if is_ddp:
         model = DDP(model, device_ids=[local_rank])
-
+    model.compile()
     os.makedirs(config['training']['output_dir'], exist_ok=True)
 
     cfg_scale = config['training'].get('cfg_scale', 4.0)

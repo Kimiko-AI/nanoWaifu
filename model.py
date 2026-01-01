@@ -1,5 +1,6 @@
 import torch
 import torch.nn as nn
+import torch.utils.checkpoint
 import numpy as np
 import math
 
@@ -155,7 +156,11 @@ class DiT(nn.Module):
             DiTBlock(hidden_size, num_heads, mlp_ratio=mlp_ratio) for _ in range(depth)
         ])
         self.final_layer = FinalLayer(hidden_size, patch_size, out_channels=in_channels)
+        self.gradient_checkpointing = False
         self.initialize_weights()
+
+    def enable_gradient_checkpointing(self):
+        self.gradient_checkpointing = True
 
     def initialize_weights(self):
         # Initialize transformer layers:
@@ -234,7 +239,10 @@ class DiT(nn.Module):
         c = t_emb + y_emb + coord_emb 
 
         for block in self.blocks:
-            x = block(x, c)
+            if self.gradient_checkpointing and self.training:
+                x = torch.utils.checkpoint.checkpoint(block, x, c, use_reentrant=False)
+            else:
+                x = block(x, c)
             
         x = self.final_layer(x, c)
         x = self.unpatchify(x)
