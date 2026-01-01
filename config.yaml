@@ -1,13 +1,14 @@
 training:
-  batch_size: 16
+  batch_size: 1024
   learning_rate: 1.0e-4
   num_epochs: 100
-  max_train_steps: 100000
   log_every_steps: 10
+  max_train_steps: 100000
+
   save_image_every_steps: 500
-  image_size: 64  # Small for testing/raw pixel speed
-  patch_size: 4   # Small patch size since image is small (64/4 = 16 patches per side)
-  num_workers: 4
+  image_size: 256  # Small for testing/raw pixel speed
+  patch_size: 16   # Small patch size since image is small (64/4 = 16 patches per side)
+  num_workers: 8
   class_dropout_prob: 0.1
   cfg_scale: 4.0
   output_dir: "outputs"
@@ -24,5 +25,5 @@ model:
   in_channels: 3
 
 data:
-  webdataset_url: "pipe:curl -L -s https://huggingface.co/datasets/animetimm/zerochan-character-w640-ws-m50-full/resolve/main/train/000{01..47}.tar" # Example URL
+  webdataset_url: "/teamspace/studios/this_studio/nanoWaifu/anime/train/000{01..47}.tar" # Example URL
   csv_path: "characters.csv"
