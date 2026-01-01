@@ -187,62 +187,63 @@ def train(config_path):
     else:
         pbar = None
 
-    # Training Loop
-    for epoch in range(start_epoch, config['training']['num_epochs']):
-        if global_step >= max_train_steps:
-            break
+    # Create iterator
+    data_iter = iter(dataloader)
 
-        print(f"Epoch {epoch + 1}/{config['training']['num_epochs']}")
+    # Training Loop
+    while global_step < max_train_steps:
         model.train()
 
-        for batch in dataloader:
-            if global_step >= max_train_steps:
-                break
+        try:
+            batch = next(data_iter)
+        except StopIteration:
+            data_iter = iter(dataloader)
+            batch = next(data_iter)
 
-            x1, class_ids, coords = batch
-            x1 = x1.to(device)
-            class_ids = class_ids.to(device)
-            coords = coords.to(device)
+        x1, class_ids, coords = batch
+        x1 = x1.to(device)
+        class_ids = class_ids.to(device)
+        coords = coords.to(device)
 
-            # Flow Matching Training
-            t = torch.rand((x1.shape[0],), device=device)
-            x0 = torch.randn_like(x1)
-            t_reshaped = t.view(-1, 1, 1, 1)
-            xt = (1 - t_reshaped) * x0 + t_reshaped * x1
-            ut = x1 - x0
+        # Flow Matching Training
+        t = torch.rand((x1.shape[0],), device=device)
+        x0 = torch.randn_like(x1)
+        t_reshaped = t.view(-1, 1, 1, 1)
+        xt = (1 - t_reshaped) * x0 + t_reshaped * x1
+        ut = x1 - x0
 
-            vt = model(xt, t * 1000, class_ids, coords)
-            loss = torch.mean((vt - ut) ** 2)
+        vt = model(xt, t * 1000, class_ids, coords)
+        loss = torch.mean((vt - ut) ** 2)
 
-            optimizer.zero_grad()
-            loss.backward()
+        optimizer.zero_grad()
+        loss.backward()
 
-            # Add gradient clipping for stability and get norm for logging
-            grad_norm = torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
+        # Add gradient clipping for stability and get norm for logging
+        grad_norm = torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
 
-            optimizer.step()
+        optimizer.step()
 
-            global_step += 1
+        global_step += 1
 
-            # Update progress bar and logs
-            if rank == 0:
-                pbar.update(1)
-                
-                current_lr = optimizer.param_groups[0]['lr']
-                logs = {
-                    "loss": loss.item(),
-                    "lr": current_lr,
-                    "grad_norm": grad_norm.item() if torch.is_tensor(grad_norm) else grad_norm,
-                }
-                pbar.set_postfix(**logs)
+        # Update progress bar and logs
+        if rank == 0:
+            pbar.update(1)
+            
+            current_lr = optimizer.param_groups[0]['lr']
+            logs = {
+                "loss": loss.item(),
+                "lr": current_lr,
+                "grad_norm": grad_norm.item() if torch.is_tensor(grad_norm) else grad_norm,
+            }
+            pbar.set_postfix(**logs)
 
-                # Log to W&B (only on rank 0)
-                if global_step % config['training']['log_every_steps'] == 0:
-                    wandb_log = {f"train/{k}": v for k, v in logs.items()}
-                    wandb.log(wandb_log, step=global_step)
+            # Log to W&B (only on rank 0)
+            if global_step % config['training']['log_every_steps'] == 0:
+                wandb_log = {f"train/{k}": v for k, v in logs.items()}
+                wandb.log(wandb_log, step=global_step)
 
-            # Sample and save checkpoint (only on rank 0)
-            if global_step % config['training']['save_image_every_steps'] == 0:
+        # Sample and save checkpoint (only on rank 0)
+        if global_step % config['training']['save_image_every_steps'] == 0:
                 # Synchronize all processes before checkpoint
                 if is_ddp:
                     dist.barrier()
