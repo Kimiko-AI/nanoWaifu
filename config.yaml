@@ -1,0 +1,27 @@
+training:
+  batch_size: 16
+  learning_rate: 1.0e-4
+  num_epochs: 100
+  log_every_steps: 10
+  save_image_every_steps: 500
+  image_size: 64  # Small for testing/raw pixel speed
+  patch_size: 4   # Small patch size since image is small (64/4 = 16 patches per side)
+  num_workers: 4
+  class_dropout_prob: 0.1
+  cfg_scale: 4.0
+  output_dir: "outputs"
+  wandb_project: "nanoWaifu-DiT"
+  resume_from: "" # Path to checkpoint to resume from (e.g. "outputs/ckpt_step_1000.pth"), empty for new run
+  max_checkpoints: 3 # Keep only top N latest checkpoints
+
+model:
+  dim: 384
+  depth: 6 # Number of DiT blocks
+  heads: 6
+  mlp_dim: 1536 # 4 * dim
+  num_classes: 0 # Will be loaded from CSV
+  in_channels: 3
+
+data:
+  webdataset_url: "pipe:curl -L -s https://huggingface.co/datasets/animetimm/zerochan-character-w640-ws-m50-full/resolve/main/train/000{01..47}.tar" # Example URL
+  csv_path: "characters.csv"

@@ -1,0 +1,5032 @@
+character,count,selected_count,train_count,test_count,val_count,id
+Hatsune Miku,57419,47805,38244,4780,4781,1
+Ganyu,6504,6137,4910,614,613,2
+Flandre Scarlet,6640,5697,4558,570,569,3
+Akemi Homura,6514,5594,4475,559,560,4
+Rem (Re:Zero),5771,5444,4355,544,545,5
+Hakurei Reimu,6419,5394,4315,539,540,6
+Hu Tao,5633,5182,4146,518,518,7
+Raiden Shogun,5218,4794,3835,479,480,8
+Megurine Luka,5504,4578,3662,458,458,9
+Houshou Marine,4703,4488,3590,449,449,10
+Kaname Madoka,5132,4478,3582,448,448,11
+Kagamine Rin,5611,4430,3544,443,443,12
+Saber (Fate/stay night),5034,4302,3442,430,430,13
+Remilia Scarlet,4649,3930,3144,393,393,14
+Princess Peach,4798,3764,3011,376,377,15
+Firefly (Honkai Star Rail),4110,3762,3010,376,376,16
+Kagamine Len,4718,3732,2986,373,373,17
+Kirisame Marisa,4419,3569,2855,357,357,18
+Yae Miko,3811,3545,2836,354,355,19
+Konpaku Youmu,4034,3499,2799,350,350,20
+Minato Aqua,3660,3492,2794,349,349,21
+Cirno,3774,3397,2718,340,339,22
+Miki Sayaka,3735,3299,2639,330,330,23
+Yazawa Nico,3412,3183,2546,318,319,24
+Mash Kyrielight,3399,3153,2522,315,316,25
+Tomoe Mami,3568,3115,2492,312,311,26
+Orihara Izaya,4658,3077,2462,308,307,27
+Amiya,3530,3072,2458,307,307,28
+Keqing,3290,3065,2452,306,307,29
+Kinomoto Sakura,3738,3053,2442,305,306,30
+Kamisato Ayaka,3275,2992,2394,299,299,31
+Izayoi Sakuya,3442,2953,2362,295,296,32
+Sakura Kyouko,3283,2952,2362,295,295,33
+Minami Kotori,3086,2928,2342,293,293,34
+Komeiji Koishi,3390,2924,2339,292,293,35
+Joan Alter,3202,2864,2291,286,287,36
+GUMI,3633,2850,2280,285,285,37
+Toujou Nozomi,3019,2838,2270,284,284,38
+Usada Pekora,2964,2813,2250,281,282,39
+Souryuu Asuka Langley,3202,2809,2247,281,281,40
+Patchouli Knowledge,3137,2741,2193,274,274,41
+Sailor Moon (Character),3129,2724,2179,272,273,42
+Nishikino Maki,2889,2658,2126,266,266,43
+Yor Briar,3039,2649,2119,265,265,44
+Watanabe You,2800,2636,2109,264,263,45
+Kochiya Sanae,2948,2632,2106,263,263,46
+Hoshimachi Suisei,2752,2596,2077,260,259,47
+Foreigner (Abigail Williams),2968,2585,2068,258,259,48
+Uruha Rushia,2693,2545,2036,254,255,49
+Formidable,2627,2531,2025,253,253,50
+Uzumaki Naruto,3915,2526,2021,253,252,51
+Kaito (Vocaloid),3428,2523,2018,252,253,52
+Nilou,2629,2484,1987,248,249,53
+Tsushima Yoshiko,2667,2477,1982,248,247,54
+Ichinose Asuna,2613,2449,1959,245,245,55
+Gawr Gura,2594,2444,1955,244,245,56
+Kuroko Tetsuya,3109,2409,1927,241,241,57
+Sangonomiya Kokomi,2569,2403,1922,240,241,58
+Emilia,2588,2384,1907,238,239,59
+Takarada Rikka,2593,2358,1886,236,236,60
+Lumine,2609,2357,1886,236,235,61
+Sakamata Chloe,2418,2337,1870,234,233,62
+Shirakami Fubuki,2438,2309,1847,231,231,63
+Sonoda Umi,2408,2281,1825,228,228,64
+Heiwajima Shizuo,3319,2273,1818,227,228,65
+Saigyouji Yuyuko,2737,2273,1818,227,228,66
+Mona Megistus,2618,2266,1813,227,226,67
+Eula Lawrence,2404,2244,1795,224,225,68
+Amane Kanata,2344,2212,1770,221,221,69
+Sakura Saber,2391,2211,1769,221,221,70
+Tokoyami Towa,2253,2208,1766,221,221,71
+Shigure (Kantai Collection),2337,2180,1744,218,218,72
+Saber (Fate/EXTRA),2476,2158,1726,216,216,73
+Furina,2429,2142,1714,214,214,74
+Shimakaze,2349,2125,1700,212,213,75
+Uchiha Sasuke,3327,2107,1686,211,210,76
+Yakumo Yukari,2499,2079,1663,208,208,77
+Kousaka Honoka,2232,2079,1663,208,208,78
+Lancer (Fate/Grand Order),2175,2066,1653,207,206,79
+Kise Ryouta,2545,2040,1632,204,204,80
+Fubuki,2172,2025,1620,202,203,81
+YoRHa No.2 Type B,2565,2024,1619,202,203,82
+Kurosawa Dia,2149,1996,1597,200,199,83
+Shenhe,2133,1963,1570,196,197,84
+Joan of Arc (Fate/Apocrypha),2157,1960,1568,196,196,85
+Sakurauchi Riko,2070,1946,1557,195,194,86
+Akashi Seijuurou,2595,1926,1541,193,192,87
+Reisen Udongein Inaba,2214,1923,1538,192,193,88
+Hinanawi Tenshi,2151,1905,1524,190,191,89
+IA,2184,1903,1522,190,191,90
+Hoshizora Rin,2033,1884,1507,188,189,91
+Levi Ackerman,2766,1882,1506,188,188,92
+Okumura Rin,2469,1879,1503,188,188,93
+Ayase Eri,2004,1864,1491,186,187,94
+Texas,1998,1853,1482,185,186,95
+Kakudate Karin,1995,1853,1482,185,186,96
+Takami Chika,1996,1839,1471,184,184,97
+Assassin (Shuten-douji),2018,1827,1462,183,182,98
+Shameimaru Aya,2274,1824,1459,182,183,99
+Koizumi Hanayo,1950,1801,1441,180,180,100
+Nahida,1999,1790,1432,179,179,101
+Nami,2198,1788,1430,179,179,102
+Yukihana Lamy,1823,1778,1422,178,178,103
+Misono Mika,1876,1756,1405,176,175,104
+Kunikida Hanamaru,1863,1745,1396,174,175,105
+Zero Two,1885,1742,1394,174,174,106
+Ultimate Madoka,1959,1735,1388,174,173,107
+Black・・・Rock Shooter (Character),2797,1730,1384,173,173,108
+Tifa Lockhart,1927,1723,1378,172,173,109
+Kurosawa Ruby,1851,1717,1374,172,171,110
+Prinz Eugen,1762,1702,1362,170,170,111
+Sakata Gintoki,2616,1696,1357,170,169,112
+Makima,2050,1687,1350,169,168,113
+Zhongli,1964,1673,1338,167,168,114
+Asuma Toki,1772,1670,1336,167,167,115
+Kurosaki Ichigo,2594,1656,1325,166,165,116
+Natori Sana,1756,1643,1314,164,165,117
+Hayase Yuuka,1703,1631,1305,163,163,118
+Xiao (Genshin Impact),1889,1624,1299,162,163,119
+Kizuna AI,1743,1614,1291,161,162,120
+Caster (Fate/EXTRA),1730,1608,1286,161,161,121
+Kamado Nezuko,1824,1606,1285,161,160,122
+Exusiai,1745,1606,1285,161,160,123
+Lancer (Ereshkigal),1730,1605,1284,160,161,124
+Belfast,1660,1604,1283,160,161,125
+Japan,2648,1602,1282,160,160,126
+Sakura Miko,1678,1589,1271,159,159,127
+United Kingdom,2333,1572,1258,157,157,128
+Nekomata Okayu,1612,1568,1254,157,157,129
+Yelan,1692,1561,1249,156,156,130
+Nakiri Ayame,1625,1550,1240,155,155,131
+Venti,1823,1549,1239,155,155,132
+Saber Alter,1713,1546,1237,155,154,133
+Kitagawa Marin,1715,1543,1234,154,155,134
+Chun-Li,1882,1542,1234,154,154,135
+C.C.,1759,1540,1232,154,154,136
+Ahri,1747,1540,1232,154,154,137
+Ellen Joe,1717,1535,1228,154,153,138
+Komeiji Satori,1734,1534,1227,153,154,139
+Fujiwara no Mokou,1872,1529,1223,153,153,140
+Tohsaka Rin,1719,1529,1223,153,153,141
+Matsuura Kanan,1641,1526,1221,153,152,142
+Gojou Satoru,2603,1500,1200,150,150,143
+Fischl,1610,1488,1190,149,149,144
+Ch・・en,1613,1464,1171,146,147,145
+Kochou Shinobu,1684,1460,1168,146,146,146
+Rumia,1638,1460,1168,146,146,147
+Kaguya Luna,1533,1456,1165,146,145,148
+Yuzuki Yukari,1627,1453,1162,145,146,149
+Miqo'te,1655,1452,1162,145,145,150
+Yuuki Asuna,1575,1448,1158,145,145,151
+Hibiki (Kantai Collection),1504,1441,1153,144,144,152
+Kashima (Kantai Collection),1489,1422,1138,142,142,153
+Skadi,1574,1421,1137,142,142,154
+Barbara Pegg,1478,1409,1127,141,141,155
+Shielder (Fate/Grand Order),1571,1400,1120,140,140,156
+Shirogane Noel,1463,1395,1116,140,139,157
+Nakano Miku,1479,1392,1114,139,139,158
+Hoshino Ai,1597,1388,1110,139,139,159
+Surtr (Arknights),1543,1385,1108,138,139,160
+Unicorn (Azur Lane),1443,1378,1102,138,138,161
+Oozora Subaru,1433,1372,1098,137,137,162
+Nakano Azusa,1510,1344,1075,134,135,163
+Haruno Sakura,1748,1340,1072,134,134,164
+Matou Sakura,1467,1330,1064,133,133,165
+Mikasa Ackerman,1648,1327,1062,133,132,166
+Nakasu Kasumi,1419,1327,1062,133,132,167
+Alice Margatroid,2637,1322,1058,132,132,168
+Haruna (Kantai Collection),1382,1322,1058,132,132,169
+Hestia (DanMachi),1402,1320,1056,132,132,170
+Sirius (Azur Lane),1369,1319,1055,132,132,171
+Inubashiri Momiji,1532,1316,1053,132,131,172
+Hyuuga Hinata,1581,1313,1050,131,132,173
+United States,1981,1306,1045,131,130,174
+Atago,1372,1304,1043,130,131,175
+Kuchiki Rukia,1758,1303,1042,130,131,176
+Megumin,1490,1296,1037,130,129,177
+Frieren,1511,1280,1024,128,128,178
+Hamakaze (Kantai Collection),1336,1277,1022,128,127,179
+Mori Calliope,1366,1276,1021,128,127,180
+Kafka (Honkai Star Rail),1398,1271,1017,127,127,181
+Mei (Pokﾃｩmon),1356,1271,1017,127,127,182
+Taihou,1314,1260,1008,126,126,183
+Akagi (Kantai Collection),1365,1256,1005,126,125,184
+Hakui Koyori,1305,1254,1003,125,126,185
+Todoroki Shouto,1573,1240,992,124,124,186
+Hibari Kyoya,1984,1231,985,123,123,187
+Yuuki Setsuna,1320,1229,983,123,123,188
+Tsukatsuki Rio,1315,1229,983,123,123,189
+Akiyama Mio,1409,1224,979,122,123,190
+Nakano Nino,1309,1220,976,122,122,191
+Tsukino Mito,1363,1218,974,122,122,192
+Gudako,1363,1198,958,120,120,193
+Kongou,1271,1196,957,120,119,194
+Sparkle,1406,1193,954,119,120,195
+Ayanami Rei,1410,1189,951,119,119,196
+Daiwa Scarlet,1189,1169,935,117,117,197
+Archer (Ishtar),1264,1168,934,117,117,198
+Ousaka Shizuku,1250,1165,932,116,117,199
+KAITO,1553,1164,931,116,117,200
+Uehara Ayumu,1242,1162,930,116,116,201
+Izumi Sagiri,1312,1157,926,116,115,202
+Miura Azusa,1385,1155,924,116,115,203
+Nico Robin,1518,1153,922,115,116,204
+Shibuya Rin,1269,1153,922,115,116,205
+Caster (Nero Claudius),1179,1138,910,114,114,206
+Dark Magician Girl,1256,1136,909,114,113,207
+Ohara Mari,1231,1136,909,114,113,208
+Kaga (Kantai Collection),1236,1133,906,113,114,209
+Hoshii Miki,1248,1126,901,113,112,210
+Moriya Suwako,1330,1124,899,112,113,211
+Kazami Yuuka,1440,1121,897,112,112,212
+Ookami Mio,1180,1113,890,111,112,213
+Ouro Kronii,1196,1112,890,111,111,214
+Sakaki Yuya,1476,1111,889,111,111,215
+Oshino Shinobu,1239,1106,885,111,110,216
+Prussia,1752,1103,882,110,111,217
+Hiiragi Yuzu,1276,1099,879,110,110,218
+Misaka Mikoto,1240,1099,879,110,110,219
+Lappland,1320,1095,876,110,109,220
+Sunaookami Shiroko,1144,1092,874,109,109,221
+Serena (Yu-Gi-Oh! ARC-V),1307,1090,872,109,109,222
+La+ Darknesss,1140,1083,866,108,109,223
+Kurusu Syo,1273,1080,864,108,108,224
+Inugami Korone,1151,1076,861,108,107,225
+Pretender (Oberon),1508,1070,856,107,107,226
+Yoimiya,1161,1070,856,107,107,227
+Ryuuge Kisaki,1127,1070,856,107,107,228
+Eren Jaeger,1553,1064,851,106,107,229
+Gokou Ruri,1203,1062,850,106,106,230
+Saber of Red,1241,1060,848,106,106,231
+Kasumi Tenjinmon,1184,1058,846,106,106,232
+Tartaglia,1237,1056,845,106,105,233
+Yuzuriha Inori,1212,1056,845,106,105,234
+Saber Bride,1145,1055,844,106,105,235
+Cure Peace,1158,1051,841,105,105,236
+Russia,1631,1048,838,105,105,237
+Lancer of Red,1555,1048,838,105,105,238
+Ninomae Ina'nis,1132,1044,835,104,105,239
+Tennouji Rina,1219,1042,834,104,104,240
+Midoriya Izuku,1532,1039,831,104,104,241
+Monkey D. Luffy,1867,1038,830,104,104,242
+Takagaki Kaede,1084,1031,825,103,103,243
+Wanderer (Genshin Impact),1305,1025,820,102,103,244
+Bakugou Katsuki,1573,1024,819,102,103,245
+Citlali,1136,1022,818,102,102,246
+Gilgamesh,1298,1020,816,102,102,247
+Vinsmoke Sanji,1569,1019,815,102,102,248
+Furina de Fontaine,1195,1018,814,102,102,249
+Violet Evergarden (Character),1145,1006,805,101,100,250
+Yamato (Kantai Collection),1119,1001,801,100,100,251
+Saber (Miyamoto Musashi),1107,1000,800,100,100,252
+Marie (Pokﾃｩmon),1084,999,799,100,100,253
+Honma Meiko,1087,995,796,100,99,254
+Anarchy Stocking,1207,992,794,99,99,255
+Shinjou Akane,1051,991,793,99,99,256
+Shinomiya Kaguya,1058,985,788,98,99,257
+Tsurumaru Kuninaga,1339,983,786,98,99,258
+Sorasaki Hina,1080,983,786,98,99,259
+Kagiyama Hina,1161,982,786,98,98,260
+Yuudachi,1049,980,784,98,98,261
+Lelouch Lamperouge,1251,978,782,98,98,262
+W (Arknights),1070,978,782,98,98,263
+Murasaki Shion,1017,970,776,97,97,264
+Klee,1153,963,770,96,97,265
+Makise Kurisu,1074,963,770,96,97,266
+Mostima,1069,963,770,96,97,267
+Aomine Daiki,1311,960,768,96,96,268
+Suigintou,1231,954,763,95,96,269
+Berserker (Minamoto-no-Raikou),1091,954,763,95,96,270
+Joumae Saori,1021,950,760,95,95,271
+Reiuji Utsuho,1171,949,759,95,95,272
+Siro,1061,949,759,95,95,273
+Rurina,1011,944,755,94,95,274
+Enterprise,1032,941,753,94,94,275
+Tachibana Makoto,1147,933,746,93,94,276
+Natsuiro Matsuri,984,930,744,93,93,277
+Robin (Honkai Star Rail),1044,929,743,93,93,278
+Kashiwazaki Sena,1001,927,742,93,92,279
+Hoshimi Miyabi,1050,921,737,92,92,280
+Kagura (Gintama),1162,918,734,92,92,281
+Yahagi (Kantai Collection),976,918,734,92,92,282
+Ayanami (Azur Lane),977,916,733,92,91,283
+Morgan le Fay,1000,915,732,92,91,284
+Ittoki Otoya,1106,914,731,91,92,285
+Amatsukaze (Kantai Collection),959,914,731,91,92,286
+Uchiha Itachi,1365,908,726,91,91,287
+Toga Himiko,1020,905,724,90,91,288
+Illustrious,960,905,724,90,91,289
+Shishiro Botan,942,905,724,90,91,290
+Morrigan Aensland,1042,902,722,90,90,291
+Shampoo (Ranma ﾂｽ),1029,895,716,90,89,292
+Noshiro (Kantai Collection),930,894,715,89,90,293
+Hijikata Toushirou,1308,890,712,89,89,294
+Akuma Homura,1065,888,710,89,89,295
+Agano (Kantai Collection),934,887,710,89,88,296
+Kyaru,922,887,710,89,88,297
+Kanroji Mitsuri,999,884,707,88,89,298
+Yumemi Riamu,932,884,707,88,89,299
+Spain,1254,883,706,88,89,300
+Kozakura Marry,1035,875,700,88,87,301
+Rokudou Mukuro,1320,872,698,87,87,302
+BB (Fate/EXTRA),927,872,698,87,87,303
+Gasai Yuno,1009,871,697,87,87,304
+Cure Sky,935,869,695,87,87,305
+Sawada Tsunayoshi,1397,865,692,86,87,306
+Yuuki Juudai,1176,861,689,86,86,307
+SeeU,1032,858,686,86,86,308
+Satono Diamond,913,858,686,86,86,309
+Toyosatomimi no Miko,1005,857,686,86,85,310
+MEIKO (VOCALOID),1099,855,684,86,85,311
+Archer Inferno,917,855,684,86,85,312
+Meltlilith,940,853,682,85,86,313
+Inoue Orihime,1065,851,681,85,85,314
+Lucy Heartfilia,1027,848,678,85,85,315
+Barnaby Brooks Jr.,1202,844,675,84,85,316
+Mysterious Alter Ego ﾎ・,899,844,675,84,85,317
+Kitasan Black,877,840,672,84,84,318
+Tsukino Usagi,1109,838,670,84,84,319
+Lancer (Fate/strange fake),946,837,670,84,83,320
+Takanashi Rikka,930,835,668,84,83,321
+Reisalin Stout,926,834,667,83,84,322
+Tokai Teio,862,834,667,83,84,323
+Bowsette,889,832,666,83,83,324
+Rosalina,1039,830,664,83,83,325
+Houjuu Nue,992,830,664,83,83,326
+Edward Elric,1163,829,663,83,83,327
+Tamaki Iroha,872,829,663,83,83,328
+Uraraka Ochako,968,827,662,83,82,329
+Hong Meiling,941,827,662,83,82,330
+Gotou Hitori,914,827,662,83,82,331
+Rider of Black,910,825,660,82,83,332
+Hirasawa Yui,937,824,659,82,83,333
+Kagami Taiga,1157,823,658,82,83,334
+Cure Beauty,902,820,656,82,82,335
+Konoe Kanata,872,818,654,82,82,336
+Suzuya,857,818,654,82,82,337
+Berserker (Joan Alter),855,816,653,82,81,338
+Kazama Iroha,853,815,652,82,81,339
+Kirigaya Kazuto,926,814,651,81,82,340
+Ichinose Shiki,850,814,651,81,82,341
+Kafuu Chino,841,809,647,81,81,342
+Kanzaki Ranko,885,808,646,81,81,343
+Narumeia (Granblue Fantasy),843,806,645,81,80,344
+Diluc Ragnvindr,926,804,643,80,81,345
+Boa Hancock,1129,802,642,80,80,346
+Castorice,895,799,639,80,80,347
+Lio Fotia,1063,798,638,80,80,348
+Jane Doe (Zenless Zone Zero),897,797,638,80,79,349
+Enomoto Takane,1045,795,636,80,79,350
+Ichinose Tokiya,967,795,636,80,79,351
+Siege (Arknights),933,791,633,79,79,352
+Mifune Shioriko,840,790,632,79,79,353
+Tokisaki Kurumi,927,789,631,79,79,354
+Tendou Alice,852,787,630,79,78,355
+Trafalgar D. Water Law,1498,786,629,79,78,356
+Nagato Yuki,937,785,628,78,79,357
+Kotobuki Tsumugi,882,785,628,78,79,358
+Assassin (Yu Mei-ren),827,784,627,78,79,359
+HK416 (Girls Frontline),823,783,626,78,79,360
+Tenryuu (Kantai Collection),852,780,624,78,78,361
+Mejiro McQueen,807,779,623,78,78,362
+Kasane Teto,980,777,622,78,77,363
+Shantae (Character),962,775,620,78,77,364
+Kaenbyou Rin,970,773,618,77,78,365
+Ryougi Shiki,915,772,618,77,77,366
+Kawashiro Nitori,891,771,617,77,77,367
+Foreigner (Katsushika Hokusai),930,770,616,77,77,368
+Kaburagi T. Kotetsu,1192,769,615,77,77,369
+Moon Cancer (BB),818,767,614,77,76,370
+Saber Lily,870,763,610,76,77,371
+Alastor,1597,762,610,76,76,372
+Jinguji Ren,949,761,609,76,76,373
+Power,900,759,607,76,76,374
+Sonico,866,759,607,76,76,375
+Angelina (Arknights),844,756,605,76,75,376
+Albedo (Overlord),892,755,604,76,75,377
+Jean Gunnhildr,821,752,602,75,75,378
+Hijiri Byakuren,853,751,601,75,75,379
+Noelle,826,750,600,75,75,380
+Judar,1056,749,599,75,75,381
+Houraisan Kaguya,866,749,599,75,75,382
+Rice Shower,805,748,598,75,75,383
+Sailor Venus,870,745,596,74,75,384
+Kida Masaomi,1014,744,595,74,75,385
+Hatake Kakashi,1473,743,594,74,75,386
+Sagisawa Fumika,780,743,594,74,75,387
+Prinz Eugen (Kantai Collection),781,742,594,74,74,388
+Roronoa Zoro,1299,741,593,74,74,389
+Ram (Re:Zero),805,738,590,74,74,390
+Shibuya Kanon,794,735,588,74,73,391
+Laffey,793,733,586,73,74,392
+Merlin (Fate/stay night),846,731,585,73,73,393
+Mikazuki Munechika,916,730,584,73,73,394
+Caster (Scathach Skadi),773,727,582,73,72,395
+Homura (Xenoblade 2),790,725,580,72,73,396
+Kaedehara Kazuha,837,722,578,72,72,397
+Emma Verde,764,718,574,72,72,398
+Hidan,1053,717,574,72,71,399
+Takasugi Shinsuke,1016,717,574,72,71,400
+Ibuki Suika,895,717,574,72,71,401
+Nanami Haruka,881,717,574,72,71,402
+Iochi Mari,764,717,574,72,71,403
+Fate Testarossa,811,716,573,72,71,404
+Foreigner (Yang Guifei),762,716,573,72,71,405
+Asaka Karin,752,713,570,71,72,406
+Matsuoka Rin,930,710,568,71,71,407
+Cure Flora,852,707,566,71,70,408
+Assassin (Kama),775,707,566,71,70,409
+Akai Haato,745,706,565,71,70,410
+Lancer (Fate/EXTRA CCC),782,704,563,70,71,411
+Watson Amelia,779,704,563,70,71,412
+Kazemaru Ichirouta,929,703,562,70,71,413
+Tachibana Kanade,843,703,562,70,71,414
+Elsa the Snow Queen,841,702,562,70,70,415
+Arlecchino,827,700,560,70,70,416
+Caster (Anastasia Nikolaevna Romanova),816,699,559,70,70,417
+Berserker (Kiyohime),745,699,559,70,70,418
+Midorima Shintarou,932,697,558,70,69,419
+Sailor Mercury,807,697,558,70,69,420
+Urawa Hanako,726,697,558,70,69,421
+Saitou Hajime (Hakuouki),883,696,557,70,69,422
+Lancer (Tamamo no Mae),750,694,555,69,70,423
+Fujiwara Chika,737,693,554,69,70,424
+Higuchi Kaede,735,693,554,69,70,425
+Konno Junko,820,691,553,69,69,426
+Ningguang,751,691,553,69,69,427
+Rider (Artoria Pendragon Alter),726,691,553,69,69,428
+Acheron,817,688,550,69,69,429
+Sailor Saturn,808,687,550,69,68,430
+Aqua (KonoSuba),759,687,550,69,68,431
+Belarus,858,684,547,68,69,432
+Takao (Azur Lane),718,684,547,68,69,433
+Hata no Kokoro,951,682,546,68,68,434
+Erza Scarlet,880,682,546,68,68,435
+Nanami Chiaki,749,679,543,68,68,436
+Assassin (Fate/Prototype: Sougin no Fragments),729,678,542,68,68,437
+Cure Happy,757,676,541,68,67,438
+Tsunomaki Watame,725,676,541,68,67,439
+Ja'far,903,675,540,68,67,440
+Ryuuguu Rena,778,674,539,67,68,441
+Miyashita Ai,715,674,539,67,68,442
+Shimamura Uzuki,703,674,539,67,68,443
+Murasakibara Atsushi,894,671,537,67,67,444
+Eyjafjalla,752,671,537,67,67,445
+Onikata Kayoko,716,670,536,67,67,446
+Okita Souji (Hakuouki),829,666,533,67,66,447
+Yakumo Ran,810,666,533,67,66,448
+Cure Milky,700,665,532,66,67,449
+Atago (Kantai Collection),682,665,532,66,67,450
+Sailor Mars,778,664,531,66,67,451
+Sheryl Nome,822,663,530,66,67,452
+Murakumo (Kantai Collection),731,663,530,66,67,453
+Taiwan,821,661,529,66,66,454
+Mayuzumi Fuyuko,686,661,529,66,66,455
+Deidara,944,660,528,66,66,456
+Kurosaki Ruri,790,660,528,66,66,457
+Touwa Erio,732,660,528,66,66,458
+Gita (Granblue Fantasy),738,657,526,66,65,459
+Nakano Itsuki,706,657,526,66,65,460
+Afuro Terumi,837,656,525,66,65,461
+Shizuka Rin,707,656,525,66,65,462
+Zelda (Breath of the Wild),776,655,524,66,65,463
+Majin Saber,686,653,522,65,66,464
+Shana,747,650,520,65,65,465
+Ganaha Hibiki,734,650,520,65,65,466
+Takanashi Kiara,719,650,520,65,65,467
+Sendai (Kantai Collection),699,648,518,65,65,468
+Kirino Ranmaru,813,646,517,65,64,469
+Sukoya Kana,669,646,517,65,64,470
+Archer (Fate/Grand Order),904,644,515,64,65,471
+Illyasviel von Einzbern,733,644,515,64,65,472
+Kaga (Azur Lane),694,642,514,64,64,473
+Pramanix,751,640,512,64,64,474
+Nian (Arknights),692,639,511,64,64,475
+Minase Iori,702,638,510,64,64,476
+Kamui Gakupo,900,636,509,64,63,477
+Elaina,732,636,509,64,63,478
+Suzumiya Haruhi,760,633,506,63,64,479
+Mudrock,696,633,506,63,64,480
+Shinomiya Natsuki,823,632,506,63,63,481
+Yamashiro (Azur Lane),681,631,505,63,63,482
+Kiryu Coco,661,631,505,63,63,483
+Saber (Fate/Prototype),722,630,504,63,63,484
+D.Va,714,628,502,63,63,485
+Shiranui Mai,717,627,502,63,62,486
+The Herta,791,625,500,62,63,487
+Hijirikawa Masato,751,625,500,62,63,488
+Yanfei,661,625,500,62,63,489
+Yae Sakura,726,624,499,62,63,490
+Lisa Minci,684,622,498,62,62,491
+Uchiha Madara,1007,621,497,62,62,492
+Lancer (Artoria Pendragon),707,621,497,62,62,493
+Allen Walker,964,620,496,62,62,494
+Tomioka Giyuu,768,620,496,62,62,495
+Rider (Fate/stay night),720,620,496,62,62,496
+Shiranui Flare,691,620,496,62,62,497
+Nakano Ichika,668,620,496,62,62,498
+Lize Helesta,635,616,493,62,61,499
+Portgas D. Ace,1013,611,489,61,61,500
+Tang Keke,656,610,488,61,61,501
+Skadi The Corrupting Heart,704,609,487,61,61,502
+Ushio Noa,654,608,486,61,61,503
+Okita Sougo,816,607,486,61,60,504
+Chitanda Eru,680,605,484,60,61,505
+Senjougahara Hitagi,674,604,483,60,61,506
+Alice (Alice in Wonderland),812,603,482,60,61,507
+Kaneki Ken,1109,602,482,60,60,508
+Nakano Yotsuba,655,602,482,60,60,509
+Kanna Kamui,635,601,481,60,60,510
+Hikari (Xenoblade 2),637,600,480,60,60,511
+Yousei-kishi Tristan,677,598,478,60,60,512
+Regina (Dokidoki),653,596,477,60,59,513
+Ceres Fauna,634,596,477,60,59,514
+Shijou Takane,638,595,476,60,59,515
+Son Goku (DRAGON BALL),992,594,475,59,60,516
+North Italy,830,594,475,59,60,517
+Fern,665,594,475,59,60,518
+Princess Serenity,730,593,474,59,60,519
+Luo Tianyi,730,592,474,59,59,520
+Kal'tsit,679,592,474,59,59,521
+Ro-500 (Kantai Collection),614,591,473,59,59,522
+Kyoyama Kazusa,632,590,472,59,59,523
+Matoi Ryuuko,696,589,471,59,59,524
+Phosphophyllite,933,588,470,59,59,525
+Ciel Phantomhive,877,588,470,59,59,526
+Kujou Sara,666,588,470,59,59,527
+Rin (Yu-Gi-Oh! ARC-V),703,587,470,59,58,528
+Lancer (Fate/stay night),779,582,466,58,58,529
+Akagi (Azur Lane),630,582,466,58,58,530
+Fushimi Saruhiko,780,581,465,58,58,531
+Koakuma,657,581,465,58,58,532
+Mikaze Ai,649,581,465,58,58,533
+Evelyn Chevalier,643,581,465,58,58,534
+Higuchi Madoka,600,581,465,58,58,535
+Musashi (Kantai Collection),616,580,464,58,58,536
+Maruyama Aya,612,580,464,58,58,537
+Rikuhachima Aru,641,579,463,58,58,538
+Inkling (Splatoon),899,577,462,58,57,539
+Mononobe no Futo,683,576,461,58,57,540
+Artoria Caster,635,576,461,58,57,541
+Komaeda Nagito,736,575,460,58,57,542
+Takao Kazunari,720,575,460,58,57,543
+Aerith Gainsborough,683,574,459,57,58,544
+Sunazuka Akira,599,574,459,57,58,545
+Berserker (Florence Nightingale),659,572,458,57,57,546
+Cure Sunny,652,572,458,57,57,547
+Takamachi Nanoha,706,571,457,57,57,548
+Jinx (League of Legends),713,570,456,57,57,549
+Inazuma (Kantai Collection),609,569,455,57,57,550
+Kaeya Alberich,661,568,454,57,57,551
+Lillie (Pokﾃｩmon),634,568,454,57,57,552
+Ruler (Artoria Pendragon),616,568,454,57,57,553
+Fudou Yuusei,749,567,454,57,56,554
+Tateyama Ayano,737,567,454,57,56,555
+Assassin of Black,610,565,452,56,57,556
+Nekomiya Hinata,599,565,452,56,57,557
+Kibana,791,563,450,56,57,558
+Nanase Haruka,718,562,450,56,56,559
+Roxy Migurdia,633,561,449,56,56,560
+Usagiyama Rumi,750,559,447,56,56,561
+Yuuki Makoto,706,559,447,56,56,562
+Agatsuma Zenitsu,746,558,446,56,56,563
+Rosaria,609,558,446,56,56,564
+Yoko Littner,709,553,442,55,56,565
+March 7th,645,553,442,55,56,566
+Kaku Seiga,635,553,442,55,56,567
+France,842,551,441,55,55,568
+Silver Wolf,739,550,440,55,55,569
+Rimuru Tempest,622,550,440,55,55,570
+Sebastian Michaelis,931,549,439,55,55,571
+Sendou Aichi,663,549,439,55,55,572
+Asui Tsuyu,647,549,439,55,55,573
+Archer (Joan of Arc),568,549,439,55,55,574
+Cure March,624,548,438,55,55,575
+Nagato (Kantai Collection),584,548,438,55,55,576
+Rias Gremory,581,548,438,55,55,577
+Arima Kana,657,547,438,55,54,578
+Albedo (Genshin Impact),683,546,437,55,54,579
+Hoshiguma,635,546,437,55,54,580
+Reze,697,545,436,54,55,581
+Amami Haruka,608,545,436,54,55,582
+Kamado Tanjirou,733,543,434,54,55,583
+Gokudera Hayato,764,542,434,54,54,584
+Cammy White,623,542,434,54,54,585
+Ruby Rose,671,541,433,54,54,586
+Majin Archer,699,540,432,54,54,587
+Plana,565,540,432,54,54,588
+Hyakumantenbara Salome,564,540,432,54,54,589
+China,795,538,430,54,54,590
+Ranka Lee,640,538,430,54,54,591
+Nanjamo,597,538,430,54,54,592
+Tokino Sora,571,538,430,54,54,593
+Zuihou (Kantai Collection),569,538,430,54,54,594
+Izumi Konata,638,537,430,54,53,595
+Alice Schuberg,604,537,430,54,53,596
+Amaimon,854,536,429,54,53,597
+Hoshimiya Ichigo,602,535,428,54,53,598
+Ruan Mei,601,535,428,54,53,599
+FEater (Arknights),575,535,428,54,53,600
+Futaba Anzu,594,534,427,53,54,601
+Rider (Marie Antoinette),602,533,426,53,54,602
+Dazai Osamu,711,530,424,53,53,603
+Hayami Kanade,571,530,424,53,53,604
+Nagisa Kaworu,690,527,422,53,52,605
+Chrome Dokuro,683,527,422,53,52,606
+Morgiana,606,527,422,53,52,607
+Eishin Flash,535,526,421,53,52,608
+Saitou (Pokﾃｩmon),577,523,418,52,53,609
+Verniy (Kantai Collection),556,523,418,52,53,610
+Asashio (Kantai Collection),544,521,417,52,52,611
+Amber,784,520,416,52,52,612
+Kokkoro (Princess Connect),548,518,414,52,52,613
+Ookurikara,759,517,414,52,51,614
+Berserker (Mysterious Heroine X Alter),545,517,414,52,51,615
+Ivan Karelin,678,516,413,52,51,616
+Caster (Murasaki Shikibu),563,515,412,52,51,617
+Wei WuXian,674,513,410,51,52,618
+Kotatsu Tamaki,586,513,410,51,52,619
+Cloud Strife,669,512,410,51,51,620
+Horo,610,512,410,51,51,621
+Yuri Plisetsky,613,511,409,51,51,622
+Takatsuki Yayoi,575,511,409,51,51,623
+Sona,570,511,409,51,51,624
+Victor Nikiforov,631,510,408,51,51,625
+Silence Suzuka,531,510,408,51,51,626
+Hoshikawa Sara,530,510,408,51,51,627
+Kise Yayoi,646,509,407,51,51,628
+Bismarck (Kantai Collection),553,509,407,51,51,629
+Hagoromo Lala,559,508,406,51,51,630
+Mercy (Overwatch),556,508,406,51,51,631
+Qiqi,545,508,406,51,51,632
+Killua Zoldyck,670,507,406,51,50,633
+Clorinde,567,507,406,51,50,634
+Cure Sword,566,507,406,51,50,635
+Kirigiri Kyouko,562,507,406,51,50,636
+Kuujou Joutarou,752,506,405,51,50,637
+Aisaka Taiga,576,506,405,51,50,638
+Rengoku Kyoujurou,672,505,404,50,51,639
+Serena (Pokﾃｩmon),571,505,404,50,51,640
+Anastasia (Idolmaster),529,505,404,50,51,641
+Foreigner (Heroine XX),539,504,403,50,51,642
+Kiyama Hiroto,650,503,402,50,51,643
+Schwarz (Arknights),544,503,402,50,51,644
+Kurapika,662,502,402,50,50,645
+Cure Grace,593,501,401,50,50,646
+Tenjouin Asuka,624,499,399,50,50,647
+Rita Rossweisse,555,499,399,50,50,648
+Anya Forger,635,498,398,50,50,649
+Kousaka Kirino,594,498,398,50,50,650
+Sailor Jupiter,585,497,398,50,49,651
+Raiden Mei,555,496,397,50,49,652
+Akatsuki (Kantai Collection),514,495,396,50,49,653
+Cure Twinkle,618,494,395,49,50,654
+N (Pokﾃｩmon),601,494,395,49,50,655
+Cure Heart,566,493,394,49,50,656
+Yuuri (Yu-Gi-Oh! ARC-V),679,492,394,49,49,657
+Shinku,618,492,394,49,49,658
+Cure Dream,559,492,394,49,49,659
+Nicole Demara,546,492,394,49,49,660
+Cure Marine,557,490,392,49,49,661
+Tatara Kogasa,595,488,390,49,49,662
+Weiss Schnee,535,488,390,49,49,663
+Takao (Kantai Collection),500,487,390,49,48,664
+Nishikigi Chisato,532,485,388,48,49,665
+Aoki Reika,558,484,387,48,49,666
+Cure Miracle,546,484,387,48,49,667
+Yuzuki Choco,500,484,387,48,49,668
+Burnice,562,482,386,48,48,669
+Takasaki Yuu,516,481,385,48,48,670
+Takanashi Hoshino,511,480,384,48,48,671
+Elysia,540,479,383,48,48,672
+Tsuyuri Kanao,513,478,382,48,48,673
+Liechtenstein,584,477,382,48,47,674
+Shirakiin Ririchiyo,534,477,382,48,47,675
+Cure Rosetta,533,475,380,48,47,676
+Kisaragi Chihaya,529,474,379,47,48,677
+Yuugo (Yu-Gi-Oh! ARC-V),599,473,378,47,48,678
+Sakurajima Mai,539,472,378,47,47,679
+Raphtalia,534,472,378,47,47,680
+Monika (Doki Doki Literature Club!),519,472,378,47,47,681
+Hitsugaya Toushirou,653,471,377,47,47,682
+Himekaidou Hatate,543,471,377,47,47,683
+Theresa Apocalypse,531,471,377,47,47,684
+Date Masamune (Sengoku Basara),724,470,376,47,47,685
+SF-A2 miki,563,470,376,47,47,686
+Tsurumaki Kokoro,496,470,376,47,47,687
+Mizuhashi Parsee,540,469,375,47,47,688
+Lucyna Kushinada,535,469,375,47,47,689
+Shirona (Pokﾃｩmon),533,469,375,47,47,690
+Hakos Baelz,513,469,375,47,47,691
+Fushiguro Megumi,741,467,374,47,46,692
+Jack Frost,584,467,374,47,46,693
+Inoue Takina,536,466,373,47,46,694
+IRyS,507,466,373,47,46,695
+Yamanaka Ino,560,464,371,46,47,696
+Amamiya Ren,727,463,370,46,47,697
+Blue Poison,494,463,370,46,47,698
+Heanna Sumire,493,463,370,46,47,699
+Berserker (Miyamoto Musashi),483,463,370,46,47,700
+Cure Blossom,562,462,370,46,46,701
+Ifrit (Arknights),513,462,370,46,46,702
+Isshiki Iroha,493,462,370,46,46,703
+Mitake Ran,487,462,370,46,46,704
+Hungary,606,461,369,46,46,705
+Kikuchi Makoto,511,461,369,46,46,706
+Cure Yell,610,458,366,46,46,707
+Ikazuchi,486,458,366,46,46,708
+Kiana Kaslana,543,457,366,46,45,709
+Beatrice,570,456,365,46,45,710
+Shirasaka Koume,529,456,365,46,45,711
+Dejiko,557,455,364,46,45,712
+Mutsu (Kantai Collection),503,455,364,46,45,713
+Shokuhou Misaki,483,455,364,46,45,714
+Merlin (Fate/Prototype),480,455,364,46,45,715
+Ouma Kokichi,644,453,362,45,46,716
+Seragaki Aoba,604,453,362,45,46,717
+Shimoe Koharu,488,453,362,45,46,718
+L Lawliet,725,452,362,45,45,719
+Uta (ONE PIECE),536,452,362,45,45,720
+Caster (Nitocris),515,452,362,45,45,721
+Bremerton,471,452,362,45,45,722
+Samus Aran,633,451,361,45,45,723
+Maka Albarn,600,451,361,45,45,724
+Lysithea von Cordelia,494,451,361,45,45,725
+Kanda Yuu,695,450,360,45,45,726
+Layla (Genshin Impact),485,450,360,45,45,727
+Platinum (Arknights),496,449,359,45,45,728
+Konno Yuuki,478,449,359,45,45,729
+Garry,644,448,358,45,45,730
+Yuigahama Yui,491,448,358,45,45,731
+Okumura Yukio,649,447,358,45,44,732
+Shiunin Sora,540,447,358,45,44,733
+Caster (Gilgamesh),519,447,358,45,44,734
+Mavuika,527,446,357,45,44,735
+Mystia Lorelei,513,446,357,45,44,736
+Yukinoshita Yukino,492,446,357,45,44,737
+Arashi Chisato,475,446,357,45,44,738
+Murasame (Kantai Collection),458,446,357,45,44,739
+Kallen Stadtfeld,540,445,356,44,45,740
+Cheshire,467,444,355,44,45,741
+Jougasaki Mika,479,443,354,44,45,742
+Kamui (Gintama),574,442,354,44,44,743
+Enoshima Junko,515,442,354,44,44,744
+Android 18,505,440,352,44,44,745
+Nazrin,505,440,352,44,44,746
+Cure Prism,465,440,352,44,44,747
+Fubuki Shirou,559,439,351,44,44,748
+Admire Vega,538,439,351,44,44,749
+Lily (VOCALOID),538,436,349,44,43,750
+Cure Star,507,436,349,44,43,751
+Mualani,480,436,349,44,43,752
+Ichigo Hitofuri,534,435,348,44,43,753
+Matsumoto Rangiku,518,435,348,44,43,754
+Hanekawa Hasumi,486,435,348,44,43,755
+Minamoto Sakura,480,435,348,44,43,756
+Takane Lui,471,435,348,44,43,757
+Ptilopsis,470,435,348,44,43,758
+Kamio Misuzu,504,434,347,43,44,759
+Kirara (Genshin Impact),476,434,347,43,44,760
+Graf Zeppelin (Kantai Collection),465,434,347,43,44,761
+Enma Ai,680,433,346,43,44,762
+Perona,611,433,346,43,44,763
+Sumeragi Sakuya,530,433,346,43,44,764
+Shihouin Yoruichi,519,432,346,43,43,765
+Eris Boreas Greyrat,468,432,346,43,43,766
+Hayasaka Ai,462,432,346,43,43,767
+Yamato (ONE PIECE),595,431,345,43,43,768
+Chen (Touhou),532,431,345,43,43,769
+WA2000 (Girls Frontline),450,430,344,43,43,770
+Armin Arlert,562,429,343,43,43,771
+Princess Zelda,555,429,343,43,43,772
+Diamond (Houseki no Kuni),489,429,343,43,43,773
+Hua Cheng,580,428,342,43,43,774
+Shoukaku (Kantai Collection),449,428,342,43,43,775
+Kurokawa Akane,512,427,342,43,42,776
+Onozuka Komachi,507,427,342,43,42,777
+Louise Franﾃｧoise de La Baume Le Blanc de La Valliﾃｨre,482,427,342,43,42,778
+Komi Shouko,473,426,341,43,42,779
+Maekawa Miku,465,426,341,43,42,780
+Momosuzu Nene,445,426,341,43,42,781
+Kamisato Ayato,465,425,340,42,43,782
+Amau Ako,452,424,339,42,43,783
+Cure Sunshine,518,423,338,42,43,784
+Javelin (Azur Lane),445,423,338,42,43,785
+Morino Rinze,449,422,338,42,42,786
+Kurosaki Shun,577,421,337,42,42,787
+Cure Melody,504,421,337,42,42,788
+Mirai Akari,463,421,337,42,42,789
+Zuikaku (Kantai Collection),459,421,337,42,42,790
+Prisma Illya,450,421,337,42,42,791
+Asakura Tooru,437,421,337,42,42,792
+Matoi (PSO2),441,420,336,42,42,793
+C.C. Lemon-tan,469,418,334,42,42,794
+Zhong Lanzhu,439,418,334,42,42,795
+Cure Precious,496,417,334,42,41,796
+Maya (Kantai Collection),430,417,334,42,41,797
+Yasaka Kanako,509,416,333,42,41,798
+Faruzan,438,416,333,42,41,799
+Ichigaya Arisa,436,416,333,42,41,800
+Kano Shuuya,585,414,331,41,42,801
+Hikari (Pokﾃｩmon),488,414,331,41,42,802
+Arcueid Brunestud,459,414,331,41,42,803
+Koshimizu Sachiko,449,414,331,41,42,804
+Poland,576,413,330,41,42,805
+Shiki Eiki,487,413,330,41,42,806
+Minato Yukina,447,413,330,41,42,807
+Yagami Light,625,412,330,41,41,808
+Kuujou Jolyne,546,409,327,41,41,809
+Ibaraki Kasen,472,408,326,41,41,810
+Beres (Fire Emblem),465,408,326,41,41,811
+Mizuno Ai,455,408,326,41,41,812
+Yamakaze (Kantai Collection),423,408,326,41,41,813
+Yata Misaki,568,407,326,41,40,814
+Echidna (Re:Zero),452,407,326,41,40,815
+Joan Alter Santa Lily,433,407,326,41,40,816
+Sinbad,608,406,325,41,40,817
+Kashuu Kiyomitsu,505,406,325,41,40,818
+Himemori Luna,434,405,324,40,41,819
+IV (Yu-Gi-Oh! ZEXAL),514,404,323,40,41,820
+Juri Han,469,404,323,40,41,821
+Charlotte Dunois,443,403,322,40,41,822
+Dehya,438,403,322,40,41,823
+Sasori,593,401,321,40,40,824
+Makinami Mari Illustrious,455,400,320,40,40,825
+Navia,472,399,319,40,40,826
+Fusou (Kantai Collection),418,399,319,40,40,827
+Cure Whip,493,398,318,40,40,828
+Yun Jin,422,398,318,40,40,829
+Archer (Fate/stay night),524,397,318,40,39,830
+Hino Akane,459,397,318,40,39,831
+Tainaka Ritsu,459,397,318,40,39,832
+Tokitou Muichirou,456,397,318,40,39,833
+Princess Daisy,503,396,317,40,39,834
+Cure Peach,478,396,317,40,39,835
+Nanashi Mumei,429,396,317,40,39,836
+Mihono Bourbon,414,396,317,40,39,837
+Toudou Yurika,452,395,316,40,39,838
+Bayonetta (Character),541,394,315,39,40,839
+Izayoi Aki,478,394,315,39,40,840
+Himejima Akeno,434,394,315,39,40,841
+Vampire (Azur Lane),408,393,314,39,40,842
+Shokudaikiri Mitsutada,563,392,314,39,39,843
+Hinamori Amu,523,392,314,39,39,844
+Nikaidou Saki,438,392,314,39,39,845
+Cure Coral,421,391,313,39,39,846
+Touko (Pokﾃｩmon),491,390,312,39,39,847
+Kariya Masaki,479,390,312,39,39,848
+Kirigaya Suguha,465,390,312,39,39,849
+Inui Toko,435,390,312,39,39,850
+Yukikaze (Kantai Collection),411,390,312,39,39,851
+Hachimiya Meguru,400,390,312,39,39,852
+Kugisaki Nobara,485,389,311,39,39,853
+Ali Baba Saluja,484,389,311,39,39,854
+Cure Black,469,389,311,39,39,855
+Honolulu (Azur Lane),405,389,311,39,39,856
+Assassin of Red,441,388,310,39,39,857
+Avenger (Edmond Dantﾃｨs),556,387,310,39,38,858
+Berserker (Ibaraki-douji),446,387,310,39,38,859
+Yuubari (Kantai Collection),419,387,310,39,38,860
+Toyama Kasumi,407,386,309,39,38,861
+Kakyoin Noriaki,489,385,308,38,39,862
+Kotobuki Reiji,465,385,308,38,39,863
+Nagae Iku,464,385,308,38,39,864
+Midorikawa Nao,452,385,308,38,39,865
+Hiiragi Kagami,438,385,308,38,39,866
+Dusk (Arknights),428,385,308,38,39,867
+Chii (Chobits),502,384,307,38,39,868
+Isokaze (Kantai Collection),396,384,307,38,39,869
+South Italy,518,383,306,38,39,870
+Kagura Mea,418,383,306,38,39,871
+Nakajima Atsushi (Bungou Stray Dogs),524,382,306,38,38,872
+Inaba Tewi,448,382,306,38,38,873
+Minami Rena,399,382,306,38,38,874
+Asagi Mutsuki,405,380,304,38,38,875
+Ushio (Kantai Collection),395,380,304,38,38,876
+Fubuki (One Punch Man),481,379,303,38,38,877
+Nelliel Tu Odelschwanck,470,379,303,38,38,878
+Sinon (GGO),411,379,303,38,38,879
+Shiina Yuika,394,379,303,38,38,880
+Kururugi Suzaku,492,378,302,38,38,881
+Gold Ship,410,377,302,38,37,882
+Grimmjow Jeagerjaques,608,376,301,38,37,883
+Senritsu no Tatsumaki,441,376,301,38,37,884
+Stelle,428,376,301,38,37,885
+Mona (Warioware),495,375,300,38,37,886
+Mary (Ib),487,375,300,38,37,887
+Yuto (Yu-Gi-Oh! ARC-V),572,374,299,37,38,888
+Kuchiki Byakuya,555,374,299,37,38,889
+Kisaragi Shintaro,518,374,299,37,38,890
+Junko,421,374,299,37,38,891
+Clownpiece,416,374,299,37,38,892
+Special Week,395,374,299,37,38,893
+Dante (Devil May Cry),567,373,298,37,38,894
+Furude Rika,432,373,298,37,38,895
+Lux,425,373,298,37,38,896
+Matsubara Kanon,390,373,298,37,38,897
+Fu Hua,424,372,298,37,37,898
+Akali,488,371,297,37,37,899
+Kiriya Aoi,411,371,297,37,37,900
+Gaara,511,370,296,37,37,901
+Yowane Haku,443,370,296,37,37,902
+Hoshizora Miyuki,442,370,296,37,37,903
+Amanogawa Kirara,441,369,295,37,37,904
+Saber (Fate/Grand Order),399,369,295,37,37,905
+Assassin (Okita J. Souji),388,369,295,37,37,906
+Mizuhara Chizuru,561,368,294,37,37,907
+Christa Renz,459,368,294,37,37,908
+Specter (Arknights),444,368,294,37,37,909
+Kamishirasawa Keine,433,368,294,37,37,910
+M4A1 (Girls Frontline),404,368,294,37,37,911
+Suou Patra,392,368,294,37,37,912
+Lavi,547,367,294,37,36,913
+Maomao (Kusuriya no Hitorigoto),446,367,294,37,36,914
+Sakawa (Kantai Collection),388,367,294,37,36,915
+Soga no Tojiko,428,366,293,37,36,916
+Varesa,408,366,293,37,36,917
+Flaky,506,365,292,36,37,918
+Sakura Futaba,438,365,292,36,37,919
+Lily White,422,365,292,36,37,920
+Cure Moonlight,421,365,292,36,37,921
+Ushiromiya Ange,416,365,292,36,37,922
+Imaizumi Kagerou,408,365,292,36,37,923
+Sengoku Nadeko,406,365,292,36,37,924
+Samidare (Kantai Collection),385,364,291,36,37,925
+Lightning Farron,466,363,290,36,37,926
+III (Yu-Gi-Oh! ZEXAL),423,363,290,36,37,927
+Saber (Lanling Wang),422,363,290,36,37,928
+Miyasaka Ryou,478,362,290,36,36,929
+Shima Rin,400,362,290,36,36,930
+Omaru Polka,399,362,290,36,36,931
+Natsume Takashi,501,360,288,36,36,932
+Yamanbagiri Kunihiro,442,360,288,36,36,933
+Cure Pine,422,360,288,36,36,934
+Shirokane Rinko,387,360,288,36,36,935
+Berserker (Tamamo Cat),457,358,286,36,36,936
+Saratoga (Kantai Collection),386,358,286,36,36,937
+Sora (Kingdom Hearts),509,356,285,36,35,938
+Chara,463,356,285,36,35,939
+Hojo Hibiki,405,355,284,36,35,940
+Kasumi (Kantai Collection),368,355,284,36,35,941
+Psyche,559,354,283,35,36,942
+Ikamusume,406,354,283,35,36,943
+Daidouji Tomoyo,404,354,283,35,36,944
+Harusame (Kantai Collection),368,354,283,35,36,945
+Nakahara Chuuya (Bungou Stray Dogs),461,352,282,35,35,946
+Izumi no Kami Kanesada,430,352,282,35,35,947
+Lum,408,352,282,35,35,948
+Mysterious Heroine X,371,352,282,35,35,949
+Shima Renzou,457,351,281,35,35,950
+Uzuki (Kantai Collection),369,350,280,35,35,951
+St. Louis,366,350,280,35,35,952
+Haruka (Pokﾃｩmon),392,349,279,35,35,953
+Kuriyama Mirai,381,349,279,35,35,954
+Sonohara Anri,446,348,278,35,35,955
+Romani Archaman,430,348,278,35,35,956
+Caster (Helena Blavatsky),384,348,278,35,35,957
+Sky Striker Ace - Raye,370,348,278,35,35,958
+Celestia Ludenberg,469,347,278,35,34,959
+Akazukin (SINoALICE),433,347,278,35,34,960
+Seele Vollerei,417,347,278,35,34,961
+Saria (Arknights),381,347,278,35,34,962
+Zara,357,347,278,35,34,963
+Sesshoumaru,450,346,277,35,34,964
+Kureiji Ollie,399,346,277,35,34,965
+Katou Megumi,382,346,277,35,34,966
+Tooru (Kobayashi-san Chi no Maid Dragon),372,346,277,35,34,967
+Ib (Character),447,345,276,34,35,968
+Ryuujou (Kantai Collection),382,345,276,34,35,969
+Minami Yume,368,345,276,34,35,970
+Itadori Yuuji,585,344,275,34,35,971
+Kurumi Erika,414,344,275,34,35,972
+Sonia (Pokﾃｩmon),402,344,275,34,35,973
+Xie Lian,479,343,274,34,35,974
+Nezumi (No.6),452,342,274,34,34,975
+Mejiro Dober,349,342,274,34,34,976
+Berserker (Arjuna Alter),482,341,273,34,34,977
+Snow White (SINoALICE),405,341,273,34,34,978
+Aozaki Aoko,391,341,273,34,34,979
+Taihou (Kantai Collection),362,341,273,34,34,980
+Magical Princess,361,341,273,34,34,981
+Shirogane Naoto,433,340,272,34,34,982
+Kurosaki Ranmaru,415,340,272,34,34,983
+Mew Ichigo,397,340,272,34,34,984
+Akashi,362,340,272,34,34,985
+Kido Tsubomi,437,339,271,34,34,986
+Mizuno Ami,406,339,271,34,34,987
+Eas,395,339,271,34,34,988
+Beidou,369,339,271,34,34,989
+Hammann,353,339,271,34,34,990
+Yuudachi (Azur Lane),353,339,271,34,34,991
+Dio Brando,520,338,270,34,34,992
+Alina Gray,365,338,270,34,34,993
+Assassin (Scﾃ｡thach),347,338,270,34,34,994
+Alisa Mikhailova Kujou,421,337,270,34,33,995
+Suzuran (Arknights),377,337,270,34,33,996
+Jingliu,360,337,270,34,33,997
+Urakaze (Kantai Collection),353,337,270,34,33,998
+Narukami Yu,522,336,269,34,33,999
+Shinkai Hayato,445,336,269,34,33,1000
+Fujiki Yuusaku,401,336,269,34,33,1001
+Yukimura Chizuru,394,336,269,34,33,1002
+Cure Beat,413,335,268,34,33,1003
+Tsunade,403,335,268,34,33,1004
+Shinjuku Assassin,397,335,268,34,33,1005
+Topaz (Honkai Star Rail),377,335,268,34,33,1006
+Aino Minako,412,334,267,33,34,1007
+Cure Summer,384,334,267,33,34,1008
+Kiso (Kantai Collection),371,334,267,33,34,1009
+Edelgard von Hrﾃｦsvelgr,389,333,266,33,34,1010
+Admiral Graf Spee,367,333,266,33,34,1011
+Le Malin,360,333,266,33,34,1012
+Hishikawa Rikka,379,332,266,33,33,1013
+Jirou Kyouka,378,332,266,33,33,1014
+Cecilia Alcott,378,332,266,33,33,1015
+Kurodate Haruna,356,332,266,33,33,1016
+Link,455,331,265,33,33,1017
+Frisk,435,331,265,33,33,1018
+Annie Leonhardt,422,331,265,33,33,1019
+Shining (Arknights),388,331,265,33,33,1020
+Blue Angel,370,331,265,33,33,1021
+Hikawa Sayo,347,331,265,33,33,1022
+Uchiha Obito,634,330,264,33,33,1023
+AZKi,371,330,264,33,33,1024
+Kaiba Seto,447,329,263,33,33,1025
+Rider (Fate/Grand Order),380,329,263,33,33,1026
+Flippy,652,328,262,33,33,1027
+Aladdin,397,328,262,33,33,1028
+Ling (Arknights),371,328,262,33,33,1029
+Black Swan (Honkai Star Rail),367,328,262,33,33,1030
+Mumei (Koutetsujou no Kabaneri),365,328,262,33,33,1031
+Frostleaf,362,328,262,33,33,1032
+Kuma (Kantai Collection),347,328,262,33,33,1033
+Pinky Pop Hepburn,340,328,262,33,33,1034
+Hijikata Toshizou (Hakuouki),436,327,262,33,32,1035
+Feixiao,381,327,262,33,32,1036
+Hagiwara Yukiho,367,327,262,33,32,1037
+Arona,357,327,262,33,32,1038
+Katsura Kotarou,459,326,261,33,32,1039
+Sakuma Jirou,416,325,260,32,33,1040
+Cleveland,340,325,260,32,33,1041
+Konan,415,324,259,32,33,1042
+Foreigner (Abigail Williams (Natsu)),362,324,259,32,33,1043
+Mephisto Pheles,524,323,258,32,33,1044
+Kosaka Wakamo,354,323,258,32,33,1045
+Takagi (Karakai Jouzu no Takagi-san),351,323,258,32,33,1046
+Giorno Giovanna,445,321,257,32,32,1047
+Muffet,431,321,257,32,32,1048
+Yagokoro Eirin,370,321,257,32,32,1049
+Avenger (Maou Nobunaga),364,321,257,32,32,1050
+Lynette (Genshin Impact),347,321,257,32,32,1051
+Sailor Chibi Moon,402,320,256,32,32,1052
+Alhaitham,383,319,255,32,32,1053
+Yamashiro (Kantai Collection),347,319,255,32,32,1054
+Super Creek,332,319,255,32,32,1055
+Tsukioka Kogane,331,319,255,32,32,1056
+Natsu Dragneel,444,318,254,32,32,1057
+Yaoyorozu Momo,413,318,254,32,32,1058
+Link (Breath of the Wild),427,317,254,32,31,1059
+Konjiki no Yami,375,317,254,32,31,1060
+Himeragi Yukina,389,316,253,32,31,1061
+Yuri (Doki Doki Literature Club!),346,316,253,32,31,1062
+Nekozuka Hibiki,328,316,253,32,31,1063
+Yami Yugi,466,315,252,32,31,1064
+Nosaka Yuuma,411,315,252,32,31,1065
+Bronya Zaychik,380,315,252,32,31,1066
+Akizuki Ritsuko,369,315,252,32,31,1067
+Passionlip,342,315,252,32,31,1068
+Oosaki Tenka,333,315,252,32,31,1069
+Mejiro Ardan,317,315,252,32,31,1070
+Seychelles,367,313,250,31,32,1071
+Imai Lisa,331,313,250,31,32,1072
+Namine Ritsu,388,312,250,31,31,1073
+Hachikuji Mayoi,366,312,250,31,31,1074
+Yumemizuki Mizuki,346,312,250,31,31,1075
+Nice Nature,321,312,250,31,31,1076
+Feena Fam Earthlight,373,311,249,31,31,1077
+Sora Harewataru,367,311,249,31,31,1078
+Shirasu Azusa,331,311,249,31,31,1079
+Howl,370,310,248,31,31,1080
+Lulu Amour,343,310,248,31,31,1081
+Zero Suit Samus,342,310,248,31,31,1082
+Saber (Frankenstein),331,310,248,31,31,1083
+Laura Apollodoros Hyginus La Mer,371,309,247,31,31,1084
+Cure Diamond,339,309,247,31,31,1085
+Oosaki Amana,325,309,247,31,31,1086
+Nitta Minami,325,309,247,31,31,1087
+Hanadera Nodoka,372,308,246,31,31,1088
+Akamatsu Kaede,355,308,246,31,31,1089
+Lucina (Fire Emblem),349,308,246,31,31,1090
+Prussia (Female),376,307,246,31,30,1091
+Mokota Mememe,335,307,246,31,30,1092
+Vigna,328,307,246,31,30,1093
+Xiangling,359,306,245,31,30,1094
+Sucrose,331,306,245,31,30,1095
+Pecorine (Princess Connect),326,306,245,31,30,1096
+Dimitri Alexandre Blaiddyd,381,305,244,30,31,1097
+Bedivere (Fate/stay night),366,305,244,30,31,1098
+Cure Muse,354,305,244,30,31,1099
+King Teresa Hime,328,305,244,30,31,1100
+Shigure Ui (VTuber),342,304,243,30,31,1101
+Vladilena Milizﾃｩ,338,304,243,30,31,1102
+Saber (Katsushika Hokusai),334,304,243,30,31,1103
+Cure Nyami,331,304,243,30,31,1104
+Hoshino Ruby,359,303,242,30,31,1105
+Cure White,354,303,242,30,31,1106
+Berserker of Black,350,303,242,30,31,1107
+Ogata Kanna,324,303,242,30,31,1108
+Anna Yanami,335,302,242,30,30,1109
+Baltimore,315,302,242,30,30,1110
+MAYU (VOCALOID),370,301,241,30,30,1111
+Shion (No.6),386,300,240,30,30,1112
+Murasa Minamitsu,353,300,240,30,30,1113
+Rider (Fate/Prototype: Sougin no Fragments),345,300,240,30,30,1114
+Krul Tepes,343,300,240,30,30,1115
+Blaze (Arknights),324,300,240,30,30,1116
+Hakutaku (Hoozuki no Reitetsu),414,299,239,30,30,1117
+Camus (Utapri),349,299,239,30,30,1118
+Vivian (Zenless Zone Zero),336,299,239,30,30,1119
+Nakamasa Ichika,315,299,239,30,30,1120
+Miyamoto Frederica,312,299,239,30,30,1121
+Germany,495,298,238,30,30,1122
+Alice (SINoALICE),375,298,238,30,30,1123
+Izayoi Nonomi,320,298,238,30,30,1124
+Shinano,326,297,238,30,29,1125
+Dino Cavallone,412,296,237,30,29,1126
+Gretel (SINoALICE),411,296,237,30,29,1127
+Mazaki Anzu,378,296,237,30,29,1128
+Himuro Tatsuya,378,296,237,30,29,1129
+Kamitsure,376,296,237,30,29,1130
+Sailor Neptune,344,296,237,30,29,1131
+Yuri (Pokﾃｩmon),337,295,236,30,29,1132
+Cure Princess,330,295,236,30,29,1133
+Lancer (Fate/zero),394,294,235,29,30,1134
+Yuri Lowell,352,294,235,29,30,1135
+Lancer (Minamoto-no-Raikou),326,294,235,29,30,1136
+Shu (Arknights),323,294,235,29,30,1137
+Iowa (Kantai Collection),317,294,235,29,30,1138
+Lancer (Bradamante),317,294,235,29,30,1139
+Haguro (Kantai Collection),316,294,235,29,30,1140
+Nanami Yachiyo,312,294,235,29,30,1141
+Lan WangJi,410,293,234,29,30,1142
+InuYasha (Character),373,293,234,29,30,1143
+Kamishiro Rio,331,293,234,29,30,1144
+Sora (Arknights),313,293,234,29,30,1145
+Lyfa (ALO),312,293,234,29,30,1146
+Satsuki (Kantai Collection),301,293,234,29,30,1147
+Canada,449,292,234,29,29,1148
+Akebono (Kantai Collection),318,292,234,29,29,1149
+Cure Cosmo,315,292,234,29,29,1150
+Shirase Sakuya,307,292,234,29,29,1151
+Kisaragi (Kantai Collection),303,292,234,29,29,1152
+Alice (American McGee's),421,291,233,29,29,1153
+Goldenglow,316,291,233,29,29,1154
+Furudo Erika,313,291,233,29,29,1155
+Hazuki Ren,310,291,233,29,29,1156
+Lancer (Kiyohime),295,291,233,29,29,1157
+Yamamoto Takeshi,411,290,232,29,29,1158
+Kijin Seija,359,290,232,29,29,1159
+Nanasaki Ai,304,290,232,29,29,1160
+Natsume (Pokﾃｩmon),361,289,231,29,29,1161
+Ren Kouha,343,289,231,29,29,1162
+Shiranui (Kantai Collection),314,289,231,29,29,1163
+Tighnari,346,288,230,29,29,1164
+MEM-Cho,329,288,230,29,29,1165
+Cure Magical,320,288,230,29,29,1166
+Natsuki (Doki Doki Literature Club!),319,288,230,29,29,1167
+Shoukaku (Azur Lane),297,288,230,29,29,1168
+Ryuugamine Mikado,405,287,230,29,28,1169
+Graf Zeppelin (Azur Lane),317,287,230,29,28,1170
+Superbi Squalo,453,286,229,29,28,1171
+Okeanos no Caster,323,286,229,29,28,1172
+Tatsuta (Kantai Collection),305,286,229,29,28,1173
+Kuda Izuna,304,286,229,29,28,1174
+Dark Sakura,337,285,228,28,29,1175
+Xingqiu,314,285,228,28,29,1176
+Kasumizawa Miyu,313,285,228,28,29,1177
+Namikaze Minato,428,284,227,28,29,1178
+Kuki Shinobu,314,284,227,28,29,1179
+Lancer (Qin Liangyu),306,284,227,28,29,1180
+Juvia Loxar,369,283,226,28,29,1181
+Shindou Takuto,359,283,226,28,29,1182
+Sakura Chiyo,318,283,226,28,29,1183
+Skyfire (Arknights),300,283,226,28,29,1184
+Aether,322,282,226,28,28,1185
+Assassin (Koha-Ace),373,281,225,28,28,1186
+Anarchy Panty,357,281,225,28,28,1187
+YoRHa Type A No.2,330,281,225,28,28,1188
+Cure Chocolat,329,281,225,28,28,1189
+Astesia,317,281,225,28,28,1190
+Magallan,315,281,225,28,28,1191
+Yukine Chris,310,281,225,28,28,1192
+Alisa Ilinichina Amiella,308,281,225,28,28,1193
+Dizzy (GUILTY GEAR),422,280,224,28,28,1194
+Ren Kougyoku,321,280,224,28,28,1195
+Nakiri Erina,321,280,224,28,28,1196
+Cure La Mer,314,280,224,28,28,1197
+Cure Idol,313,280,224,28,28,1198
+Amano Hina (Tenki no Ko),299,280,224,28,28,1199
+Endou Mamoru,426,279,223,28,28,1200
+Suiseiseki,339,279,223,28,28,1201
+Anjou Naruko,331,279,223,28,28,1202
+Rory Mercury,312,279,223,28,28,1203
+Reines El-Melloi Archisorte,307,279,223,28,28,1204
+Astra Yao,328,278,222,28,28,1205
+Fey Rune,396,277,222,28,27,1206
+Silence (Arknights),321,277,222,28,27,1207
+Black Lady,314,277,222,28,27,1208
+Blake Belladonna,312,277,222,28,27,1209
+Choukai (Kantai Collection),300,277,222,28,27,1210
+Vikala (Granblue Fantasy),292,277,222,28,27,1211
+Caster (Asclepius),430,276,221,28,27,1212
+Sanada Yukimura (Sengoku Basara),373,276,221,28,27,1213
+Norway,367,276,221,28,27,1214
+Kirishima Touka,340,276,221,28,27,1215
+Cure Lovely,321,276,221,28,27,1216
+Hasegawa Kobato,310,276,221,28,27,1217
+Tsukiyuki Miyako,294,276,221,28,27,1218
+Moonlight Cookie,407,275,220,28,27,1219
+Soraka,352,275,220,28,27,1220
+Akatsuki UNI,295,275,220,28,27,1221
+Fudou Akio,440,274,219,27,28,1222
+Dido,335,274,219,27,28,1223
+Princess of the Crystal,328,274,219,27,28,1224
+Cure Mermaid,320,274,219,27,28,1225
+Lingsha,316,274,219,27,28,1226
+Archer (Fate/EXTRA),314,274,219,27,28,1227
+Rosa (Arknights),301,274,219,27,28,1228
+Cure Selene,291,274,219,27,28,1229
+Yumehara Nozomi,327,273,218,27,28,1230
+Yang Xiao Long,307,273,218,27,28,1231
+Nyarlko,306,272,218,27,27,1232
+Noumi Kudryavka,304,272,218,27,27,1233
+Kageyama Tobio,375,271,217,27,27,1234
+Ariel,328,271,217,27,27,1235
+Kuroyukihime,311,271,217,27,27,1236
+Kasodani Kyouko,295,271,217,27,27,1237
+Ferry (Granblue Fantasy),292,271,217,27,27,1238
+Yui Tsuruno,289,271,217,27,27,1239
+Kuwayama Chiyuki,287,271,217,27,27,1240
+Kiryuuin Satsuki,310,270,216,27,27,1241
+Qingyi,299,270,216,27,27,1242
+Cure Finale,295,270,216,27,27,1243
+Cure Lillian,291,270,216,27,27,1244
+Yin,333,269,215,27,27,1245
+Gray (Lord El-Melloi II Case Files),325,269,215,27,27,1246
+Saber (Saitou Hajime),318,269,215,27,27,1247
+Miyako Yoshika,313,269,215,27,27,1248
+Kino Makoto,331,268,214,27,27,1249
+Hotarumaru,311,268,214,27,27,1250
+Sora Ginko,297,268,214,27,27,1251
+Misaki Mei,370,267,214,27,26,1252
+Cure Passion,327,267,214,27,26,1253
+Tsukikage Yuri,317,267,214,27,26,1254
+Yozakura Tama,314,267,214,27,26,1255
+Aijima Cecil,307,267,214,27,26,1256
+Cure Butterfly,292,267,214,27,26,1257
+Taigei (Kantai Collection),279,267,214,27,26,1258
+Aglaea,307,266,213,27,26,1259
+I-19 (Kantai Collection),281,266,213,27,26,1260
+Kamikaze (Kantai Collection),281,265,212,26,27,1261
+Ootsuki Yui,278,265,212,26,27,1262
+Abarai Renji,403,264,211,26,27,1263
+Foreigner (Van Gogh),339,264,211,26,27,1264
+Moriyama Shiemi,338,264,211,26,27,1265
+Hanekawa Tsubasa,313,264,211,26,27,1266
+Houjou Satoko,313,264,211,26,27,1267
+Iino Miko,278,264,211,26,27,1268
+Akizuki (Kantai Collection),276,263,210,26,27,1269
+Uzumaki Kushina,332,262,210,26,26,1270
+Yuna,331,262,210,26,26,1271
+Cure Macaron,297,262,210,26,26,1272
+Fuji Aoi,283,262,210,26,26,1273
+Fluttershy,340,261,209,26,26,1274
+Cure Gelato,301,261,209,26,26,1275
+Sandalphon,350,260,208,26,26,1276
+YoRHa No.9 Type S,342,260,208,26,26,1277
+Satonaka Chie,309,260,208,26,26,1278
+Sailor Pluto,308,260,208,26,26,1279
+Kisaragi Momo,306,260,208,26,26,1280
+Katarina,299,260,208,26,26,1281
+LLEN (Sword Art Online),293,260,208,26,26,1282
+Cure Wink,280,260,208,26,26,1283
+Hikawa Hina,279,260,208,26,26,1284
+SilverAsh,334,259,207,26,26,1285
+Zima (Arknights),300,259,207,26,26,1286
+Yousei-kishi Gawain,287,259,207,26,26,1287
+Fujita Kotone,277,259,207,26,26,1288
+Shiroko Terror,270,259,207,26,26,1289
+Kazama Chikage,327,258,206,26,26,1290
+Riddle Rosehearts,317,258,206,26,26,1291
+Cure Scarlet,312,258,206,26,26,1292
+Sonozaki Shion,305,258,206,26,26,1293
+Miss Fortune,304,258,206,26,26,1294
+Chongyun,293,258,206,26,26,1295
+Chloe von Einzbern,286,258,206,26,26,1296
+Fu Xuan,285,258,206,26,26,1297
+Cure Wonderful,282,258,206,26,26,1298
+Roboco,282,258,206,26,26,1299
+Gummy (Arknights),280,258,206,26,26,1300
+Kiryuu Kikyou,277,258,206,26,26,1301
+Suomi (Girls Frontline),271,258,206,26,26,1302
+Higashikata Jousuke,362,257,206,26,25,1303
+Momoe Nagisa,298,257,206,26,25,1304
+Otonashi Kotori,286,257,206,26,25,1305
+Type 95 (Girls Frontline),265,257,206,26,25,1306
+Tsurugi Kyousuke,351,256,205,26,25,1307
+Nefertari Vivi,316,256,205,26,25,1308
+Sesshouin Kiara,307,256,205,26,25,1309
+Stheno (Fate/hollow ataraxia),268,256,205,26,25,1310
+Madotsuki,393,255,204,26,25,1311
+Chibiusa,335,255,204,26,25,1312
+Kino (Kino no Tabi),334,255,204,26,25,1313
+Shalltear Bloodfallen,301,255,204,26,25,1314
+Serval (Kemono Friends),293,255,204,26,25,1315
+The Shorekeeper,283,255,204,26,25,1316
+Hashibira Inosuke,399,254,203,25,26,1317
+Heshikiri Hasebe,331,254,203,25,26,1318
+Cure Rhythm,311,254,203,25,26,1319
+Kotomine Shirou (Fate/Apocrypha),302,254,203,25,26,1320
+Lancer Alter,291,254,203,25,26,1321
+Hinatsuru Ai,284,254,203,25,26,1322
+Anzai Chiyomi,282,254,203,25,26,1323
+Suzutsuki (Kantai Collection),264,254,203,25,26,1324
+Fujimaru Ritsuka,365,253,202,25,26,1325
+Yukimura Seiichi,318,253,202,25,26,1326
+Red (Arknights),308,253,202,25,26,1327
+Clear (DMMd),339,252,202,25,25,1328
+Shirayuki Hime,295,252,202,25,25,1329
+Hino Rei,304,251,201,25,25,1330
+Momoi Satsuki,293,251,201,25,25,1331
+Zhu Yuan,293,251,201,25,25,1332
+Palutena,291,251,201,25,25,1333
+Shimada Alice,281,251,201,25,25,1334
+Kakyoin Chieri,274,251,201,25,25,1335
+Tokitsukaze (Kantai Collection),264,251,201,25,25,1336
+Cure Yum-Yum,338,250,200,25,25,1337
+Kusanagi Motoko,321,250,200,25,25,1338
+Warfarin,298,250,200,25,25,1339
+Uchiha Sarada,296,250,200,25,25,1340
+Platelet,287,250,200,25,25,1341
+Hoto Kokoa,279,250,200,25,25,1342
+Ajitani Hifumi,271,250,200,25,25,1343
+Ange Katrina,269,250,200,25,25,1344
+UMP9 (Girls Frontline),257,250,200,25,25,1345
+Rider (Mandricardo),385,249,199,25,25,1346
+Katsuki Yuuri,323,249,199,25,25,1347
+Inaba Haneru,277,249,199,25,25,1348
+Ichigo (Darling in the FranXX),269,249,199,25,25,1349
+Cure Ange,268,249,199,25,25,1350
+Akechi Goro,405,248,198,25,25,1351
+Sabo,368,248,198,25,25,1352
+Cherry Blossom Cookie,332,248,198,25,25,1353
+Tsukumo Yuma,310,248,198,25,25,1354
+Mioda Ibuki,280,248,198,25,25,1355
+Archer of Red,275,248,198,25,25,1356
+Jougasaki Rika,274,248,198,25,25,1357
+Laura Bodewig,274,248,198,25,25,1358
+Lulu (League of Legends),313,247,198,25,24,1359
+Saya (Saya no Uta),275,247,198,25,24,1360
+Rider (Medb),261,247,198,25,24,1361
+Berserker (Cﾃｺ Chulainn Alter),347,246,197,25,24,1362
+Kamishiro Ryoga,333,246,197,25,24,1363
+Caster (Cﾃｺ Chulainn),328,246,197,25,24,1364
+Xingchen,287,246,197,25,24,1365
+Darjeeling (GIRLS und PANZER),271,246,197,25,24,1366
+Jeanne d'Arc (Granblue Fantasy),257,246,197,25,24,1367
+Lag Seeing,352,245,196,24,25,1368
+Cure Ace,271,245,196,24,25,1369
+Izayoi Riko,271,245,196,24,25,1370
+Yousei-kishi Lancelot,269,245,196,24,25,1371
+Kirima Sharo,262,245,196,24,25,1372
+Kozeki Ui,256,245,196,24,25,1373
+Byakuran,324,244,195,24,25,1374
+Cyno,310,244,195,24,25,1375
+Victorique de Blois,309,244,195,24,25,1376
+Harley Quinn,302,244,195,24,25,1377
+Hanasaki Tsubomi,291,244,195,24,25,1378
+Xayah,302,243,194,24,25,1379
+Frostnova,297,243,194,24,25,1380
+Aegis,282,243,194,24,25,1381
+Assassin (Osakabehime),269,243,194,24,25,1382
+Vash the Stampede,393,242,194,24,24,1383
+Dave Strider,347,242,194,24,24,1384
+Nora Cat,265,242,194,24,24,1385
+Archer (Sei Shounagon),256,242,194,24,24,1386
+Alcina Dimitrescu,361,241,193,24,24,1387
+Changli,282,241,193,24,24,1388
+Milky Rose,278,241,193,24,24,1389
+Wriggle Nightbug,277,241,193,24,24,1390
+Manhattan Cafﾃｩ,258,241,193,24,24,1391
+Hisoka Morow,357,240,192,24,24,1392
+Eldridge,266,240,192,24,24,1393
+Amor (Caren),264,240,192,24,24,1394
+Naganami (Kantai Collection),249,240,192,24,24,1395
+Hyuuga Neji,365,239,191,24,24,1396
+Hinata Shouyou,327,239,191,24,24,1397
+Nekomura Iroha,320,239,191,24,24,1398
+Slaine Troyard,293,239,191,24,24,1399
+Yatogami Tohka,281,239,191,24,24,1400
+Gorou (Genshin Impact),272,239,191,24,24,1401
+Yoisaki Kanade,269,239,191,24,24,1402
+Sakuma Mayu,255,239,191,24,24,1403
+Dead Master,404,238,190,24,24,1404
+Oumae Kumiko,266,238,190,24,24,1405
+Ayano Keiko,258,238,190,24,24,1406
+Shirasagi Chisato,255,238,190,24,24,1407
+Iwakura Lain,377,237,190,24,23,1408
+Haruno Haruka,301,237,190,24,23,1409
+Zuikaku (Azur Lane),253,237,190,24,23,1410
+Totoki Airi,249,237,190,24,23,1411
+Sukuna,420,236,189,24,23,1412
+Blade (Honkai Star Rail),299,236,189,24,23,1413
+Ruler (Sherlock Holmes),288,236,189,24,23,1414
+Clara (Pokﾃｩmon),284,236,189,24,23,1415
+YuNi (VTuber),273,236,189,24,23,1416
+Cure Mint,272,236,189,24,23,1417
+Hoshino Ruri,249,236,189,24,23,1418
+Yamabuki Saaya (BanG Dream!),244,236,189,24,23,1419
+Sephiroth,363,235,188,24,23,1420
+Ichimaru Gin,351,235,188,24,23,1421
+Lenalee Lee,336,235,188,24,23,1422
+Kogitsunemaru,317,235,188,24,23,1423
+Matsukaze Tenma,310,235,188,24,23,1424
+Mizuki Kotori,271,235,188,24,23,1425
+Ninomiya Asuka,244,235,188,24,23,1426
+Getou Suguru,519,234,187,23,24,1427
+Austria,340,234,187,23,24,1428
+Iceland,311,234,187,23,24,1429
+Busujima Saeko,287,234,187,23,24,1430
+Jabami Yumeko,283,234,187,23,24,1431
+Furude Hanyuu,258,234,187,23,24,1432
+Cure Kyun Kyun,251,234,187,23,24,1433
+Alice Baskerville,313,233,186,23,24,1434
+Kasugano Sora,272,233,186,23,24,1435
+Miyu Edelfelt,263,233,186,23,24,1436
+Hadou Nejire,260,233,186,23,24,1437
+AK-12 (Girls Frontline),258,233,186,23,24,1438
+Jessica (Arknights),253,233,186,23,24,1439
+Ogata Chieri,253,233,186,23,24,1440
+Cagliostro (Granblue Fantasy),247,233,186,23,24,1441
+Yozora Mel,244,233,186,23,24,1442
+Irene (Arknights),277,232,186,23,23,1443
+Shermie,274,232,186,23,23,1444
+Xerxes Break,344,231,185,23,23,1445
+Nightingale (Arknights),286,231,185,23,23,1446
+Caitlyn,267,231,185,23,23,1447
+Wo-Class (Kantai Collection),419,230,184,23,23,1448
+Noiz (DMMd),331,230,184,23,23,1449
+Ada Wong,280,230,184,23,23,1450
+Wakasagihime,262,230,184,23,23,1451
+Naka (Kantai Collection),251,230,184,23,23,1452
+Mononobe Alice,249,230,184,23,23,1453
+UMP45 (Girls Frontline),246,230,184,23,23,1454
+Roy Mustang,309,229,183,23,23,1455
+Evelynn,280,229,183,23,23,1456
+Noel Vermillion,260,229,183,23,23,1457
+Clarisse (Granblue Fantasy),257,229,183,23,23,1458
+Yui (Angel Beats!),254,229,183,23,23,1459
+Sister Claire (VTuber),245,229,183,23,23,1460
+Oguri Cap,243,229,183,23,23,1461
+Hilda Valentine Goneril,239,229,183,23,23,1462
+Joker (Persona 5),420,228,182,23,23,1463
+Horikawa Kunihiro,288,228,182,23,23,1464
+Kirishima Romin,254,228,182,23,23,1465
+Murokasa Akane,238,228,182,23,23,1466
+Ooyodo (Kantai Collection),234,228,182,23,23,1467
+Hanamura Yousuke,318,227,182,23,22,1468
+Ren Hakuryuu,313,227,182,23,22,1469
+Springfield (Girls Frontline),250,227,182,23,22,1470
+Kitakami (Kantai Collection),249,227,182,23,22,1471
+Fuuro,249,227,182,23,22,1472
+Europa (Granblue Fantasy),242,227,182,23,22,1473
+Ashigara (Kantai Collection),240,227,182,23,22,1474
+Kashino,239,227,182,23,22,1475
+Toudou Heisuke (Hakuouki),293,226,181,23,22,1476
+Tomoe Hotaru,290,226,181,23,22,1477
+Kishin Sagume,265,226,181,23,22,1478
+Hieda no Akyuu,259,226,181,23,22,1479
+Sasaki Saku,230,226,181,23,22,1480
+Higashi Setsuna,355,225,180,22,23,1481
+Takasugi Shinsaku (Fate/Grand Order),280,225,180,22,23,1482
+Lalatina Dustiness Ford,258,225,180,22,23,1483
+Cure Papaya,250,225,180,22,23,1484
+Sans,572,224,179,22,23,1485
+ﾃ・bel,242,224,179,22,23,1486
+Souryuu (Kantai Collection),240,224,179,22,23,1487
+Hiei (Kantai Collection),237,224,179,22,23,1488
+Sin Mal,294,223,178,22,23,1489
+Uzumaki Naruto (Female),278,223,178,22,23,1490
+Sarashina Ruka,262,223,178,22,23,1491
+Daiyousei,247,223,178,22,23,1492
+Hatsuzuki (Kantai Collection),241,223,178,22,23,1493
+Twin Turbo,233,223,178,22,23,1494
+Nia Teppelin,292,222,178,22,22,1495
+Kenzaki Makoto,273,222,178,22,22,1496
+Sakamaki Kanato,271,222,178,22,22,1497
+Tanya Degurechaff,245,222,178,22,22,1498
+New Jersey,243,222,178,22,22,1499
+Aoba Moca,236,222,178,22,22,1500
+Houjou Karen,234,222,178,22,22,1501
+Saber (Tomoe Gozen),231,222,178,22,22,1502
+Tina Branford,290,221,177,22,22,1503
+Hazuki Nagisa,273,221,177,22,22,1504
+Myrtle (Arknights),232,221,177,22,22,1505
+Silver (Pokﾃｩmon SPECIAL),294,220,176,22,22,1506
+Rarity,294,220,176,22,22,1507
+Nono Hana,280,220,176,22,22,1508
+Belgium,279,220,176,22,22,1509
+Yokoyama Nao,239,220,176,22,22,1510
+Futatsuiwa Mamizou,293,219,175,22,22,1511
+Malleus Draconia,274,219,175,22,22,1512
+Perseus,240,219,175,22,22,1513
+John Egbert,307,218,174,22,22,1514
+Cure Custard,295,218,174,22,22,1515
+Camellya,276,218,174,22,22,1516
+Razor (Genshin Impact),248,218,174,22,22,1517
+Furukawa Nagisa,248,218,174,22,22,1518
+Arisugawa Natsuha,234,218,174,22,22,1519
+Shiina Mahiru,320,217,174,22,21,1520
+Vongola Primo Giotto,306,217,174,22,21,1521
+Kuroo Tetsurou,291,217,174,22,21,1522
+Tia Harribel,288,217,174,22,21,1523
+Sailor Uranus,263,217,174,22,21,1524
+Lancer (Caenis),241,217,174,22,21,1525
+Istina,240,217,174,22,21,1526
+Kitakami Futaba,229,217,174,22,21,1527
+Serizawa Asahi,229,217,174,22,21,1528
+Hyakkimaru,352,216,173,22,21,1529
+Amemura Ramuda,263,216,173,22,21,1530
+Cure Felice,259,216,173,22,21,1531
+Hoshikawa Lily,248,216,173,22,21,1532
+Saotome Ranma (Girl),248,216,173,22,21,1533
+Matsuoka Gou,237,216,173,22,21,1534
+Cure Majesty,229,216,173,22,21,1535
+Anis,228,216,173,22,21,1536
+Lady Avalon,225,216,173,22,21,1537
+Sakuragi Mano,224,216,173,22,21,1538
+Fran,297,215,172,22,21,1539
+Kirakishou,275,215,172,22,21,1540
+Harukawa Maki,248,215,172,22,21,1541
+Yagami Hayate,241,215,172,22,21,1542
+Yamada Elf,231,215,172,22,21,1543
+Shiomi Shuuko,227,215,172,22,21,1544
+Temari (NARUTO),275,214,171,21,22,1545
+Cure Berry,255,214,171,21,22,1546
+Usada Hikaru,252,214,171,21,22,1547
+Assassin (Nitocris),244,214,171,21,22,1548
+Hiryuu (Kantai Collection),233,214,171,21,22,1549
+Cure Flamingo,230,214,171,21,22,1550
+Hanako-kun,304,213,170,21,22,1551
+Kozume Kenma,284,213,170,21,22,1552
+Oozora Akari,258,213,170,21,22,1553
+Beatrice (Re:Zero),246,213,170,21,22,1554
+Sawamura Spencer Eriri,239,213,170,21,22,1555
+Tanaka Mamimi,231,213,170,21,22,1556
+Kazano Hiori,229,213,170,21,22,1557
+Caster (Marie Antoinette),224,213,170,21,22,1558
+Angela Balzac,224,212,170,21,21,1559
+Yaezawa Natori,222,212,170,21,21,1560
+Accelerator,296,211,169,21,21,1561
+Silver (Pokﾃｩmon),283,211,169,21,21,1562
+Kannonzaka Doppo,270,211,169,21,21,1563
+Suﾃｬ-Fﾄ・ng,267,211,169,21,21,1564
+Cure Aqua,252,211,169,21,21,1565
+Letty Whiterock,247,211,169,21,21,1566
+Suzumura Sango,240,211,169,21,21,1567
+Yanagi (Zenless Zone Zero),233,211,169,21,21,1568
+Tokura Misaki,232,211,169,21,21,1569
+Kazuno Sarah,228,211,169,21,21,1570
+ﾃ・gir,221,211,169,21,21,1571
+Gray Fullbuster,289,210,168,21,21,1572
+Bruno (Yu-Gi-Oh!),288,210,168,21,21,1573
+Souseiseki,250,210,168,21,21,1574
+Yakushiji Saaya,249,210,168,21,21,1575
+Nishizumi Miho,246,210,168,21,21,1576
+Cure Rouge,238,210,168,21,21,1577
+Roon (Azur Lane),231,210,168,21,21,1578
+Kumano (Kantai Collection),223,210,168,21,21,1579
+Sakura Bakushin O,221,210,168,21,21,1580
+Cheval Grand,220,210,168,21,21,1581
+Yayoi (Kantai Collection),220,210,168,21,21,1582
+Z3 Max Schultz (Kantai Collection),219,210,168,21,21,1583
+Tenjou Kaito,284,209,167,21,21,1584
+Haizaki Ryouhei,281,209,167,21,21,1585
+Shiota Nagisa,248,209,167,21,21,1586
+Manaka Lala,226,209,167,21,21,1587
+Jack Atlas,286,208,166,21,21,1588
+Pan (DRAGON BALL),283,208,166,21,21,1589
+Yamato no Kami Yasusada,279,208,166,21,21,1590
+Rider of Red,268,208,166,21,21,1591
+Wendy Marvell,254,208,166,21,21,1592
+Xilonen,251,208,166,21,21,1593
+Tsumiki Mikan,237,208,166,21,21,1594
+Reed (Arknights),232,208,166,21,21,1595
+Mutsuki (Kantai Collection),219,208,166,21,21,1596
+Roxas,279,207,166,21,20,1597
+Sekibanki,265,207,166,21,20,1598
+Saber (Senji Muramasa),250,207,166,21,20,1599
+Akaza Akari,228,207,166,21,20,1600
+Mia Taylor,228,207,166,21,20,1601
+Cure Wing,226,207,166,21,20,1602
+Hazawa Tsugumi,221,207,166,21,20,1603
+I-401 (Kantai Collection),218,207,166,21,20,1604
+Kuromi Serika,218,207,166,21,20,1605
+Charlie Morningstar,346,206,165,21,20,1606
+Twilight Sparkle,289,206,165,21,20,1607
+Himeno,244,206,165,21,20,1608
+Akiyama Mizuki,233,206,165,21,20,1609
+Houshou (Kantai Collection),228,206,165,21,20,1610
+Shinonome Ena,221,206,165,21,20,1611
+La Pluma,227,205,164,20,21,1612
+Nibutani Shinka,223,205,164,20,21,1613
+Eunectes,221,205,164,20,21,1614
+Alter Ego (Ashiya Douman),312,204,163,20,21,1615
+Saihara Shuuichi,280,204,163,20,21,1616
+Inumaki Toge,273,204,163,20,21,1617
+Kagamihara Nadeshiko,222,204,163,20,21,1618
+Kurumizawa Satanichia McDowell,215,204,163,20,21,1619
+Oikawa Tooru,267,203,162,20,21,1620
+Russia (Female),261,203,162,20,21,1621
+Yagen Toushirou,260,203,162,20,21,1622
+Jill Valentine,250,203,162,20,21,1623
+Amuro Tooru,250,203,162,20,21,1624
+Tohno Akiha,249,203,162,20,21,1625
+Alter Ego (Tamamo Vitch),226,203,162,20,21,1626
+Asagami Fujino,225,203,162,20,21,1627
+Cinderella (NIKKE),224,203,162,20,21,1628
+Nerissa Ravencroft,223,203,162,20,21,1629
+Mimura Kanako,221,203,162,20,21,1630
+Kamui (Female) (Fire Emblem),217,203,162,20,21,1631
+Ichinose Kotomi,216,203,162,20,21,1632
+U-511 (Kantai Collection),216,203,162,20,21,1633
+Yura (Kantai Collection),212,203,162,20,21,1634
+Uzumaki Boruto,261,202,162,20,20,1635
+Ryuugazaki Rei,250,202,162,20,20,1636
+Neji Kokuto,241,202,162,20,20,1637
+Tedeza Rise,219,202,162,20,20,1638
+Cure Echo,218,202,162,20,20,1639
+Symboli Rudolf,212,202,162,20,20,1640
+Hiver Laurant,268,201,161,20,20,1641
+Ushiromiya Maria,247,201,161,20,20,1642
+Shidare Hotaru,229,201,161,20,20,1643
+Caster (Xuanzang),214,201,161,20,20,1644
+Z1 Leberecht Maass,207,201,161,20,20,1645
+Nutty,276,200,160,20,20,1646
+United Kingdom (Female),256,200,160,20,20,1647
+Kaine (NieR),253,200,160,20,20,1648
+Arataki Itto,252,200,160,20,20,1649
+Chiori,242,200,160,20,20,1650
+Cure Honey,240,200,160,20,20,1651
+OMGkawaiiAngel-chan,238,200,160,20,20,1652
+Dande (Pokﾃｩmon),273,199,159,20,20,1653
+Kasumi (Pokﾃｩmon),239,199,159,20,20,1654
+Ayase Momo,234,199,159,20,20,1655
+Aragaki Ayase,233,199,159,20,20,1656
+Eugeo (Sword Art Online),229,199,159,20,20,1657
+Yaoyao,226,199,159,20,20,1658
+Herrscher of the Void,224,199,159,20,20,1659
+Sakuranomiya Maika,217,199,159,20,20,1660
+Kohinata Miho,211,199,159,20,20,1661
+Nagumo Haruya,277,198,158,20,20,1662
+Leona Kingscholar,244,198,158,20,20,1663
+Lancer (Fate/Prototype: Sougin no Fragments),229,198,158,20,20,1664
+Xianyun,223,198,158,20,20,1665
+Nymph,221,198,158,20,20,1666
+Carro Pino,210,198,158,20,20,1667
+Ooi (Kantai Collection),209,198,158,20,20,1668
+Grell Sutcliff,292,197,158,20,19,1669
+Waver Velvet,266,197,158,20,19,1670
+Himura Kenshin,251,197,158,20,19,1671
+Betilla,248,197,158,20,19,1672
+Cure Parfait,229,197,158,20,19,1673
+Space Ishtar,229,197,158,20,19,1674
+Midare Toushirou,228,197,158,20,19,1675
+Momo Velia Deviluke,222,197,158,20,19,1676
+Diona Kﾃ､tzlein,220,197,158,20,19,1677
+Shiroyasha,302,196,157,20,19,1678
+Amane Misa,253,196,157,20,19,1679
+Aohitsugi Samatoki,244,196,157,20,19,1680
+Kikyo (InuYasha),237,196,157,20,19,1681
+Murata Himeko,229,196,157,20,19,1682
+AN-94 (Girls Frontline),227,196,157,20,19,1683
+Maizono Sayaka,218,196,157,20,19,1684
+Chili (Pokﾃｩmon),213,196,157,20,19,1685
+Kasugano Sakura,212,196,157,20,19,1686
+Saber (Astolfo),203,196,157,20,19,1687
+Erwin Smith,307,195,156,20,19,1688
+Caster (Fate/stay night),241,195,156,20,19,1689
+Syndra,239,195,156,20,19,1690
+Shiromi Iori,207,195,156,20,19,1691
+Zooey,205,195,156,20,19,1692
+Lyn (Fire Emblem),204,195,156,20,19,1693
+Tenten,260,194,155,19,20,1694
+Yamada Ichirou (Hypnosis Mic),248,194,155,19,20,1695
+Tachibana Kisa,243,194,155,19,20,1696
+Vampy (Shingeki no Bahamut),210,194,155,19,20,1697
+Modeus,208,194,155,19,20,1698
+Amamiya Kokoro,207,194,155,19,20,1699
+Akutagawa Ryuunosuke (Bungou Stray Dogs),294,193,154,19,20,1700
+Mutou Yuugi,287,193,154,19,20,1701
+Genos,282,193,154,19,20,1702
+Hoshina Hikaru,230,193,154,19,20,1703
+Minamino Kanade,225,193,154,19,20,1704
+Vajra (Granblue Fantasy),221,193,154,19,20,1705
+Z23,209,193,154,19,20,1706
+Widowmaker,236,192,154,19,19,1707
+Yamino Shu,228,192,154,19,19,1708
+Kagura Suzu (VTuber),212,192,154,19,19,1709
+Ulquiorra Schiffer,578,191,153,19,19,1710
+Chrollo Lucilfer,288,191,153,19,19,1711
+Emiya Shirou,241,191,153,19,19,1712
+Aida Mana,238,191,153,19,19,1713
+Kousaka Tamaki,226,191,153,19,19,1714
+Tingyun,217,191,153,19,19,1715
+Sayori (Doki Doki Literature Club!),216,191,153,19,19,1716
+Tomimi,210,191,153,19,19,1717
+Nagi,204,191,153,19,19,1718
+Sazanami (Kantai Collection),202,191,153,19,19,1719
+Curren Chan,201,191,153,19,19,1720
+Hikari no Koyanskaya,200,191,153,19,19,1721
+Red (Pokﾃｩmon),316,190,152,19,19,1722
+Oze Maki,264,190,152,19,19,1723
+Hanamiya Makoto,262,190,152,19,19,1724
+Berserker (Oda Nobunaga),238,190,152,19,19,1725
+Janna,236,190,152,19,19,1726
+Hecatia Lapislazuli,221,190,152,19,19,1727
+Milla Maxwell,206,190,152,19,19,1728
+Shiori Novella,204,190,152,19,19,1729
+Mayano Top Gun,199,190,152,19,19,1730
+Kidou Yuuto,300,189,151,19,19,1731
+Wadanohara,261,189,151,19,19,1732
+Shuu (Inazuma Eleven),256,189,151,19,19,1733
+Koide Natsuno,252,189,151,19,19,1734
+Hatsune Mikuo,252,189,151,19,19,1735
+Johan Andersen,231,189,151,19,19,1736
+Shiraishi Kuranosuke,230,189,151,19,19,1737
+Gwen (League of Legends),225,189,151,19,19,1738
+Idia Shroud,222,189,151,19,19,1739
+Kaveh,220,189,151,19,19,1740
+Izumi Kyouka (Bungou Stray Dogs),207,189,151,19,19,1741
+Rapi,198,189,151,19,19,1742
+Cure Lemonade,233,188,150,19,19,1743
+Collei,231,188,150,19,19,1744
+Bridget (GUILTY GEAR),225,188,150,19,19,1745
+Tendo Akane,220,188,150,19,19,1746
+Mikazuki Yozora,215,188,150,19,19,1747
+Lacus Clyne,214,188,150,19,19,1748
+Sylphiette,211,188,150,19,19,1749
+Kasumigaoka Utaha,210,188,150,19,19,1750
+Kamikita Komari,207,188,150,19,19,1751
+Lusamine,206,188,150,19,19,1752
+Yozakura Kirara,197,188,150,19,19,1753
+Colorado (Kantai Collection),196,188,150,19,19,1754
+Rainbow Dash,259,187,150,19,18,1755
+Northern Ocean Hime (Kantai Collection),234,187,150,19,18,1756
+Seraphine,220,187,150,19,18,1757
+Yukiko-tan (Coffee),219,187,150,19,18,1758
+Kujikawa Rise,215,187,150,19,18,1759
+Aoki Lapis,213,187,150,19,18,1760
+Akise Aru,211,187,150,19,18,1761
+Nakoruru,207,187,150,19,18,1762
+Columbina,206,187,150,19,18,1763
+Kai'Sa,206,187,150,19,18,1764
+Korra,240,186,149,19,18,1765
+Sakamaki Subaru,234,186,149,19,18,1766
+Sukuna Shinmyoumaru,224,186,149,19,18,1767
+Anchira (Granblue Fantasy),219,186,149,19,18,1768
+Caster (Nursery Rhyme),214,186,149,19,18,1769
+Iris (Enen no Shouboutai),205,186,149,19,18,1770
+Altina Orion,204,186,149,19,18,1771
+Ceobe,199,186,149,19,18,1772
+Sir Crocodile,341,185,148,18,19,1773
+Aizen Sousuke,272,185,148,18,19,1774
+Minah,254,185,148,18,19,1775
+Noctis Lucis Caelum,252,185,148,18,19,1776
+Fuyajou no Caster,224,185,148,18,19,1777
+Matsumae Ohana,210,185,148,18,19,1778
+Agnes Tachyon,202,185,148,18,19,1779
+Atlanta (Kantai Collection),199,185,148,18,19,1780
+Cecilia (Shiro Seijo to Kuro Bokushi),198,185,148,18,19,1781
+Nemugaki Fubuki,195,185,148,18,19,1782
+Bruno Bucciarati,260,184,147,18,19,1783
+Hange Zoﾃｫ,259,184,147,18,19,1784
+Delic,249,184,147,18,19,1785
+Kiss-shot Acerola-orion Heart-under-blade,228,184,147,18,19,1786
+Shibuki Ran,210,184,147,18,19,1787
+Musashi (Azur Lane),209,184,147,18,19,1788
+Swire,201,184,147,18,19,1789
+Ijichi Nijika,196,184,147,18,19,1790
+Tomori Nao,193,184,147,18,19,1791
+Loki Laufeyson,328,183,146,18,19,1792
+Joseph Joestar,262,183,146,18,19,1793
+Millhiore Firianno Biscotti,217,183,146,18,19,1794
+Nakamura Yuri,207,183,146,18,19,1795
+Cure Soleil,203,183,146,18,19,1796
+Sonoda Chiyoko,196,183,146,18,19,1797
+Hiyama Kiyoteru,260,182,146,18,18,1798
+Kaitou Kid,259,182,146,18,18,1799
+Hoshiguma Yuugi,219,182,146,18,18,1800
+Shirai Kuroko,215,182,146,18,18,1801
+Ruler (Saint Martha),200,182,146,18,18,1802
+Kula Diamond,193,182,146,18,18,1803
+Kenneth McCormick,269,181,145,18,18,1804
+Kotomine Kirei,267,181,145,18,18,1805
+Octoling,267,181,145,18,18,1806
+Ibarahime (SINoALICE),248,181,145,18,18,1807
+Vox Akuma,223,181,145,18,18,1808
+Thoma,218,181,145,18,18,1809
+Makoto Nanaya,209,181,145,18,18,1810
+Kaguya Madoka,197,181,145,18,18,1811
+Yukikaze Panettone,195,181,145,18,18,1812
+Umikaze (Kantai Collection),189,181,145,18,18,1813
+Jean Kirschstein,292,180,144,18,18,1814
+Hoozuki (Hoozuki no Reitetsu),292,180,144,18,18,1815
+Shishiou,254,180,144,18,18,1816
+Biscuit Krueger,238,180,144,18,18,1817
+Winry Rockbell,230,180,144,18,18,1818
+Hyakuya Mikaela,220,180,144,18,18,1819
+Belle (Zenless Zone Zero),216,180,144,18,18,1820
+Namazuo Toushirou,206,180,144,18,18,1821
+Yukoku Kiriko,186,180,144,18,18,1822
+Almond Eye,183,180,144,18,18,1823
+Sylveon,443,179,143,18,18,1824
+Antarcticite,271,179,143,18,18,1825
+Niche,258,179,143,18,18,1826
+Alois Trancy,254,179,143,18,18,1827
+Lancer (Medusa),215,179,143,18,18,1828
+Sakuma Rei (Ensemble Stars!),205,179,143,18,18,1829
+Saten Ruiko,194,179,143,18,18,1830
+Noshiro,190,179,143,18,18,1831
+Matou Kariya,236,178,142,18,18,1832
+Japan (Female),222,178,142,18,18,1833
+Kuja,215,178,142,18,18,1834
+Araragi Karen,205,178,142,18,18,1835
+Kanzaki H Aria,203,178,142,18,18,1836
+Sheffield,190,178,142,18,18,1837
+Hanazono Tae,188,178,142,18,18,1838
+Dragonmaid Parla,187,178,142,18,18,1839
+Uzui Tengen,267,177,142,18,17,1840
+Qi Yu,217,177,142,18,17,1841
+Bulma Briefs,213,177,142,18,17,1842
+Asahina Mirai,213,177,142,18,17,1843
+Yuffie Kisaragi,202,177,142,18,17,1844
+Cure ﾃ・toile,202,177,142,18,17,1845
+Manticore (Arknights),197,177,142,18,17,1846
+Nagomi Yui,195,177,142,18,17,1847
+Eria the Water Charmer,191,177,142,18,17,1848
+Assassin (Katou Danzou),186,177,142,18,17,1849
+Hong Kong,253,176,141,18,17,1850
+Kiryu Kyousuke,252,176,141,18,17,1851
+Hiramitsu Hinata,214,176,141,18,17,1852
+Hatoba Tsugu,189,176,141,18,17,1853
+Fukuwa,329,175,140,18,17,1854
+Roromiya Karuta,216,175,140,18,17,1855
+Orangina-tan,208,175,140,18,17,1856
+May (Guilty Gear),204,175,140,18,17,1857
+Archer (Billy the Kid),202,175,140,18,17,1858
+Akiyama Yukari,200,175,140,18,17,1859
+Kurodani Yamame,200,175,140,18,17,1860
+Toshiba Emi,196,175,140,18,17,1861
+Frederica Bernkastel,195,175,140,18,17,1862
+Hikami Sumire,191,175,140,18,17,1863
+Cygnet,181,175,140,18,17,1864
+Genﾃｩ (PSO2),181,175,140,18,17,1865
+Xanxus,298,174,139,17,18,1866
+Cotton Candy Cookie,248,174,139,17,18,1867
+Kusakabe Shinra,247,174,139,17,18,1868
+Jade Harley,247,174,139,17,18,1869
+Akita Neru,225,174,139,17,18,1870
+Tsunami Jousuke,218,174,139,17,18,1871
+Pixiv-tan,208,174,139,17,18,1872
+Niou Masaharu,208,174,139,17,18,1873
+Arisugawa Otome,207,174,139,17,18,1874
+Cure Earth,206,174,139,17,18,1875
+Hirako Shinji,269,173,138,17,18,1876
+Seto Kousuke,248,173,138,17,18,1877
+Higashiyama Kobeni,234,173,138,17,18,1878
+Penny Crygor,226,173,138,17,18,1879
+Mikage Kojirou,224,173,138,17,18,1880
+Ex Keine,208,173,138,17,18,1881
+Nijino Yume,205,173,138,17,18,1882
+Neeko (League of Legends),205,173,138,17,18,1883
+Kasugano Urara,204,173,138,17,18,1884
+Li Syaoran,199,173,138,17,18,1885
+Ryuu (Street Fighter),195,173,138,17,18,1886
+Dark Dream,188,173,138,17,18,1887
+Moon Cancer (Sessyoin Kiara),187,173,138,17,18,1888
+Rossweisse,183,173,138,17,18,1889
+Kishibe Rohan,244,172,138,17,17,1890
+Hazama,234,172,138,17,17,1891
+Kamiki Izumo,233,172,138,17,17,1892
+Ayatsuji Tsukasa,214,172,138,17,17,1893
+Merry Nightmare,207,172,138,17,17,1894
+Yuni (Precure),204,172,138,17,17,1895
+Takamaki Anne,202,172,138,17,17,1896
+Raora Panthera,188,172,138,17,17,1897
+Fujibayashi Kyou,185,172,138,17,17,1898
+Yahiro Mio,180,172,138,17,17,1899
+Dunkerque,179,172,138,17,17,1900
+Kasuga Tsubaki,178,172,138,17,17,1901
+Asta (Black Clover),266,171,137,17,17,1902
+Iida (Splatoon),214,171,137,17,17,1903
+Nachi (Kantai Collection),194,171,137,17,17,1904
+Kirisaki Chitoge,193,171,137,17,17,1905
+Angel Dust,1108,170,136,17,17,1906
+Oz Vessalius,238,170,136,17,17,1907
+Captain Syrup,228,170,136,17,17,1908
+Arisugawa Himari,218,170,136,17,17,1909
+Oda Nobukatsu (Fate/Grand Order),202,170,136,17,17,1910
+Cure MaChﾃｩrie,201,170,136,17,17,1911
+Zidane Tribal,197,170,136,17,17,1912
+Okusawa Misaki,197,170,136,17,17,1913
+Cure Fortune,194,170,136,17,17,1914
+Sophie (Tales of Graces),194,170,136,17,17,1915
+Shikanoin Heizou,187,170,136,17,17,1916
+Ichijou Ririka,181,170,136,17,17,1917
+Sai,301,169,135,17,17,1918
+Manjoume Jun,253,169,135,17,17,1919
+Splendid (HTF),234,169,135,17,17,1920
+Ikaros,217,169,135,17,17,1921
+Kaminari Denki,214,169,135,17,17,1922
+Mysta Rias,205,169,135,17,17,1923
+Mistorene Callus,193,169,135,17,17,1924
+Kirishima (Kantai Collection),185,169,135,17,17,1925
+Rider (Saint Martha),180,169,135,17,17,1926
+Avenger (Kama),179,169,135,17,17,1927
+Ratna Petit,175,169,135,17,17,1928
+Kougami Shinya,249,168,134,17,17,1929
+Sea Fairy Cookie,246,168,134,17,17,1930
+Kirigakure Shura,208,168,134,17,17,1931
+Twilight (Pretty Cure),200,168,134,17,17,1932
+Earth-chan,193,168,134,17,17,1933
+Loid Forger,191,168,134,17,17,1934
+Huang Lingyin,184,168,134,17,17,1935
+Miyazono Kaori,180,168,134,17,17,1936
+Ise (Kantai Collection),177,168,134,17,17,1937
+Crona,302,167,134,17,16,1938
+Jinguuji Jakurai,204,167,134,17,16,1939
+Kagemori Michiru,201,167,134,17,16,1940
+Sonozaki Mion,194,167,134,17,16,1941
+Honma Himawari,180,167,134,17,16,1942
+Yurizono Seia,179,167,134,17,16,1943
+Kurumi Noah,177,167,134,17,16,1944
+Shiratsuyu (Kantai Collection),173,167,134,17,16,1945
+Marcille Donato,227,166,133,17,16,1946
+Saryuu Evan,221,166,133,17,16,1947
+Tsukishima Kei,215,166,133,17,16,1948
+Toramaru Shou,212,166,133,17,16,1949
+Gwendolyn (Odin Sphere),199,166,133,17,16,1950
+Itsuka Kotori,195,166,133,17,16,1951
+Heroine (AMNESIA),195,166,133,17,16,1952
+Kagayaki Homare,195,166,133,17,16,1953
+Midrash no Caster,187,166,133,17,16,1954
+Nero (Mahoutsukai no Yakusoku),182,166,133,17,16,1955
+Futaba Sana,180,166,133,17,16,1956
+Shanks,244,165,132,16,17,1957
+Ikari Shinji,236,165,132,16,17,1958
+Asakura Hao,236,165,132,16,17,1959
+Toma (AMNESIA),210,165,132,16,17,1960
+Tsukimiya Ringo,201,165,132,16,17,1961
+Takamura Yui,192,165,132,16,17,1962
+Emilie de Rochefort,189,165,132,16,17,1963
+Fuwa Kokone,187,165,132,16,17,1964
+Fuyajou no Assassin,187,165,132,16,17,1965
+Haruyanaginomiya Sakura,176,165,132,16,17,1966
+Sawatari Shingo,244,164,131,16,17,1967
+Aigami,197,164,131,16,17,1968
+Ace Trappola,193,164,131,16,17,1969
+Iwanaga Kotoko,183,164,131,16,17,1970
+Neko Musume,181,164,131,16,17,1971
+Kujou Karen (Kiniro Mosaic),179,164,131,16,17,1972
+Ujimatsu Chiya,174,164,131,16,17,1973
+Tenjouin Katsura,173,164,131,16,17,1974
+Kyubee,366,163,130,16,17,1975
+Cure Spicy,243,163,130,16,17,1976
+Maou (Maoyu Maou Yusha),201,163,130,16,17,1977
+Kasai Amane,196,163,130,16,17,1978
+Iroha (Samurai Spirits),187,163,130,16,17,1979
+Bismarck,184,163,130,16,17,1980
+Nearl,184,163,130,16,17,1981
+Ghislaine Dedoldia,184,163,130,16,17,1982
+Sakurai Momoka (Idolmaster),182,163,130,16,17,1983
+Alice (NIKKE),180,163,130,16,17,1984
+Abe Nana,174,163,130,16,17,1985
+Nekonoki Mochi,174,163,130,16,17,1986
+Tachibana Hinano,170,163,130,16,17,1987
+Nero (Devil May Cry),230,162,130,16,16,1988
+Utatane Piko,211,162,130,16,16,1989
+Shiny Luminous,210,162,130,16,16,1990
+Caren Hortensia,201,162,130,16,16,1991
+Sakamaki Ayato,197,162,130,16,16,1992
+Kaidou Minami,195,162,130,16,16,1993
+Beast VI/S,195,162,130,16,16,1994
+Euryale (Fate/hollow ataraxia),175,162,130,16,16,1995
+Abukuma (Kantai Collection),173,162,130,16,16,1996
+Crow Hogan,249,161,129,16,16,1997
+Vil Schoenheit,204,161,129,16,16,1998
+Ike Eveland,197,161,129,16,16,1999
+Niijima Makoto,193,161,129,16,16,2000
+Wriothesley,189,161,129,16,16,2001
+Cure Friendy,178,161,129,16,16,2002
+Kita Ikuyo,177,161,129,16,16,2003
+Suou Tsukasa,177,161,129,16,16,2004
+Nagato (Azur Lane),177,161,129,16,16,2005
+Rachel Gardner,174,161,129,16,16,2006
+I-8 (Kantai Collection),169,161,129,16,16,2007
+Taiki Shuttle,166,161,129,16,16,2008
+Archer (Artoria Pendragon),164,161,129,16,16,2009
+Assassin (Tezcatlipoca),263,160,128,16,16,2010
+Alter Ego (Larva Tiamat),191,160,128,16,16,2011
+Caster (Leonardo da Vinci),188,160,128,16,16,2012
+Ais Wallenstein,182,160,128,16,16,2013
+Sigewinne,181,160,128,16,16,2014
+Miorine Rembran,176,160,128,16,16,2015
+Yamato Iori,174,160,128,16,16,2016
+Candace,170,160,128,16,16,2017
+Jervis (Kantai Collection),169,160,128,16,16,2018
+Nezu (Pokﾃｩmon),276,159,127,16,16,2019
+Severus Snape,246,159,127,16,16,2020
+Suzuya Juuzou,224,159,127,16,16,2021
+Felicita,206,159,127,16,16,2022
+Lucy (Zenless Zone Zero),203,159,127,16,16,2023
+96neko,194,159,127,16,16,2024
+Kurokawa Eren,192,159,127,16,16,2025
+Atobe Keigo,191,159,127,16,16,2026
+Mobius,187,159,127,16,16,2027
+Kanbaru Suruga,180,159,127,16,16,2028
+Millia Rage,176,159,127,16,16,2029
+Konomi Yui,174,159,127,16,16,2030
+Wakana Shiki,172,159,127,16,16,2031
+Togame Momoko,171,159,127,16,16,2032
+Natsume Iroha,162,159,127,16,16,2033
+Munakata Reisi,213,158,126,16,16,2034
+Shirahoshi,204,158,126,16,16,2035
+Leaf (Pokﾃｩmon),197,158,126,16,16,2036
+Riven,189,158,126,16,16,2037
+Anila (Granblue Fantasy),178,158,126,16,16,2038
+Lilith Aensland,173,158,126,16,16,2039
+Nishizumi Shiho,169,158,126,16,16,2040
+Spider-Gwen,220,157,126,16,15,2041
+Sakamaki Shuu,206,157,126,16,15,2042
+Rider (Quetzalcoatl),191,157,126,16,15,2043
+Euphemia li Britannia,183,157,126,16,15,2044
+Oosuki Mamako,181,157,126,16,15,2045
+Sekishiro Mico,181,157,126,16,15,2046
+Elf no Elu,172,157,126,16,15,2047
+Myoukou (Kantai Collection),171,157,126,16,15,2048
+Aston Machan,171,157,126,16,15,2049
+Nekota Tsuna,170,157,126,16,15,2050
+Kamiya Nao,160,157,126,16,15,2051
+Kiryuu Zero,248,156,125,16,15,2052
+Kuronuma Sawako,234,156,125,16,15,2053
+Amemiya Taiyou,218,156,125,16,15,2054
+Shimura Shinpachi,207,156,125,16,15,2055
+Yuugiri (Zombieland Saga),193,156,125,16,15,2056
+Yato (Noragami),193,156,125,16,15,2057
+Mukami Kou,191,156,125,16,15,2058
+Siesta (Tantei wa Mou Shindeiru),188,156,125,16,15,2059
+Mirajane Strauss,187,156,125,16,15,2060
+KOS-MOS,185,156,125,16,15,2061
+Sakuma Ritsu,182,156,125,16,15,2062
+Yatsuhana Lancer,173,156,125,16,15,2063
+Kubira (Granblue Fantasy),170,156,125,16,15,2064
+Noire (Choujigen Game Neptune),170,156,125,16,15,2065
+Black Hanekawa,169,156,125,16,15,2066
+Kusuriuri,304,155,124,16,15,2067
+Belldandy,235,155,124,16,15,2068
+Kirishima Eijirou,224,155,124,16,15,2069
+Denmark,220,155,124,16,15,2070
+Saber (Gawain),216,155,124,16,15,2071
+Riku (Kingdom Hearts),206,155,124,16,15,2072
+Chu WanNing,205,155,124,16,15,2073
+Ukyo (AMNESIA),203,155,124,16,15,2074
+Rapunzel (Tangled),199,155,124,16,15,2075
+Harada Sanosuke (Hakuouki),197,155,124,16,15,2076
+Owen (Mahoutsukai no Yakusoku),196,155,124,16,15,2077
+Yuni,188,155,124,16,15,2078
+Tsukinaga Leo,184,155,124,16,15,2079
+Gotland (Kantai Collection),170,155,124,16,15,2080
+Inuyama Aoi,169,155,124,16,15,2081
+Vietnam,221,154,123,15,16,2082
+Zhao Yun,216,154,123,15,16,2083
+Unohana Retsu,197,154,123,15,16,2084
+Sasha Braus,196,154,123,15,16,2085
+Irisviel von Einzbern,187,154,123,15,16,2086
+Anceril Sacred,183,154,123,15,16,2087
+Hex Maniac,179,154,123,15,16,2088
+Taneshima Popura,179,154,123,15,16,2089
+Teruzuki (Kantai Collection),158,154,123,15,16,2090
+Au Ra,207,153,122,15,16,2091
+Cure Mofurun,193,153,122,15,16,2092
+Manami Sangaku,189,153,122,15,16,2093
+Nami (League of Legends),188,153,122,15,16,2094
+Azul Ashengrotto,187,153,122,15,16,2095
+Tachibana Hibiki,185,153,122,15,16,2096
+Takemi Tae,183,153,122,15,16,2097
+Morinaka Kazaki,175,153,122,15,16,2098
+Fleura (Pokﾃｩmon),172,153,122,15,16,2099
+Melantha,162,153,122,15,16,2100
+Furutaka (Kantai Collection),161,153,122,15,16,2101
+Akashi (Kantai Collection),159,153,122,15,16,2102
+Gardevoir,281,152,122,15,15,2103
+Flamebringer,243,152,122,15,15,2104
+VY2,233,152,122,15,15,2105
+Galo Thymos,215,152,122,15,15,2106
+Kuzuha (VTuber),193,152,122,15,15,2107
+Virtuosa,189,152,122,15,15,2108
+Yamabuki Inori,186,152,122,15,15,2109
+Higekiri,185,152,122,15,15,2110
+Panther (Persona 5),181,152,122,15,15,2111
+Ignis Scientia,180,152,122,15,15,2112
+Yunli,174,152,122,15,15,2113
+Uehara Himari,164,152,122,15,15,2114
+Hagikaze (Kantai Collection),161,152,122,15,15,2115
+Alucard (Hellsing),382,151,121,15,15,2116
+Dabi,234,151,121,15,15,2117
+Ishida Mitsunari (Sengoku Basara),232,151,121,15,15,2118
+Belphegor,232,151,121,15,15,2119
+Finland,211,151,121,15,15,2120
+Akagi Towa,195,151,121,15,15,2121
+Yatogami Kuroh,191,151,121,15,15,2122
+Red Riding Hood (Character),189,151,121,15,15,2123
+Shirota Mitsuki,181,151,121,15,15,2124
+Aki Rosenthal,180,151,121,15,15,2125
+Moroboshi Kirari,175,151,121,15,15,2126
+Lucifer (Helltaker),171,151,121,15,15,2127
+Cyan (Show by Rock!!),169,151,121,15,15,2128
+Aoyama Sumika,166,151,121,15,15,2129
+Tanigawa Kanna,165,151,121,15,15,2130
+Yamada Ryou,165,151,121,15,15,2131
+Saber (Elizabeth Bathory),162,151,121,15,15,2132
+Isuzu Ren,159,151,121,15,15,2133
+Mario (Character),288,150,120,15,15,2134
+Son Gohan,266,150,120,15,15,2135
+Pinkie Pie,215,150,120,15,15,2136
+Yellow (Pokﾃｩmon Special),198,150,120,15,15,2137
+Kuno Kodachi,191,150,120,15,15,2138
+Neuvillette,188,150,120,15,15,2139
+Yamada Aoi,168,150,120,15,15,2140
+May (Gundam Build Divers),164,150,120,15,15,2141
+Sanshokuin Sumireko,163,150,120,15,15,2142
+Rindou Mikoto,162,150,120,15,15,2143
+Vira (Granblue Fantasy),161,150,120,15,15,2144
+Zeta (Granblue Fantasy),160,150,120,15,15,2145
+Pretender (Tlaloc),160,150,120,15,15,2146
+August von Parseval,156,150,120,15,15,2147
+Yoru (Chainsaw Man),236,149,119,15,15,2148
+Jade Leech,189,149,119,15,15,2149
+Shen Xinghui,187,149,119,15,15,2150
+Madoka Aguri,184,149,119,15,15,2151
+Sawaizumi Chiyu,180,149,119,15,15,2152
+Purah,175,149,119,15,15,2153
+Takara Miyuki,174,149,119,15,15,2154
+Noelle Silva,172,149,119,15,15,2155
+Mizukamiya Seiryuu,172,149,119,15,15,2156
+Hiiragi Shinoa,171,149,119,15,15,2157
+Irene (Kanniiepan),159,149,119,15,15,2158
+Nanami Kento,230,148,118,15,15,2159
+Suoh Mikoto,226,148,118,15,15,2160
+Luo BingHe,222,148,118,15,15,2161
+Emiya Kiritsugu,203,148,118,15,15,2162
+Cure Fontaine,190,148,118,15,15,2163
+Hiiragi Tsukasa,179,148,118,15,15,2164
+Hyakuya Yuuichirou,177,148,118,15,15,2165
+Ootori Emu,176,148,118,15,15,2166
+Tategami Aoi,174,148,118,15,15,2167
+Purple Heart,163,148,118,15,15,2168
+Liskarm,159,148,118,15,15,2169
+Soraru,210,147,118,15,14,2170
+Hakuryuu (Inazuma Eleven),206,147,118,15,14,2171
+Cream Puff Cookie,193,147,118,15,14,2172
+Aventurine,191,147,118,15,14,2173
+Claude von Regan,182,147,118,15,14,2174
+Kuonji Alice,182,147,118,15,14,2175
+Emma (Yakusoku no Neverland),177,147,118,15,14,2176
+Anby Demara,168,147,118,15,14,2177
+Saint Louis,167,147,118,15,14,2178
+Nishizumi Maho,165,147,118,15,14,2179
+Wonder Woman,165,147,118,15,14,2180
+Riesz,163,147,118,15,14,2181
+Hoshino Fumina,162,147,118,15,14,2182
+Nightmare (Arknights),161,147,118,15,14,2183
+Mei (Overwatch),161,147,118,15,14,2184
+Satono Crown,150,147,118,15,14,2185
+Gouenji Shuuya,221,146,117,15,14,2186
+Rex Lapis,182,146,117,15,14,2187
+Usami Ichika,179,146,117,15,14,2188
+Zaizen Aoi,179,146,117,15,14,2189
+Katsuragi Misato,177,146,117,15,14,2190
+Tobiichi Origami,173,146,117,15,14,2191
+Ashe (League of Legends),172,146,117,15,14,2192
+Sakazaki Yuri,170,146,117,15,14,2193
+Narberal Gamma,166,146,117,15,14,2194
+Weedy,160,146,117,15,14,2195
+Azuma Lim,159,146,117,15,14,2196
+Rider (Da Vinci-chan),157,146,117,15,14,2197
+Sweden,248,145,116,14,15,2198
+Leon Scott Kennedy,204,145,116,14,15,2199
+Rachel Alucard,193,145,116,14,15,2200
+Ruler (Qin Shi Huang),178,145,116,14,15,2201
+Amakusa Shirou Tokisada,174,145,116,14,15,2202
+Kinoshita Hideyoshi,173,145,116,14,15,2203
+Nakatsu Shizuru,159,145,116,14,15,2204
+Suzunari Shizuku,147,145,116,14,15,2205
+Nikkari Aoe,200,144,115,14,15,2206
+Danua (Granblue Fantasy),198,144,115,14,15,2207
+Koujaku,195,144,115,14,15,2208
+Kan'u Unchou,187,144,115,14,15,2209
+Ichinose Honami (Youkoso),185,144,115,14,15,2210
+Irelia,170,144,115,14,15,2211
+Sky Striker Ace - Roze,159,144,115,14,15,2212
+Kiyoshimo (Kantai Collection),156,144,115,14,15,2213
+Lyria (Granblue Fantasy),154,144,115,14,15,2214
+Kurata Mashiro,151,144,115,14,15,2215
+Yorigami Shion,150,144,115,14,15,2216
+Narita Top Road,147,144,115,14,15,2217
+Yorumi Rena,146,144,115,14,15,2218
+Jiang Cheng,226,143,114,14,15,2219
+Okkotsu Yuuta,218,143,114,14,15,2220
+Kanae (VTuber),182,143,114,14,15,2221
+Akimoto Komachi,178,143,114,14,15,2222
+Rebecca (Cyberpunk: Edgerunners),177,143,114,14,15,2223
+Ruggie Bucchi,171,143,114,14,15,2224
+Rapunzel (SINoALICE),166,143,114,14,15,2225
+Rider (Mordred),165,143,114,14,15,2226
+Space Ereshkigal,163,143,114,14,15,2227
+Berserker (Atalanta Alter),157,143,114,14,15,2228
+Kuonji Ukyou,156,143,114,14,15,2229
+Whisperain,154,143,114,14,15,2230
+DSR-50 (Girls Frontline),153,143,114,14,15,2231
+Chosokabe Motochika (Sengoku Basara),209,142,114,14,14,2232
+Oliver (VOCALOID),182,142,114,14,14,2233
+Jamil Viper,180,142,114,14,14,2234
+Hiura Kirina,157,142,114,14,14,2235
+Asuna (ALO),150,142,114,14,14,2236
+Aizawa Shouta,241,141,113,14,14,2237
+Mello,194,141,113,14,14,2238
+Lala Satalin Deviluke,191,141,113,14,14,2239
+Squall Leonhart,178,141,113,14,14,2240
+Kotone (Pokﾃｩmon),172,141,113,14,14,2241
+Roll (Rockman),165,141,113,14,14,2242
+Kinose Azusa,162,141,113,14,14,2243
+Index,154,141,113,14,14,2244
+Hokko Tarumae,145,141,113,14,14,2245
+Ranni the Witch,263,140,112,14,14,2246
+Akira (TNC),189,140,112,14,14,2247
+Sugawara Koushi,187,140,112,14,14,2248
+Mayuzumi Kai,183,140,112,14,14,2249
+Caesar Anthonio Zeppeli,182,140,112,14,14,2250
+Floyd Leech,180,140,112,14,14,2251
+Caster (Fate/EXTRA CCC),177,140,112,14,14,2252
+Imanotsurugi,171,140,112,14,14,2253
+Nanobana Kinako,171,140,112,14,14,2254
+Hina Ichigo,170,140,112,14,14,2255
+Ningyou Hime (SINoALICE),169,140,112,14,14,2256
+Sariya (Fire Emblem),150,140,112,14,14,2257
+Sasaki Saren,148,140,112,14,14,2258
+Jintsuu (Kantai Collection),147,140,112,14,14,2259
+Kisaragi (Azur Lane),144,140,112,14,14,2260
+Fukumaru Koito,142,140,112,14,14,2261
+Yuki Cross,239,139,111,14,14,2262
+Gilbert Nightray,212,139,111,14,14,2263
+Valkyrie (Valkyrie no Densetsu),185,139,111,14,14,2264
+Hinata Hajime,181,139,111,14,14,2265
+Higurashi Kagome,169,139,111,14,14,2266
+Assassin (Charlotte Corday),160,139,111,14,14,2267
+Ashido Mina,160,139,111,14,14,2268
+Morishima Haruka,158,139,111,14,14,2269
+Suzukaze Aoba,157,139,111,14,14,2270
+Charlotte (Genshin Impact),151,139,111,14,14,2271
+Nia (Granblue Fantasy),147,139,111,14,14,2272
+Pneuma,145,139,111,14,14,2273
+Suzuhara Lulu,145,139,111,14,14,2274
+Matsuno Karamatsu,222,138,110,14,14,2275
+Avenger (Antonio Salieri),216,138,110,14,14,2276
+Kira Yoshikage,215,138,110,14,14,2277
+Kumoi Ichirin,208,138,110,14,14,2278
+Kurama,195,138,110,14,14,2279
+Tieria Erde,189,138,110,14,14,2280
+Dokugamine Riruka,189,138,110,14,14,2281
+Amagi Yukiko,184,138,110,14,14,2282
+Vinsmoke Reiju,173,138,110,14,14,2283
+Hanami Kotoha,172,138,110,14,14,2284
+Suzugamori Ren,171,138,110,14,14,2285
+Sagihara Sakyou,170,138,110,14,14,2286
+Sailor Cosmos,170,138,110,14,14,2287
+Shiina Mayuri,169,138,110,14,14,2288
+Kotegawa Yui,163,138,110,14,14,2289
+Neopolitan (RWBY),155,138,110,14,14,2290
+Jack-O' Valentine,154,138,110,14,14,2291
+Mikamo Neru,150,138,110,14,14,2292
+Hyuuga (Kantai Collection),147,138,110,14,14,2293
+Chikuma (Kantai Collection),140,138,110,14,14,2294
+Turkey,234,137,110,14,13,2295
+Ishida Uryuu,215,137,110,14,13,2296
+Alluka Zoldyck,199,137,110,14,13,2297
+Vaati,180,137,110,14,13,2298
+Toshinou Kyouko,160,137,110,14,13,2299
+Kirisu Mafuyu,155,137,110,14,13,2300
+Udagawa Ako,151,137,110,14,13,2301
+Kirito (GGO),150,137,110,14,13,2302
+Honebami Toushirou,150,137,110,14,13,2303
+Wakamiya Eve,149,137,110,14,13,2304
+Mew Mint,147,137,110,14,13,2305
+Jiang Wei,188,136,109,14,13,2306
+Sunday,181,136,109,14,13,2307
+Morgana (League of Legends),177,136,109,14,13,2308
+Dark Precure,173,136,109,14,13,2309
+Ciel (Tsukihime),172,136,109,14,13,2310
+Doremy Sweet,168,136,109,14,13,2311
+Kagari Atsuko,164,136,109,14,13,2312
+Aisaki Emiru,162,136,109,14,13,2313
+Setsuna F. Seiei,161,136,109,14,13,2314
+Minato Tomoka,157,136,109,14,13,2315
+Rufure (Female) (Fire Emblem),152,136,109,14,13,2316
+Kazuno Leah,151,136,109,14,13,2317
+Firo (Tate no Yuusha no Nariagari),150,136,109,14,13,2318
+Hinata Kaho,150,136,109,14,13,2319
+Sussurro,145,136,109,14,13,2320
+Gavial (Arknights),145,136,109,14,13,2321
+Vegeta,231,135,108,14,13,2322
+Nara Shikamaru,218,135,108,14,13,2323
+Felicia,188,135,108,14,13,2324
+Kougami Ryouken,178,135,108,14,13,2325
+Riza Hawkeye,177,135,108,14,13,2326
+Playmaker,174,135,108,14,13,2327
+Blackberry Cookie,172,135,108,14,13,2328
+Yokune Ruko,169,135,108,14,13,2329
+Kisaragi Jin,168,135,108,14,13,2330
+Fubuki Atsuya,168,135,108,14,13,2331
+Figaro (Mahoutsukai no Yakusoku),159,135,108,14,13,2332
+Pauline,154,135,108,14,13,2333
+Asukawa Taiyou,153,135,108,14,13,2334
+Kousaka Reina,148,135,108,14,13,2335
+Kongou Iroha,147,135,108,14,13,2336
+Onitsuka Natsumi,147,135,108,14,13,2337
+Terumii Mei,146,135,108,14,13,2338
+Kalim Al-Asim,146,135,108,14,13,2339
+Honda Mio,145,135,108,14,13,2340
+Beatrix (Granblue Fantasy),141,135,108,14,13,2341
+Sakura Chiyono O,139,135,108,14,13,2342
+Karkat Vantas,226,134,107,13,14,2343
+Adachi Tohru,207,134,107,13,14,2344
+Yamazaki Sosuke,203,134,107,13,14,2345
+Sirin,180,134,107,13,14,2346
+Echizen Ryoma,172,134,107,13,14,2347
+Cure Egret,169,134,107,13,14,2348
+Melon (Pokﾃｩmon),167,134,107,13,14,2349
+Corticarte Apa Lagranges,166,134,107,13,14,2350
+Phoebe (Wuthering Waves),163,134,107,13,14,2351
+Cardia,159,134,107,13,14,2352
+Bagpipe (Arknights),152,134,107,13,14,2353
+Yuuki Yuuna,151,134,107,13,14,2354
+Gascogne,144,134,107,13,14,2355
+Akitsushima (Kantai Collection),143,134,107,13,14,2356
+Libeccio (Kantai Collection),142,134,107,13,14,2357
+Izumimoto Eimi,137,134,107,13,14,2358
+Simon (Tengen Toppa Gurren-Lagann),236,133,106,13,14,2359
+Fukawa Touko,222,133,106,13,14,2360
+Princess Sakura,213,133,106,13,14,2361
+Undyne,196,133,106,13,14,2362
+Komori Yui,185,133,106,13,14,2363
+Shin (AMNESIA),185,133,106,13,14,2364
+Yoshizawa Kasumi,178,133,106,13,14,2365
+Kyon,159,133,106,13,14,2366
+Navia Caspar,157,133,106,13,14,2367
+Warspite (Kantai Collection),157,133,106,13,14,2368
+Saber (Fate/EXTRA CCC Fox Tail),145,133,106,13,14,2369
+Saionji Mary,143,133,106,13,14,2370
+Helena (Azur Lane),141,133,106,13,14,2371
+I-58 (Kantai Collection),140,133,106,13,14,2372
+Gentildonna,138,133,106,13,14,2373
+Kawakaze (Kantai Collection),136,133,106,13,14,2374
+Vaggie,288,132,106,13,13,2375
+Beyond Birthday,241,132,106,13,13,2376
+Pao-lin Huang,178,132,106,13,13,2377
+Azami (Kagerou Project),169,132,106,13,13,2378
+Shamare,162,132,106,13,13,2379
+Platinum the Trinity,160,132,106,13,13,2380
+Araragi Tsukihi,159,132,106,13,13,2381
+Ibuki Munemasa,157,132,106,13,13,2382
+Mishou Mai,151,132,106,13,13,2383
+Horikawa Raiko,146,132,106,13,13,2384
+Saratoga (Azur Lane),140,132,106,13,13,2385
+Camilla,137,132,106,13,13,2386
+Oyashio (Kantai Collection),137,132,106,13,13,2387
+Nanakami Rin,134,132,106,13,13,2388
+Nobori,235,131,105,13,13,2389
+Marco (ONE PIECE),201,131,105,13,13,2390
+South Korea,182,131,105,13,13,2391
+Iguro Obanai,177,131,105,13,13,2392
+Oreki Houtarou,171,131,105,13,13,2393
+Ezreal,169,131,105,13,13,2394
+Kaiou Michiru,164,131,105,13,13,2395
+Oda Sakunosuke (Bungou Stray Dogs),163,131,105,13,13,2396
+Uryuu Ryuunosuke,157,131,105,13,13,2397
+Tsutsukakushi Tsukiko,155,131,105,13,13,2398
+Fugue (Honkai Star Rail),151,131,105,13,13,2399
+Amamiya Erena,148,131,105,13,13,2400
+Hood (Azur Lane),141,131,105,13,13,2401
+Zhuge Liang,245,130,104,13,13,2402
+Edo Phoenix,174,130,104,13,13,2403
+Cure Sparkle,173,130,104,13,13,2404
+Saber (Beni-Enma),169,130,104,13,13,2405
+Motoori Kosuzu,153,130,104,13,13,2406
+Tracer,152,130,104,13,13,2407
+Jean Bart,148,130,104,13,13,2408
+Captain (Fate/Grand Order),147,130,104,13,13,2409
+Shinonono Houki,145,130,104,13,13,2410
+Amagi (Azur Lane),143,130,104,13,13,2411
+Gambier Bay (Kantai Collection),137,130,104,13,13,2412
+Kobayakawa Sae,133,130,104,13,13,2413
+Orochimaru,232,129,103,13,13,2414
+Astarion Ancunﾃｭn,222,129,103,13,13,2415
+Yamazaki Sagaru,190,129,103,13,13,2416
+Kirasaka Sayaka,175,129,103,13,13,2417
+Ikki (AMNESIA),174,129,103,13,13,2418
+Shiba Miyuki,171,129,103,13,13,2419
+Edogawa Ranpo (Bungou Stray Dogs),164,129,103,13,13,2420
+Kallen Kaslana,151,129,103,13,13,2421
+Misono Karin,146,129,103,13,13,2422
+Amate Yuzuriha,141,129,103,13,13,2423
+Tsukumo Sana,141,129,103,13,13,2424
+Umori Hinako,139,129,103,13,13,2425
+Tenma Saki,139,129,103,13,13,2426
+Ulrich Von Hutten,137,129,103,13,13,2427
+Mikoko (Kemomimi Teikoku Kokuei Housou),136,129,103,13,13,2428
+Isuzu (Kantai Collection),136,129,103,13,13,2429
+Aoba (Kantai Collection),135,129,103,13,13,2430
+Yinlin,226,128,102,13,13,2431
+Angel Devil,181,128,102,13,13,2432
+Uguisumaru,176,128,102,13,13,2433
+Tsugaru,173,128,102,13,13,2434
+Kyle Broflovski,172,128,102,13,13,2435
+Nanami Lucia,164,128,102,13,13,2436
+Genji Hotaru,161,128,102,13,13,2437
+Bibury (Pretty Cure),159,128,102,13,13,2438
+Demon Spade,159,128,102,13,13,2439
+Mithra (Mahoutsukai no Yakusoku),158,128,102,13,13,2440
+Hoshimiya Yukina,156,128,102,13,13,2441
+Voyager (Fate/Requiem),155,128,102,13,13,2442
+Asahina Mafuyu,154,128,102,13,13,2443
+Makaino Ririmu,147,128,102,13,13,2444
+Rider (Ishtar),144,128,102,13,13,2445
+Seta Kaoru,143,128,102,13,13,2446
+Kizuna Akari,139,128,102,13,13,2447
+Aqua (Kingdom Hearts),139,128,102,13,13,2448
+M4 SOPMODII (Girls Frontline),137,128,102,13,13,2449
+Kobo Kanaeru,131,128,102,13,13,2450
+Takami Keigo,257,127,102,13,12,2451
+Hoshi Ryouma,206,127,102,13,12,2452
+Hiiragi Nana,194,127,102,13,12,2453
+Greece,193,127,102,13,12,2454
+Shinjuku Archer,174,127,102,13,12,2455
+Herta,168,127,102,13,12,2456
+Lady Phantomhive,163,127,102,13,12,2457
+Tsukuyo,160,127,102,13,12,2458
+Anzu (Ensemble Stars!),160,127,102,13,12,2459
+Kanaria,156,127,102,13,12,2460
+Himesaki Anri,155,127,102,13,12,2461
+Mizuki (Pokﾃｩmon),150,127,102,13,12,2462
+Arisugawa Dice,150,127,102,13,12,2463
+Priestess (Goblin Slayer),146,127,102,13,12,2464
+Yuel (Shingeki no Bahamut),145,127,102,13,12,2465
+Herrscher of Thunder,139,127,102,13,12,2466
+Cure Amour,138,127,102,13,12,2467
+Rider (Boudica),138,127,102,13,12,2468
+Shiina Mashiro,137,127,102,13,12,2469
+I-168 (Kantai Collection),135,127,102,13,12,2470
+Hayasui (Kantai Collection),129,127,102,13,12,2471
+Kudari,219,126,101,13,12,2472
+Pharaoh Atem,196,126,101,13,12,2473
+Kaede (Elfen Lied),187,126,101,13,12,2474
+Firewatch,157,126,101,13,12,2475
+Cure Bloom,156,126,101,13,12,2476
+Ginpachi-sensei,154,126,101,13,12,2477
+Ping Hai,152,126,101,13,12,2478
+Esdese,146,126,101,13,12,2479
+Saber (Lakshmi Bai),138,126,101,13,12,2480
+Eva-Beatrice,137,126,101,13,12,2481
+Mitsuki Felicia,132,126,101,13,12,2482
+Vector (Yu-Gi-Oh! ZEXAL),233,125,100,12,13,2483
+Amy Rose,201,125,100,12,13,2484
+Chiori (Genshin Impact),163,125,100,12,13,2485
+Shiomi Kotone,162,125,100,12,13,2486
+Luca Kaneshiro,158,125,100,12,13,2487
+Asakura Yoh,157,125,100,12,13,2488
+Nijigaoka Mashiro,153,125,100,12,13,2489
+Naoi Ayato,152,125,100,12,13,2490
+Kazama Asuka,143,125,100,12,13,2491
+Suntory Nomu,142,125,100,12,13,2492
+Chiki (Fire Emblem),136,125,100,12,13,2493
+Akeboshi Himari,135,125,100,12,13,2494
+Igarashi Kyouko,134,125,100,12,13,2495
+Yamato Maya,132,125,100,12,13,2496
+Shinosawa Hiro,132,125,100,12,13,2497
+La Volpe (Yagisaka Seto),132,125,100,12,13,2498
+Nagatoro Hayase,131,125,100,12,13,2499
+Satomi Touka,131,125,100,12,13,2500
+Marie Rose,131,125,100,12,13,2501
+Cinnabar,180,124,99,12,13,2502
+Quanxi,171,124,99,12,13,2503
+Assassin (Carmilla),165,124,99,12,13,2504
+Takakura Himari,161,124,99,12,13,2505
+Blue Rose (T&B),160,124,99,12,13,2506
+Kairi (Kingdom Hearts),152,124,99,12,13,2507
+Kirijou Mitsuru,150,124,99,12,13,2508
+Kiso Azuki,142,124,99,12,13,2509
+Tachibana Alice,134,124,99,12,13,2510
+Sakurakouji Kinako,133,124,99,12,13,2511
+Nakagawa Nana,132,124,99,12,13,2512
+Sinon (ALO),129,124,99,12,13,2513
+Kagerou (Kantai Collection),129,124,99,12,13,2514
+Ginko (Mushishi),197,123,98,12,13,2515
+Urahara Kisuke,185,123,98,12,13,2516
+Inga,168,123,98,12,13,2517
+Noﾃｫl (Sound Horizon),164,123,98,12,13,2518
+Kushina Anna,161,123,98,12,13,2519
+Lei Lei,161,123,98,12,13,2520
+Sakurasawa Sumi,160,123,98,12,13,2521
+Schneewittchen,160,123,98,12,13,2522
+Asahina Mikuru,157,123,98,12,13,2523
+La Signora,150,123,98,12,13,2524
+Sasaki Chiho,147,123,98,12,13,2525
+Deutschland (Azur Lane),143,123,98,12,13,2526
+Cantarella (Wuthering Waves),141,123,98,12,13,2527
+Rider (Taigong Wang),139,123,98,12,13,2528
+Lunasa Prismriver,139,123,98,12,13,2529
+Meer Campbell,138,123,98,12,13,2530
+Grani (Arknights),137,123,98,12,13,2531
+Oshino Ougi,137,123,98,12,13,2532
+Caster (Shuten-douji),136,123,98,12,13,2533
+Emily Stock,135,123,98,12,13,2534
+Airi (Queen's Blade),132,123,98,12,13,2535
+Smart Falcon,131,123,98,12,13,2536
+Mei (8 Beat Story),188,122,98,12,12,2537
+Gauche Suede,178,122,98,12,12,2538
+Suzuno Fuusuke,172,122,98,12,12,2539
+Connor (Detroit: Become Human),167,122,98,12,12,2540
+Tom Marvolo Riddle,160,122,98,12,12,2541
+Himekawa Yoshino,154,122,98,12,12,2542
+Yukishiro Honoka,154,122,98,12,12,2543
+Waai Fu,152,122,98,12,12,2544
+Nunnally Lamperouge,150,122,98,12,12,2545
+Minamisawa Atsushi,150,122,98,12,12,2546
+Anegasaki Nene,138,122,98,12,12,2547
+Ophelia Phamrsolone,136,122,98,12,12,2548
+Ho'olheyak,133,122,98,12,12,2549
+Shiraishi Tsumugi,133,122,98,12,12,2550
+Warspite,129,122,98,12,12,2551
+Revo (Sound Horizon),188,121,97,12,12,2552
+Friday (Shisha no Teikoku),178,121,97,12,12,2553
+Homulilly,158,121,97,12,12,2554
+Tachibana Ayame (8 beat Story),156,121,97,12,12,2555
+Taliyah,153,121,97,12,12,2556
+Epel Felmier,149,121,97,12,12,2557
+Kira Yamato,147,121,97,12,12,2558
+Minase Suzune,145,121,97,12,12,2559
+Natsuki Rin,143,121,97,12,12,2560
+Naegi Makoto,142,121,97,12,12,2561
+Lunamaria Hawke,138,121,97,12,12,2562
+Kingprotea,138,121,97,12,12,2563
+Barasuishou,137,121,97,12,12,2564
+Savage (Arknights),134,121,97,12,12,2565
+Yakumo Mitama,133,121,97,12,12,2566
+Yoneme Mei,132,121,97,12,12,2567
+Arashio (Kantai Collection),132,121,97,12,12,2568
+Rurikawa Yuki,131,121,97,12,12,2569
+Hayashimo (Kantai Collection),125,121,97,12,12,2570
+Kageyama Shigeo,211,120,96,12,12,2571
+Green (Pokﾃｩmon),183,120,96,12,12,2572
+Assassin (Charles-Henri Sanson),176,120,96,12,12,2573
+Ononoki Yotsugi,152,120,96,12,12,2574
+Shirabe Ako,149,120,96,12,12,2575
+Revy,147,120,96,12,12,2576
+Shima Kinzou,146,120,96,12,12,2577
+Yona (Akatsuki no Yona),144,120,96,12,12,2578
+Neptune (Choujigen Game Neptune),144,120,96,12,12,2579
+Jade (Honkai Star Rail),139,120,96,12,12,2580
+Executor,139,120,96,12,12,2581
+Leona Heidern,134,120,96,12,12,2582
+Olga Marie Animusphere,133,120,96,12,12,2583
+Akatsuki Kirika,133,120,96,12,12,2584
+Yuugumo (Kantai Collection),127,120,96,12,12,2585
+Akaba Reiji,191,119,95,12,12,2586
+Gogeta,164,119,95,12,12,2587
+Nanatsumori Minoru,162,119,95,12,12,2588
+Alvaro Garay,161,119,95,12,12,2589
+Suo Yuki,156,119,95,12,12,2590
+Princess Anna of Arendelle,146,119,95,12,12,2591
+Imbibitor Lunae,142,119,95,12,12,2592
+Sano Manjirou,139,119,95,12,12,2593
+Divus Crewel,137,119,95,12,12,2594
+Akitsu Maru (Kantai Collection),135,119,95,12,12,2595
+Sougetsu Eli,133,119,95,12,12,2596
+Red Hood (NIKKE),129,119,95,12,12,2597
+Tanaka Hime,126,119,95,12,12,2598
+Michishio (Kantai Collection),124,119,95,12,12,2599
+Korwa (Granblue Fantasy),124,119,95,12,12,2600
+Emma August,122,119,95,12,12,2601
+Godguard Brodia,119,119,95,12,12,2602
+Rider (Odysseus),179,118,94,12,12,2603
+Aya Brea,156,118,94,12,12,2604
+Lapis Lazuli (Houseki no Kuni),155,118,94,12,12,2605
+Minazuki Karen,145,118,94,12,12,2606
+Kagura Akari,141,118,94,12,12,2607
+Tio Plato,140,118,94,12,12,2608
+Grace Howard,139,118,94,12,12,2609
+Jinhsi,136,118,94,12,12,2610
+Takamachi Vivio,136,118,94,12,12,2611
+Misha (Pita Ten),135,118,94,12,12,2612
+Honda Iku,135,118,94,12,12,2613
+Kroos,133,118,94,12,12,2614
+Nakiri Alice,128,118,94,12,12,2615
+Assassin (Jing Ke),127,118,94,12,12,2616
+Medicine Melancholy,234,117,94,12,11,2617
+Donquixote Rocinante,215,117,94,12,11,2618
+Harry Potter (Character),166,117,94,12,11,2619
+Kiyoshi Teppei,157,117,94,12,11,2620
+Yotsuba Alice,152,117,94,12,11,2621
+Archer (Tristan),150,117,94,12,11,2622
+Anya Alstreim,145,117,94,12,11,2623
+Ousaka Sougo,138,117,94,12,11,2624
+Yang (Piofiore no Bansho),137,117,94,12,11,2625
+Hermione Granger,135,117,94,12,11,2626
+Isabella Valentine,135,117,94,12,11,2627
+Bennett,134,117,94,12,11,2628
+Deuce Spade,131,117,94,12,11,2629
+Shikinami (Kantai Collection),129,117,94,12,11,2630
+Verxina,117,117,94,12,11,2631
+Tachibana Iori (Yubisaki Connection),117,117,94,12,11,2632
+Kanoe Yuuko,200,116,93,12,11,2633
+Hisagi Shuuhei,179,116,93,12,11,2634
+VALSHE,174,116,93,12,11,2635
+Archer (Ashwatthama),171,116,93,12,11,2636
+Toph Bei Fong,170,116,93,12,11,2637
+Sakamaki Laito,162,116,93,12,11,2638
+Kurumi (Kantoku),159,116,93,12,11,2639
+Applejack,150,116,93,12,11,2640
+Hoshino Ichika,148,116,93,12,11,2641
+Ushiromiya Battler,147,116,93,12,11,2642
+Makishima Shougo,144,116,93,12,11,2643
+Matatagi Hayato,143,116,93,12,11,2644
+Amami Rantarou,143,116,93,12,11,2645
+Sunset Shimmer,139,116,93,12,11,2646
+Ayane (Dead or Alive),132,116,93,12,11,2647
+Nekomiya Mana,127,116,93,12,11,2648
+Mejiro Bright,121,116,93,12,11,2649
+Edogawa Conan,161,115,92,12,11,2650
+Sanka Rea,157,115,92,12,11,2651
+Takane Takamine,155,115,92,12,11,2652
+Tsunemori Akane,155,115,92,12,11,2653
+Okazaki Kei,143,115,92,12,11,2654
+Latte Cookie,141,115,92,12,11,2655
+Arancia,140,115,92,12,11,2656
+Aono Miki,139,115,92,12,11,2657
+Haibara Ai,137,115,92,12,11,2658
+Totsuka Tatara,132,115,92,12,11,2659
+Friedrich der Groﾃ・e,129,115,92,12,11,2660
+Alaude,128,115,92,12,11,2661
+Victorious,127,115,92,12,11,2662
+Foreigner (Jacques de Molay),126,115,92,12,11,2663
+Inami Mahiru,126,115,92,12,11,2664
+Implacable,125,115,92,12,11,2665
+Fiammetta,123,115,92,12,11,2666
+Ryushen,123,115,92,12,11,2667
+Nakigitsune,162,114,91,11,12,2668
+Trunks Briefs,156,114,91,11,12,2669
+Kudou Shinichi,155,114,91,11,12,2670
+Yamada Tae,154,114,91,11,12,2671
+Dennis Macfield,153,114,91,11,12,2672
+Sakuragi Hinata,151,114,91,11,12,2673
+Kyouyama Anna,149,114,91,11,12,2674
+Yami Bakura,147,114,91,11,12,2675
+Shirley Fenette,141,114,91,11,12,2676
+Leontius,140,114,91,11,12,2677
+Shinn Asuka,138,114,91,11,12,2678
+Sakagami Tomoyo,135,114,91,11,12,2679
+Elie MacDowell,133,114,91,11,12,2680
+United States (Female),132,114,91,11,12,2681
+Shiraishi An,131,114,91,11,12,2682
+Uzaki Hana,129,114,91,11,12,2683
+Izumi Kanagi,129,114,91,11,12,2684
+Katsura Hinagiku,126,114,91,11,12,2685
+Santa Alter,124,114,91,11,12,2686
+Julietto,118,114,91,11,12,2687
+Elisabeth von Wettin,181,113,90,11,12,2688
+Vriska Serket,180,113,90,11,12,2689
+Houjou Tokiyuki,155,113,90,11,12,2690
+Jing Yuan,153,113,90,11,12,2691
+Thanatos-ko,152,113,90,11,12,2692
+Sakamaki Reiji,149,113,90,11,12,2693
+Lord El-Melloi II,148,113,90,11,12,2694
+Izanami Hifumi,147,113,90,11,12,2695
+Arthur Boyle,146,113,90,11,12,2696
+Jakuzure Nonon,144,113,90,11,12,2697
+Izuki Shun,142,113,90,11,12,2698
+Caster (Solomon),142,113,90,11,12,2699
+Fuwa Minato,139,113,90,11,12,2700
+Sazare,138,113,90,11,12,2701
+Cinderella (SINoALICE),136,113,90,11,12,2702
+Tanamachi Kaoru,134,113,90,11,12,2703
+Caesar (Zenless Zone Zero),134,113,90,11,12,2704
+Hoshizuki Kotarou,131,113,90,11,12,2705
+Bakura Ryou,130,113,90,11,12,2706
+Sento Isuzu,130,113,90,11,12,2707
+Zelda (Skyward Sword),130,113,90,11,12,2708
+Owari (Azur Lane),127,113,90,11,12,2709
+Tobisawa Misaki,126,113,90,11,12,2710
+Koseki Bijou,119,113,90,11,12,2711
+Maruzensky,119,113,90,11,12,2712
+Fushiguro Touji,235,112,90,11,11,2713
+Konoe Subaru,176,112,90,11,11,2714
+Roguefort Cookie,167,112,90,11,11,2715
+Midorikawa Ryuuji,160,112,90,11,11,2716
+Tendou (Pein),159,112,90,11,11,2717
+Saber of Black,157,112,90,11,11,2718
+Mﾃ､rchen von Friedhof,149,112,90,11,11,2719
+Ukraine,145,112,90,11,11,2720
+April O'Neil,139,112,90,11,11,2721
+Rappa (Honkai Star Rail),138,112,90,11,11,2722
+Cain (Mahoutsukai no Yakusoku),128,112,90,11,11,2723
+Shinozaki Rika,126,112,90,11,11,2724
+Jessica Rabbit,123,112,90,11,11,2725
+Akagi Miria,122,112,90,11,11,2726
+Kuwakami Kaho,122,112,90,11,11,2727
+Moona Hoshinova,121,112,90,11,11,2728
+Archer (Durga),119,112,90,11,11,2729
+Kawakami Mai,118,112,90,11,11,2730
+Nanase Kureha,117,112,90,11,11,2731
+Kamoi (Kantai Collection),115,112,90,11,11,2732
+Saijou Juri,113,112,90,11,11,2733
+Zenin Maki,182,111,89,11,11,2734
+Rock Lee,178,111,89,11,11,2735
+Romania,149,111,89,11,11,2736
+Akabane Karma,140,111,89,11,11,2737
+Amaha Masane,136,111,89,11,11,2738
+Jack Howl,132,111,89,11,11,2739
+Tsukuyomi Shirabe,126,111,89,11,11,2740
+Alter Ego (Sitonai),126,111,89,11,11,2741
+Merry Milk,124,111,89,11,11,2742
+Kaga Sumire,120,111,89,11,11,2743
+Utage (Arknights),119,111,89,11,11,2744
+Ichinose Uruha,118,111,89,11,11,2745
+Heles (Granblue Fantasy),116,111,89,11,11,2746
+Vestia Zeta,115,111,89,11,11,2747
+Princess Luna,219,110,88,11,11,2748
+Kisaragi Saya,181,110,88,11,11,2749
+Kuran Kaname,171,110,88,11,11,2750
+Shinazugawa Sanemi,160,110,88,11,11,2751
+Ikezawa Kazuma,145,110,88,11,11,2752
+Kars,145,110,88,11,11,2753
+Toudou Jinpachi,142,110,88,11,11,2754
+CUL,141,110,88,11,11,2755
+Oumori Yuuko,137,110,88,11,11,2756
+Tomoe (Kamisama Hajimemashita),135,110,88,11,11,2757
+Isana Yashiro,135,110,88,11,11,2758
+Elphelt Valentine,134,110,88,11,11,2759
+Amahane Madoka,132,110,88,11,11,2760
+Kinich,129,110,88,11,11,2761
+Zoe (League of Legends),129,110,88,11,11,2762
+Zessica Wong,129,110,88,11,11,2763
+Kazanari Tsubasa,127,110,88,11,11,2764
+Beeswax,124,110,88,11,11,2765
+Mew Lettuce,122,110,88,11,11,2766
+Ushiromiya Jessica,122,110,88,11,11,2767
+Usami Renko,122,110,88,11,11,2768
+Ushigome Rimi,121,110,88,11,11,2769
+King Halo,117,110,88,11,11,2770
+Sakuragi Miria,117,110,88,11,11,2771
+Mano Aloe,117,110,88,11,11,2772
+Mayoi Shigure,115,110,88,11,11,2773
+Indomitable,115,110,88,11,11,2774
+Monarch,114,110,88,11,11,2775
+Kuroe (Magia Record),113,110,88,11,11,2776
+Yukikaze (Azur Lane),112,110,88,11,11,2777
+Dirk Strider,193,109,87,11,11,2778
+Berserker (Kriemhild),176,109,87,11,11,2779
+Annie (League of Legends),155,109,87,11,11,2780
+Kano Chinatsu,155,109,87,11,11,2781
+X (Mega Man X),155,109,87,11,11,2782
+Shaw (Arknights),139,109,87,11,11,2783
+Raven (DC Comics),136,109,87,11,11,2784
+Natsumi Manatsu,136,109,87,11,11,2785
+Zero (Drag-on Dragoon),134,109,87,11,11,2786
+Carlotta,133,109,87,11,11,2787
+Ling Xiaoyu,132,109,87,11,11,2788
+Iruma Miu,125,109,87,11,11,2789
+High Elf Archer,123,109,87,11,11,2790
+Kay (GIRLS und PANZER),123,109,87,11,11,2791
+Berserker (Artoria Caster),121,109,87,11,11,2792
+Charlotta (Granblue Fantasy),121,109,87,11,11,2793
+ﾃ・ngel (The King of Fighters),120,109,87,11,11,2794
+Tougou Mimori,120,109,87,11,11,2795
+Grea (Shingeki no Bahamut),118,109,87,11,11,2796
+Lucoa,115,109,87,11,11,2797
+Charlotte (Madoka Magica),229,108,86,11,11,2798
+Akaashi Keiji,172,108,86,11,11,2799
+Hibiya (Subarashii Hibi),163,108,86,11,11,2800
+Keith Goodman,162,108,86,11,11,2801
+Ross,161,108,86,11,11,2802
+Plain Doll,143,108,86,11,11,2803
+Vegito,139,108,86,11,11,2804
+Misumi Nagisa,133,108,86,11,11,2805
+Natsume Rin,131,108,86,11,11,2806
+Kobayakawa Rinko,131,108,86,11,11,2807
+Berserker (Manga de Wakaru! FGO),129,108,86,11,11,2808
+Secre Swallowtail,128,108,86,11,11,2809
+Rider (Fate/EXTRA),127,108,86,11,11,2810
+Yunyun (KonoSuba),126,108,86,11,11,2811
+Miyamizu Mitsuha,125,108,86,11,11,2812
+Rydia of Mist,124,108,86,11,11,2813
+Sayu,123,108,86,11,11,2814
+Saber (Fate/EXTELLA LINK),122,108,86,11,11,2815
+Shiro (No Game No Life),119,108,86,11,11,2816
+Ikaruga (Senran Kagura),118,108,86,11,11,2817
+Gold City,118,108,86,11,11,2818
+Essex,116,108,86,11,11,2819
+Mikasa (Azur Lane),114,108,86,11,11,2820
+Azuma (Azur Lane),113,108,86,11,11,2821
+Saitama,177,107,86,11,10,2822
+Shiro (Deadman Wonderland),167,107,86,11,10,2823
+Illumi Zoldyk,161,107,86,11,10,2824
+Rose Lalonde,156,107,86,11,10,2825
+San (Mononoke Hime),150,107,86,11,10,2826
+Aladdin (SINoALICE),147,107,86,11,10,2827
+Peppermint Cookie,138,107,86,11,10,2828
+Catarina Claes,136,107,86,11,10,2829
+Altera the San(ta),133,107,86,11,10,2830
+Snow White,132,107,86,11,10,2831
+Uryuu Minene,131,107,86,11,10,2832
+Nanami Mami,130,107,86,11,10,2833
+Shinonome Akito,127,107,86,11,10,2834
+Xinyan,126,107,86,11,10,2835
+Lina Inverse,125,107,86,11,10,2836
+Usami Sumireko,124,107,86,11,10,2837
+Gagaga Girl,123,107,86,11,10,2838
+Lilia Vanrouge,122,107,86,11,10,2839
+Tomoe Tamao,121,107,86,11,10,2840
+Aqua (Fire Emblem),121,107,86,11,10,2841
+Mio (Xenoblade 3),117,107,86,11,10,2842
+Oikawa Shizuku,117,107,86,11,10,2843
+Helm (NIKKE),115,107,86,11,10,2844
+Kamizaki Risa,113,107,86,11,10,2845
+Elira Pendora,110,107,86,11,10,2846
+Lady Maria of the Astral Clocktower,187,106,85,11,10,2847
+Nura Rikuo (Youkai),153,106,85,11,10,2848
+Momozono Love,143,106,85,11,10,2849
+Ulti (ONE PIECE),135,106,85,11,10,2850
+Charlotte Pudding,133,106,85,11,10,2851
+Blood Elf,131,106,85,11,10,2852
+Izumi Kei,130,106,85,11,10,2853
+Saegusa Akina,130,106,85,11,10,2854
+Psylocke,129,106,85,11,10,2855
+Eve (Nezumi),127,106,85,11,10,2856
+Sakura Hibiki,127,106,85,11,10,2857
+Hoshi Shouko,124,106,85,11,10,2858
+Ange (Princess Principal),121,106,85,11,10,2859
+Otoshiro Seira,120,106,85,11,10,2860
+Futami Mami,119,106,85,11,10,2861
+Sena Izumi,117,106,85,11,10,2862
+Kjera,117,106,85,11,10,2863
+Sombra (Overwatch),115,106,85,11,10,2864
+Dorothy (Arknights),115,106,85,11,10,2865
+Ilulu,114,106,85,11,10,2866
+Z46,112,106,85,11,10,2867
+Tone (Kantai Collection),111,106,85,11,10,2868
+Bache,110,106,85,11,10,2869
+All Might,183,105,84,10,11,2870
+Bertholdt Fubar,170,105,84,10,11,2871
+Ginoza Nobuchika,168,105,84,10,11,2872
+Sekka Yufu,143,105,84,10,11,2873
+Kurama Norihito,142,105,84,10,11,2874
+Harukaze Doremi,142,105,84,10,11,2875
+Arakita Yasutomo,141,105,84,10,11,2876
+Petunia (HTF),134,105,84,10,11,2877
+Kirahoshi Ciel,132,105,84,10,11,2878
+Mouri Ran,130,105,84,10,11,2879
+Uki Violeta,126,105,84,10,11,2880
+Archer (Anastasia & Viy),123,105,84,10,11,2881
+Prinz Heinrich,119,105,84,10,11,2882
+Penance (Arknights),118,105,84,10,11,2883
+Souya Ichika,112,105,84,10,11,2884
+Avenger (Marie Alter),112,105,84,10,11,2885
+Watanabe Tsuki,112,105,84,10,11,2886
+Professor Niyaniya,109,105,84,10,11,2887
+Vivlos,108,105,84,10,11,2888
+Yuzuki Roa,108,105,84,10,11,2889
+Yakumo Beni,105,105,84,10,11,2890
+Gokotai,195,104,83,10,11,2891
+Vergil (Devil May Cry),161,104,83,10,11,2892
+Aori (Splatoon),145,104,83,10,11,2893
+Moritsuki Rei,141,104,83,10,11,2894
+Shingetsu Rei,137,104,83,10,11,2895
+Videl,131,104,83,10,11,2896
+Amaha Tsubasa,131,104,83,10,11,2897
+Oudou Yuuga,129,104,83,10,11,2898
+Bloom (Winx Club),128,104,83,10,11,2899
+Typhon (Arknights),124,104,83,10,11,2900
+Aino Megumi,123,104,83,10,11,2901
+Kai Toshiki,121,104,83,10,11,2902
+Yosano Akiko,119,104,83,10,11,2903
+Violet (Persona 5),119,104,83,10,11,2904
+Shimakaze (Azur Lane),115,104,83,10,11,2905
+Human Luna,114,104,83,10,11,2906
+Blue Reimu,113,104,83,10,11,2907
+Tsukumo Benben,112,104,83,10,11,2908
+Wakaba Hinata,111,104,83,10,11,2909
+Shinki,111,104,83,10,11,2910
+Richelieu (Kantai Collection),111,104,83,10,11,2911
+Kai (Pokﾃｩmon),107,104,83,10,11,2912
+Natsuki Subaru,163,103,82,10,11,2913
+Tachimukai Yuuki,146,103,82,10,11,2914
+Lulu (Wand of Fortune),134,103,82,10,11,2915
+Idolfried Ehrenberg,132,103,82,10,11,2916
+Cirilla Fiona Elen Riannon,132,103,82,10,11,2917
+Kingu,124,103,82,10,11,2918
+Shadowheart,120,103,82,10,11,2919
+Itsumi Erika,120,103,82,10,11,2920
+Himeko (Honkai Star Rail),118,103,82,10,11,2921
+Mito Ikumi,117,103,82,10,11,2922
+Monica (Shingeki no Bahamut),115,103,82,10,11,2923
+Altair (Re:Creators),114,103,82,10,11,2924
+Takizawa Asuka,114,103,82,10,11,2925
+Stacia (PA),113,103,82,10,11,2926
+Atri (Atri -My Dear Moments-),112,103,82,10,11,2927
+Medusa (Shingeki no Bahamut),111,103,82,10,11,2928
+Aikiyo Fuuka,109,103,82,10,11,2929
+Onodera Kosaki,108,103,82,10,11,2930
+Izumi Mei,108,103,82,10,11,2931
+Biwa Hayahide,107,103,82,10,11,2932
+Durandal (Uma Musume),107,103,82,10,11,2933
+Tamayori Himari,104,103,82,10,11,2934
+Black・・・Gold Saw,178,102,82,10,10,2935
+Octavia (Helluva Boss),164,102,82,10,10,2936
+Netherlands,153,102,82,10,10,2937
+Ishigami Senkuu,152,102,82,10,10,2938
+Ashley (Warioware),151,102,82,10,10,2939
+Jake English,142,102,82,10,10,2940
+Yashiro Nene,137,102,82,10,10,2941
+Renne Bright,136,102,82,10,10,2942
+Anemone (Eureka Seven),135,102,82,10,10,2943
+Neferpitou,134,102,82,10,10,2944
+Scheherazade (Magi),127,102,82,10,10,2945
+Luke fon Fabre,126,102,82,10,10,2946
+Eucliwood Hellscythe,124,102,82,10,10,2947
+Sonsaku Hakufu,123,102,82,10,10,2948
+Entelechia,122,102,82,10,10,2949
+Aki Minoriko,121,102,82,10,10,2950
+Kadoc Zemlupus,120,102,82,10,10,2951
+Murr (Mahoutsukai no Yakusoku),118,102,82,10,10,2952
+Blue (Pokﾃｩmon SPECIAL),118,102,82,10,10,2953
+Maple (Itai no wa Iya nano de Bougyoryoku),115,102,82,10,10,2954
+Leia Roland,115,102,82,10,10,2955
+Unryuu (Kantai Collection),114,102,82,10,10,2956
+Richelieu,113,102,82,10,10,2957
+Tashkent (Kantai Collection),109,102,82,10,10,2958
+Grey Wolf (Kemono Friends),109,102,82,10,10,2959
+Ookami Ryouko,109,102,82,10,10,2960
+Washington,108,102,82,10,10,2961
+Akigumo (Kantai Collection),106,102,82,10,10,2962
+Kotonoha Aoi,105,102,82,10,10,2963
+Stolas (Helluva Boss),325,101,81,10,10,2964
+Joker (Smile Precure),173,101,81,10,10,2965
+Re-Class (Kantai Collection),164,101,81,10,10,2966
+Zazie Winters,154,101,81,10,10,2967
+I-No,134,101,81,10,10,2968
+Yamuraiha,129,101,81,10,10,2969
+Miyaji Kiyoshi,125,101,81,10,10,2970
+Ichihoshi Mitsuru,124,101,81,10,10,2971
+Sukone Tei,123,101,81,10,10,2972
+Mizuki (Arknights),122,101,81,10,10,2973
+Wynn the Wind Charmer,122,101,81,10,10,2974
+Kusanagi Kyou,119,101,81,10,10,2975
+Asakura Ryouko,117,101,81,10,10,2976
+Mukami Azusa,117,101,81,10,10,2977
+Titania (ALO),114,101,81,10,10,2978
+Ayame (Gundam Build Divers),114,101,81,10,10,2979
+RPK-16,112,101,81,10,10,2980
+Colette Brunel,111,101,81,10,10,2981
+Seiun Sky,108,101,81,10,10,2982
+Dragonmaid Tillroo,107,101,81,10,10,2983
+Hino Akane (Idolmaster),105,101,81,10,10,2984
+Aurora (Arknights),103,101,81,10,10,2985
+Kageyama Shien,133,100,80,10,10,2986
+Jewelry Bonney,128,100,80,10,10,2987
+Sharrkan,127,100,80,10,10,2988
+Nanakusa Nazuna,126,100,80,10,10,2989
+Hinamori Momo,124,100,80,10,10,2990
+Asseylum Vers Allusia,121,100,80,10,10,2991
+Muelsyse,119,100,80,10,10,2992
+Hirasawa Ui,119,100,80,10,10,2993
+Est Rinaudo,118,100,80,10,10,2994
+Sendou Emi,118,100,80,10,10,2995
+Terry Bogard,116,100,80,10,10,2996
+Astraea,115,100,80,10,10,2997
+Juufuutei Raden,112,100,80,10,10,2998
+Suiren (Pokﾃｩmon),112,100,80,10,10,2999
+Ceres (Shuuen no Virche),111,100,80,10,10,3000
+Xenovia Quarta,111,100,80,10,10,3001
+Archbishop (RAGNARﾃ・K ONLINE),110,100,80,10,10,3002
+Lancer (Parvati),109,100,80,10,10,3003
+Rider (Dobrynya Nikitich),106,100,80,10,10,3004
+Shirogane Kei,106,100,80,10,10,3005
+Sunohara Shun,105,100,80,10,10,3006
+Katori (Kantai Collection),105,100,80,10,10,3007
+Vincent Valentine,163,99,79,10,10,3008
+Seaport Hime (Kantai Collection),157,99,79,10,10,3009
+Makishima Yuusuke,132,99,79,10,10,3010
+Switzerland,130,99,79,10,10,3011
+Kasamatsu Yukio,129,99,79,10,10,3012
+Cocoa Cookie,128,99,79,10,10,3013
+Tohsaka Tokiomi,123,99,79,10,10,3014
+Konoe,122,99,79,10,10,3015
+Faye Valentine,121,99,79,10,10,3016
+Saga (Arknights),121,99,79,10,10,3017
+Jude Mathis,121,99,79,10,10,3018
+Perfumer,121,99,79,10,10,3019
+Shinguuji Sakura,120,99,79,10,10,3020
+Dekomori Sanae,120,99,79,10,10,3021
+Hindenburg (Azur Lane),112,99,79,10,10,3022
+Fa Zheng,111,99,79,10,10,3023
+Foreigner (Kukulkan),111,99,79,10,10,3024
+Kagurazaka Shiki,110,99,79,10,10,3025
+Hakari Atsuko,109,99,79,10,10,3026
+Sideroca,107,99,79,10,10,3027
+Dola (VTuber),107,99,79,10,10,3028
+Henri Lambert,106,99,79,10,10,3029
+Ienaga Mugi,104,99,79,10,10,3030
+Yggdrasil (Granblue Fantasy),103,99,79,10,10,3031
+Yugo (Wakfu),191,98,78,10,10,3032
+Mori Motonari (Sengoku Basara),156,98,78,10,10,3033
+Honda Tohru,134,98,78,10,10,3034
+Lithuania,133,98,78,10,10,3035
+Jellal Fernandes,130,98,78,10,10,3036
+Mishima Kazuya,129,98,78,10,10,3037
+Will of the Abyss,128,98,78,10,10,3038
+Takashina Sarafumi,127,98,78,10,10,3039
+Kurotsuchi Nemu,124,98,78,10,10,3040
+Female Protagonist (Fate/EXTRA),124,98,78,10,10,3041
+Rio Rollins,122,98,78,10,10,3042
+Eureka,119,98,78,10,10,3043
+Xion,118,98,78,10,10,3044
+Elise (Sound Horizon),116,98,78,10,10,3045
+Asada Shino,116,98,78,10,10,3046
+Athena Asamiya,115,98,78,10,10,3047
+Saber (Fate/Samurai Remnant),113,98,78,10,10,3048
+Sakuraba Laura,111,98,78,10,10,3049
+Matoimaru,109,98,78,10,10,3050
+Kiyosumi Akira,103,98,78,10,10,3051
+Queen Elizabeth,102,98,78,10,10,3052
+Hishi Amazon,98,98,78,10,10,3053
+Denji,223,97,78,10,9,3054
+Shionji Yuuko,149,97,78,10,9,3055
+Hayakawa Aki,143,97,78,10,9,3056
+Shen QingQiu,140,97,78,10,9,3057
+Zhou Yu,138,97,78,10,9,3058
+Shikimori Micchon,137,97,78,10,9,3059
+Senju Tobirama,136,97,78,10,9,3060
+Fami,134,97,78,10,9,3061
+Rokujo Chikage,129,97,78,10,9,3062
+Lancer (Fate/Prototype),128,97,78,10,9,3063
+Lancer (Hektor),127,97,78,10,9,3064
+Mo Ran,126,97,78,10,9,3065
+Pieck Finger,126,97,78,10,9,3066
+Gunji,125,97,78,10,9,3067
+flower (VOCALOID),122,97,78,10,9,3068
+Zyra,118,97,78,10,9,3069
+Kirschtaria Wodime,118,97,78,10,9,3070
+Neo-Queen Serenity,117,97,78,10,9,3071
+Alexandrina Sebastiane,116,97,78,10,9,3072
+Kasuga Nozomi,115,97,78,10,9,3073
+Haku (Sen to Chihiro no Kamikakushi),115,97,78,10,9,3074
+Nohara Rin,114,97,78,10,9,3075
+Kuraki Suzuna,113,97,78,10,9,3076
+Silent Magician,113,97,78,10,9,3077
+Nami (ONE PIECE),112,97,78,10,9,3078
+Neko (K Project),109,97,78,10,9,3079
+Mukaido Manaka,108,97,78,10,9,3080
+STAR-15,106,97,78,10,9,3081
+Grass Wonder,105,97,78,10,9,3082
+Labrynth of the Silver Castle,103,97,78,10,9,3083
+Alice Cartelet,102,97,78,10,9,3084
+Otokura Yuuki,102,97,78,10,9,3085
+Mifune Miyu,100,97,78,10,9,3086
+Zenno Rob Roy,99,97,78,10,9,3087
+I-26 (Kantai Collection),98,97,78,10,9,3088
+Pikachu,718,96,77,10,9,3089
+Undertaker,216,96,77,10,9,3090
+Kamina (Tengen Toppa Gurren-Lagann),150,96,77,10,9,3091
+Fyodor Dostoyevsky,142,96,77,10,9,3092
+Yagyuu Kyuubei,134,96,77,10,9,3093
+Matsuba (Pokﾃｩmon),130,96,77,10,9,3094
+Kusanagi Nene,124,96,77,10,9,3095
+Gladiia,120,96,77,10,9,3096
+Strawberry Crepe Cookie,118,96,77,10,9,3097
+Rosmontis,112,96,77,10,9,3098
+Marui Bunta,112,96,77,10,9,3099
+Pyrrha Nikos,110,96,77,10,9,3100
+Amane Suzuha,109,96,77,10,9,3101
+Marianne von Edmund,109,96,77,10,9,3102
+Durandal,107,96,77,10,9,3103
+Xun Yu,106,96,77,10,9,3104
+Assassin (Cleopatra),105,96,77,10,9,3105
+Hanamichi Ran,105,96,77,10,9,3106
+Thorns (Arknights),105,96,77,10,9,3107
+Minegumo (Kantai Collection),102,96,77,10,9,3108
+Johnston (Kantai Collection),99,96,77,10,9,3109
+Carrot (ONE PIECE),147,95,76,10,9,3110
+Min Min (ARMS),145,95,76,10,9,3111
+Bort (Houseki no Kuni),137,95,76,10,9,3112
+Jonathan Joestar,136,95,76,10,9,3113
+Toujou Kirumi,133,95,76,10,9,3114
+Orianna,129,95,76,10,9,3115
+Tenjou Utena,123,95,76,10,9,3116
+Petra Ral,118,95,76,10,9,3117
+Hope Estheim,118,95,76,10,9,3118
+Sakurai Ruka,116,95,76,10,9,3119
+Fuji Shuusuke,114,95,76,10,9,3120
+Aponia,113,95,76,10,9,3121
+Saber (Setanta),113,95,76,10,9,3122
+Yue (Cardcaptor Sakura),109,95,76,10,9,3123
+Kanade Izuru,108,95,76,10,9,3124
+Takebe Saori,106,95,76,10,9,3125
+Mimosa (Pokﾃｩmon),104,95,76,10,9,3126
+Pola,102,95,76,10,9,3127
+Gravel (Arknights),101,95,76,10,9,3128
+Ansel,100,95,76,10,9,3129
+Fletcher (Kantai Collection),100,95,76,10,9,3130
+Velvet,175,94,75,9,10,3131
+Speed-o'-Sound Sonic,129,94,75,9,10,3132
+Talulah,124,94,75,9,10,3133
+Tendo Nabiki,123,94,75,9,10,3134
+Kalifa,121,94,75,9,10,3135
+Ichinose Minori,119,94,75,9,10,3136
+Ramlethal Valentine,116,94,75,9,10,3137
+Tiamat (Fate/Grand Order),110,94,75,9,10,3138
+Yuzuhara Konomi,109,94,75,9,10,3139
+Nanao Yuriko,106,94,75,9,10,3140
+Ginga Bishounen,106,94,75,9,10,3141
+Pola (Kantai Collection),105,94,75,9,10,3142
+Suzuki Hina,104,94,75,9,10,3143
+Hatsuyuki (Kantai Collection),103,94,75,9,10,3144
+Admiral Hipper,100,94,75,9,10,3145
+Miya Utsu-tsu,99,94,75,9,10,3146
+Tama (Kantai Collection),98,94,75,9,10,3147
+Nathaniel (Amour Sucrﾃｩ),97,94,75,9,10,3148
+Mitsumine Yuika,96,94,75,9,10,3149
+Tsuchinaga Hiyori,94,94,75,9,10,3150
+Death the Kid,170,93,74,9,10,3151
+Eridan Ampora,157,93,74,9,10,3152
+Heiwajima Kasuka,127,93,74,9,10,3153
+Kuroki Tomoko,125,93,74,9,10,3154
+Jasmine (Aladdin),120,93,74,9,10,3155
+Shiranui Kazuki,120,93,74,9,10,3156
+Draco Malfoy,119,93,74,9,10,3157
+Kamishiro Rui,115,93,74,9,10,3158
+Norman (Yakusoku no Neverland),112,93,74,9,10,3159
+El Dorado no Berserker,112,93,74,9,10,3160
+Maria Cadenzavna Eve,109,93,74,9,10,3161
+Segawa Onpu,109,93,74,9,10,3162
+Kitazawa Hagumi,109,93,74,9,10,3163
+Emilie (Genshin Impact),108,93,74,9,10,3164
+Hoshimiya Kate,107,93,74,9,10,3165
+Mankanshoku Mako,106,93,74,9,10,3166
+Len (Tsukihime),105,93,74,9,10,3167
+Dainsleif,104,93,74,9,10,3168
+Chevreuse,103,93,74,9,10,3169
+Satake Minako,102,93,74,9,10,3170
+Chapayev,102,93,74,9,10,3171
+Kochou Kanae,102,93,74,9,10,3172
+Cheria Barnes,100,93,74,9,10,3173
+G36 (Girls Frontline),99,93,74,9,10,3174
+Skirk,98,93,74,9,10,3175
+RFB (Girls Frontline),96,93,74,9,10,3176
+Shigure (Azur Lane),95,93,74,9,10,3177
+Senju Hashirama,165,92,74,9,9,3178
+Kazuma Asogi,133,92,74,9,9,3179
+Stella Vermillion,128,92,74,9,9,3180
+Koko Hekmatyar,124,92,74,9,9,3181
+Zaizen Hikaru,121,92,74,9,9,3182
+Ashe (Overwatch),120,92,74,9,9,3183
+Lucilius (Granblue Fantasy),117,92,74,9,9,3184
+Nanachi (Made in Abyss),116,92,74,9,9,3185
+Ankou,116,92,74,9,9,3186
+Tsukiyama Shuu,116,92,74,9,9,3187
+Isekaijoucho (VTuber),115,92,74,9,9,3188
+Mitsuki (NARUTO),112,92,74,9,9,3189
+Takatsuka Azusa,111,92,74,9,9,3190
+Takagi Saya,111,92,74,9,9,3191
+Saileach,108,92,74,9,9,3192
+Titus Alexius,107,92,74,9,9,3193
+Long Island,106,92,74,9,9,3194
+Manabe Jinichirou,104,92,74,9,9,3195
+Hiroi Kikuri,103,92,74,9,9,3196
+Miwa Taishi,102,92,74,9,9,3197
+Manabe Nodoka,102,92,74,9,9,3198
+Takamiya Rion,101,92,74,9,9,3199
+Yamano Remon,101,92,74,9,9,3200
+Arashi (Kantai Collection),101,92,74,9,9,3201
+Bernadetta von Varley,100,92,74,9,9,3202
+Griffith,154,91,73,9,9,3203
+Diego Brando,134,91,73,9,9,3204
+Minase Natsuhiko,128,91,73,9,9,3205
+Elefseus,122,91,73,9,9,3206
+Hanato Kobato,118,91,73,9,9,3207
+Nishinoya Yuu,118,91,73,9,9,3208
+Mavis Vermillion,116,91,73,9,9,3209
+Rook Hunt,116,91,73,9,9,3210
+Sarutobi Ayame,116,91,73,9,9,3211
+YANHE,112,91,73,9,9,3212
+Beret (Fire Emblem),112,91,73,9,9,3213
+Azusawa Kohane,110,91,73,9,9,3214
+Kagehira Mika,110,91,73,9,9,3215
+Rider (Kyokutei Bakin),108,91,73,9,9,3216
+Scarlet (NIKKE),106,91,73,9,9,3217
+Taroutachi,103,91,73,9,9,3218
+Rita Mordio,102,91,73,9,9,3219
+Estelle (Arknights),102,91,73,9,9,3220
+Ibuki Fuko,101,91,73,9,9,3221
+Takane Manaka,100,91,73,9,9,3222
+Pavolia Reine,99,91,73,9,9,3223
+Kazamaki Matsuri (Female),98,91,73,9,9,3224
+Power Girl,98,91,73,9,9,3225
+Katyusha (GIRLS und PANZER),98,91,73,9,9,3226
+Katsuragi (Kantai Collection),96,91,73,9,9,3227
+Suzuya (Azur Lane),91,91,73,9,9,3228
+Mettaton EX,153,90,72,9,9,3229
+Marceline Abadeer,143,90,72,9,9,3230
+Hotaru (Splatoon),133,90,72,9,9,3231
+Douma (Kimetsu no Yaiba),131,90,72,9,9,3232
+Lucifer (Shingeki no Bahamut),124,90,72,9,9,3233
+Chibitalia,124,90,72,9,9,3234
+Kagari Shuusei,122,90,72,9,9,3235
+Matara Okina,117,90,72,9,9,3236
+Kotozume Yukari,117,90,72,9,9,3237
+Suzukake,115,90,72,9,9,3238
+Souza Samonji,113,90,72,9,9,3239
+Kaai Yuki,111,90,72,9,9,3240
+Mito Mashiro,111,90,72,9,9,3241
+Hiita the Fire Charmer,109,90,72,9,9,3242
+Primula (Shuffle!),109,90,72,9,9,3243
+Trish Una,107,90,72,9,9,3244
+Rikku,105,90,72,9,9,3245
+Makira (Granblue Fantasy),104,90,72,9,9,3246
+Lupusregina Beta,99,90,72,9,9,3247
+Perrine H. Clostermann,98,90,72,9,9,3248
+Takamori Aiko,97,90,72,9,9,3249
+Bluebell,96,90,72,9,9,3250
+Kirishima Roa,95,90,72,9,9,3251
+Asashimo (Kantai Collection),94,90,72,9,9,3252
+Loona (Helluva Boss),196,89,71,9,9,3253
+Walpeach,161,89,71,9,9,3254
+Xu Fu (Fate/Grand Order),143,89,71,9,9,3255
+5-Volt,130,89,71,9,9,3256
+Gold (Pokﾃｩmon SPECIAL),129,89,71,9,9,3257
+Kasen Kanesada,122,89,71,9,9,3258
+Fujisaki Chihiro,113,89,71,9,9,3259
+Ryu Lion,109,89,71,9,9,3260
+Yune (Ikoku Meiro no Croisee),108,89,71,9,9,3261
+Nadja Applefield,107,89,71,9,9,3262
+Fuyou Kaede,105,89,71,9,9,3263
+Caster (Tonelico),104,89,71,9,9,3264
+Archetype Earth,104,89,71,9,9,3265
+Hino Kahoko,102,89,71,9,9,3266
+Eris (Asobi ni Iku yo!),102,89,71,9,9,3267
+Elizabeth Liones,101,89,71,9,9,3268
+Leonmitchelli Galette des Rois,100,89,71,9,9,3269
+Nyotengu,99,89,71,9,9,3270
+Eunie,99,89,71,9,9,3271
+Yuuki Chihiro,98,89,71,9,9,3272
+Haniyasushin Keiki,98,89,71,9,9,3273
+Moon Cancer (BB Dubai),98,89,71,9,9,3274
+Hibari (Senran Kagura),96,89,71,9,9,3275
+Satou Shin,95,89,71,9,9,3276
+Mogador,94,89,71,9,9,3277
+Archer (Zenobia),93,89,71,9,9,3278
+UNI (VOCALOID),93,89,71,9,9,3279
+Hiodoshi Ao,90,89,71,9,9,3280
+Eustass Kid,192,88,70,9,9,3281
+Daybit Sem Void,188,88,70,9,9,3282
+Fay D. Flourite,155,88,70,9,9,3283
+Myoudouin Itsuki,123,88,70,9,9,3284
+Shinsou Hitoshi,121,88,70,9,9,3285
+William James Moriarty,117,88,70,9,9,3286
+Falin Touden,116,88,70,9,9,3287
+Karuizawa Kei,111,88,70,9,9,3288
+Kozato Enma,110,88,70,9,9,3289
+Sasagawa Kyoko,110,88,70,9,9,3290
+Sirius Black,110,88,70,9,9,3291
+Eve (Elsword),105,88,70,9,9,3292
+Estellise Sidos Heurassein,103,88,70,9,9,3293
+Kotonoha Akane,99,88,70,9,9,3294
+Last Order,98,88,70,9,9,3295
+Star Sapphire,97,88,70,9,9,3296
+Saotome Rei,96,88,70,9,9,3297
+Vermeil (Arknights),96,88,70,9,9,3298
+Lancer (Yu Mei-ren),95,88,70,9,9,3299
+Franka,94,88,70,9,9,3300
+Focalors,94,88,70,9,9,3301
+Arisaka Mashiro,93,88,70,9,9,3302
+Mafumafu,135,87,70,9,8,3303
+Princess Celestia,127,87,70,9,8,3304
+Benimaru Shinmon (Enen no Shouboutai),125,87,70,9,8,3305
+Hellagur,124,87,70,9,8,3306
+Vi (League of Legends),122,87,70,9,8,3307
+Marufuji Ryou,114,87,70,9,8,3308
+Ouma Shu,110,87,70,9,8,3309
+Aozaki Touko,107,87,70,9,8,3310
+Shitara Seiji,107,87,70,9,8,3311
+Ladybug (Character),107,87,70,9,8,3312
+Stellar Loussier,105,87,70,9,8,3313
+Oikawa Tsurara,105,87,70,9,8,3314
+Sailor V,103,87,70,9,8,3315
+Miniwa Tsumiki,101,87,70,9,8,3316
+Black Cat (Felicia Hardy),99,87,70,9,8,3317
+Emilico,97,87,70,9,8,3318
+Rope (Arknights),96,87,70,9,8,3319
+Tirpitz,96,87,70,9,8,3320
+Erica Hartmann,95,87,70,9,8,3321
+Wang Yuanji,93,87,70,9,8,3322
+Etorofu (Kantai Collection),93,87,70,9,8,3323
+U-47,92,87,70,9,8,3324
+Futaba Tsukushi,92,87,70,9,8,3325
+Cuora,91,87,70,9,8,3326
+Tokugawa Ieyasu (Sengoku Basara),148,86,69,9,8,3327
+Narancia Ghirga,123,86,69,9,8,3328
+Mimino Kurumi,117,86,69,9,8,3329
+Zuko,114,86,69,9,8,3330
+Yuezheng Ling,114,86,69,9,8,3331
+Yotsuba Tamaki,112,86,69,9,8,3332
+Hoshino Aquamarine,111,86,69,9,8,3333
+Andou Mahoro,108,86,69,9,8,3334
+Athrun Zala,108,86,69,9,8,3335
+Gareki,105,86,69,9,8,3336
+Alisa Reinford,105,86,69,9,8,3337
+Juzumaru Tsunetsugu,103,86,69,9,8,3338
+TAITO (VOCALOID),103,86,69,9,8,3339
+Bel (Pokﾃｩmon),103,86,69,9,8,3340
+Sherlock Shellingford,103,86,69,9,8,3341
+Elin,103,86,69,9,8,3342
+Kanzaki Mizuki,102,86,69,9,8,3343
+Dorothy (SINoALICE),101,86,69,9,8,3344
+Himesato Maria,101,86,69,9,8,3345
+Takimoto Hifumi,100,86,69,9,8,3346
+Kujaku Mai,100,86,69,9,8,3347
+Freyja Wion,97,86,69,9,8,3348
+Tokiko (Touhou),96,86,69,9,8,3349
+Alsace,93,86,69,9,8,3350
+Tsuruhime Yachiyo,93,86,69,9,8,3351
+Rozaliya Olenyeva,92,86,69,9,8,3352
+Tsushima (Kantai Collection),92,86,69,9,8,3353
+Mamiya (Kantai Collection),88,86,69,9,8,3354
+Makigumo (Kantai Collection),88,86,69,9,8,3355
+Matikane Tannhauser,88,86,69,9,8,3356
+Sonic the Hedgehog (Character),448,85,68,8,9,3357
+Kakuzu,156,85,68,8,9,3358
+The Inquisitor,135,85,68,8,9,3359
+Touya (Pokﾃｩmon),121,85,68,8,9,3360
+Yubel,120,85,68,8,9,3361
+Haou,120,85,68,8,9,3362
+Gian Carlo,117,85,68,8,9,3363
+Whipped Cream Cookie,113,85,68,8,9,3364
+Ryomou Shimei,111,85,68,8,9,3365
+Tsukimori Len,111,85,68,8,9,3366
+Archer (Fate/Prototype: Sougin no Fragments),107,85,68,8,9,3367
+Princess Bonnibel Bubblegum,107,85,68,8,9,3368
+Suletta Mercury,106,85,68,8,9,3369
+Sigma (Bungou Stray Dogs),105,85,68,8,9,3370
+Baiken (Guilty Gear),105,85,68,8,9,3371
+Nu-13,103,85,68,8,9,3372
+Sakyo Shizuma,100,85,68,8,9,3373
+Tear Grants,94,85,68,8,9,3374
+Airani Iofifteen,94,85,68,8,9,3375
+Utazumi Sakurako,93,85,68,8,9,3376
+Sovetskaya Rossiya,93,85,68,8,9,3377
+Kar98k (Girls Frontline),92,85,68,8,9,3378
+Kazekura Moe,90,85,68,8,9,3379
+Honoka (Dead or Alive),90,85,68,8,9,3380
+I:P Masquerena,89,85,68,8,9,3381
+North Carolina,89,85,68,8,9,3382
+Gamzee Makara,180,84,67,8,9,3383
+Husk,161,84,67,8,9,3384
+Aubrey,136,84,67,8,9,3385
+Amamiya Hibiya,136,84,67,8,9,3386
+Shiki (TNC),135,84,67,8,9,3387
+Sarutobi Sasuke,132,84,67,8,9,3388
+Alice Liddell,127,84,67,8,9,3389
+Yamanami Keisuke (Fate/Grand Order),118,84,67,8,9,3390
+Momomiya Ichigo,117,84,67,8,9,3391
+Kirihara Akaya,116,84,67,8,9,3392
+Okumura Haru,113,84,67,8,9,3393
+LeBlanc,112,84,67,8,9,3394
+Horikita Suzune,109,84,67,8,9,3395
+Kazama Jin,109,84,67,8,9,3396
+Tomoe Yoh,106,84,67,8,9,3397
+Crystal (Pokﾃｩmon SPECIAL),104,84,67,8,9,3398
+Pekoyama Peko,100,84,67,8,9,3399
+Sanya V. Litvyak,99,84,67,8,9,3400
+Raven (Tales of Vesperia),97,84,67,8,9,3401
+Vita,97,84,67,8,9,3402
+Lico (Black Star),96,84,67,8,9,3403
+Yashajin Ai,93,84,67,8,9,3404
+Li Meiling,93,84,67,8,9,3405
+Ken Masters,93,84,67,8,9,3406
+Ayasato Mayoi,92,84,67,8,9,3407
+Igusa Haruka,91,84,67,8,9,3408
+Aiba Yumi,90,84,67,8,9,3409
+Taki,90,84,67,8,9,3410
+Kirifuji Nagisa,90,84,67,8,9,3411
+Hatsushimo (Kantai Collection),90,84,67,8,9,3412
+Lancer (Utsumi Erice),89,84,67,8,9,3413
+Fine Motion,86,84,67,8,9,3414
+Hei,138,83,66,8,9,3415
+Caster (Wolfgang Amadeus Mozart),121,83,66,8,9,3416
+Nidalee,116,83,66,8,9,3417
+Faust (Mahoutsukai no Yakusoku),109,83,66,8,9,3418
+Sasazuka Takeru,103,83,66,8,9,3419
+Liliana Adornato,102,83,66,8,9,3420
+Pit,100,83,66,8,9,3421
+Artemisia (Sound Horizon),100,83,66,8,9,3422
+Pretender (Cait Cu Miko-Cer),98,83,66,8,9,3423
+Hoshino Ichika (Project Sekai),98,83,66,8,9,3424
+Tenshouin Eichi,97,83,66,8,9,3425
+Aragami Ouga,96,83,66,8,9,3426
+Mizunashi Akari,95,83,66,8,9,3427
+Himemiya Touri,95,83,66,8,9,3428
+Milim Nava,95,83,66,8,9,3429
+Niyah (Xenoblade 2),94,83,66,8,9,3430
+Dobermann,93,83,66,8,9,3431
+Rupee,92,83,66,8,9,3432
+Saber (Rama),91,83,66,8,9,3433
+Tada Riina,91,83,66,8,9,3434
+Rosetta (Granblue Fantasy),89,83,66,8,9,3435
+Aizawa Ema,86,83,66,8,9,3436
+Suguro Ryuji,130,82,66,8,8,3437
+Ayase Saki,126,82,66,8,8,3438
+Saegusa Kii,118,82,66,8,8,3439
+Stella (Sound Horizon),111,82,66,8,8,3440
+Giggles (HTF),108,82,66,8,8,3441
+Pomegranate Cookie,106,82,66,8,8,3442
+Naruko Shoukichi,104,82,66,8,8,3443
+Saber (Watanabe no Tsuna),103,82,66,8,8,3444
+Jean Otus,103,82,66,8,8,3445
+Tezuka Kunimitsu,103,82,66,8,8,3446
+Yumeno Himiko,103,82,66,8,8,3447
+Huohuo,100,82,66,8,8,3448
+Princess Usagi Small Lady Serenity,100,82,66,8,8,3449
+L-Elf Karlstein,99,82,66,8,8,3450
+Princess Shokora,98,82,66,8,8,3451
+Android 21,92,82,66,8,8,3452
+Bel-chan,91,82,66,8,8,3453
+Kinugasa (Kantai Collection),91,82,66,8,8,3454
+Natsume Mai,89,82,66,8,8,3455
+Minneapolis,89,82,66,8,8,3456
+Kurashina Asuka,88,82,66,8,8,3457
+Judith (Tales of Vesperia),88,82,66,8,8,3458
+Shiramine Rika,87,82,66,8,8,3459
+Indigo (Arknights),87,82,66,8,8,3460
+Signum,87,82,66,8,8,3461
+Negev,86,82,66,8,8,3462
+Hisakawa Hayate,84,82,66,8,8,3463
+Lain Paterson,83,82,66,8,8,3464
+Hollow Ichigo,337,81,65,8,8,3465
+Yuri Petrov,164,81,65,8,8,3466
+Kamukura Izuru,136,81,65,8,8,3467
+Niwa Daisuke,132,81,65,8,8,3468
+Near,121,81,65,8,8,3469
+Mi-chan,115,81,65,8,8,3470
+Amatsuki (Nico Nico Singer),111,81,65,8,8,3471
+Kanra,109,81,65,8,8,3472
+Astel Leda,107,81,65,8,8,3473
+Himuro Inori,106,81,65,8,8,3474
+V (Yu-Gi-Oh! ZEXAL),104,81,65,8,8,3475
+Aki Shizuha,103,81,65,8,8,3476
+Tilarna Exedilika,103,81,65,8,8,3477
+Kusanagi Izumo,102,81,65,8,8,3478
+Natane (Pokﾃｩmon),102,81,65,8,8,3479
+Hoshina Utau,101,81,65,8,8,3480
+Takeyama Yuu,96,81,65,8,8,3481
+Lime Cookie,95,81,65,8,8,3482
+Niihashi Noel,95,81,65,8,8,3483
+Karin (NARUTO),94,81,65,8,8,3484
+Kasane Ted,94,81,65,8,8,3485
+Emerald (For All Time),92,81,65,8,8,3486
+Erilyn,92,81,65,8,8,3487
+Kudamaki Tsukasa,90,81,65,8,8,3488
+Etou Kanami,90,81,65,8,8,3489
+Yui (Sword Art Online),89,81,65,8,8,3490
+Yumi (Senran Kagura),89,81,65,8,8,3491
+Tashkent,88,81,65,8,8,3492
+Shino Hajime,88,81,65,8,8,3493
+Lee (Saraki),87,81,65,8,8,3494
+Juujou Hiyori,87,81,65,8,8,3495
+Touhoku Zunko,87,81,65,8,8,3496
+Air Groove,87,81,65,8,8,3497
+Nishimiya Shouko,87,81,65,8,8,3498
+Baizhu,86,81,65,8,8,3499
+Iijima Yun,86,81,65,8,8,3500
+Tsukimi Eiko,86,81,65,8,8,3501
+Inui Sajuna,85,81,65,8,8,3502
+Yuisis (Granblue Fantasy),84,81,65,8,8,3503
+Finana Ryugu,84,81,65,8,8,3504
+Mannen Sakura no Uwasa,82,81,65,8,8,3505
+Kson,81,81,65,8,8,3506
+Rouge the Bat,142,80,64,8,8,3507
+Spike Spiegel,140,80,64,8,8,3508
+Nougami Neuro,134,80,64,8,8,3509
+Sollux Captor,124,80,64,8,8,3510
+Aradia Megido,120,80,64,8,8,3511
+Tsukimiya Ayu,119,80,64,8,8,3512
+Edna (Tales of Zestiria),114,80,64,8,8,3513
+Bazett Fraga McRemitz,106,80,64,8,8,3514
+Garnet Til Alexandros XVII,102,80,64,8,8,3515
+Rinoa Heartilly,102,80,64,8,8,3516
+Kaizuka Inaho,101,80,64,8,8,3517
+Cater Diamond,101,80,64,8,8,3518
+Yagyuu Juubei,100,80,64,8,8,3519
+Yokoyama Ishimi,98,80,64,8,8,3520
+Ayuzawa Misaki,98,80,64,8,8,3521
+Femirins,96,80,64,8,8,3522
+707 (Mystic Messenger),95,80,64,8,8,3523
+Mousse (Arknights),94,80,64,8,8,3524
+Puchiko,94,80,64,8,8,3525
+Melon-chan,93,80,64,8,8,3526
+Tsuyuzaki Mahiru,93,80,64,8,8,3527
+Yamada Jirou,92,80,64,8,8,3528
+Naminﾃｩ,92,80,64,8,8,3529
+Dan Heng,92,80,64,8,8,3530
+KAIKO,90,80,64,8,8,3531
+Meteor (Arknights),88,80,64,8,8,3532
+Kitazawa Shiho,88,80,64,8,8,3533
+Mulberry,87,80,64,8,8,3534
+Viper (NIKKE),87,80,64,8,8,3535
+Yuuhi Riri,87,80,64,8,8,3536
+Moon Cancer (Tenochtitlan),86,80,64,8,8,3537
+Ichikawa Hinana,86,80,64,8,8,3538
+Komiya Kaho,85,80,64,8,8,3539
+Copano Rickey,84,80,64,8,8,3540
+Sorn (Granblue Fantasy),84,80,64,8,8,3541
+I-14 (Kantai Collection),82,80,64,8,8,3542
+STRength,145,79,63,8,8,3543
+Verosika Mayday,128,79,63,8,8,3544
+Sakamoto Tatsuma,124,79,63,8,8,3545
+Shikimi (Pokﾃｩmon),122,79,63,8,8,3546
+Jounouchi Katsuya,121,79,63,8,8,3547
+Pinocchio (SINoALICE),111,79,63,8,8,3548
+Otsutsuki Indra,106,79,63,8,8,3549
+Chaika Trabant,104,79,63,8,8,3550
+Shigure Asa,102,79,63,8,8,3551
+Kouyama Mitsuki,102,79,63,8,8,3552
+Corrector Yui (Character),101,79,63,8,8,3553
+Shining Glitter Cookie,100,79,63,8,8,3554
+Miyaji Ryunosuke,99,79,63,8,8,3555
+Hyuuga Saki,99,79,63,8,8,3556
+Levy McGarden,99,79,63,8,8,3557
+Iris (Pokﾃｩmon),97,79,63,8,8,3558
+Clarence (For All Time),97,79,63,8,8,3559
+Avenger (Gorgon),95,79,63,8,8,3560
+Karna (Santa),95,79,63,8,8,3561
+Valkyrie (P&D),94,79,63,8,8,3562
+Sonia Nevermind,94,79,63,8,8,3563
+Baji Keisuke,93,79,63,8,8,3564
+Lune (KnzSS),92,79,63,8,8,3565
+Akizuki Ryou,91,79,63,8,8,3566
+Natsuki Mikuru,91,79,63,8,8,3567
+Yonaga Angie,90,79,63,8,8,3568
+Shannon,90,79,63,8,8,3569
+Ohto Ai,89,79,63,8,8,3570
+Majin Android 21,88,79,63,8,8,3571
+Ricotta Elmar,87,79,63,8,8,3572
+Cthuko,87,79,63,8,8,3573
+Lin Yuxia,87,79,63,8,8,3574
+San Diego,87,79,63,8,8,3575
+Ceylon,87,79,63,8,8,3576
+Sword Maiden,87,79,63,8,8,3577
+Ryuhou (Kantai Collection),86,79,63,8,8,3578
+OTs-14 (Girls Frontline),85,79,63,8,8,3579
+Luna Child,85,79,63,8,8,3580
+Kousaka Umi,85,79,63,8,8,3581
+Mogami (Kantai Collection),84,79,63,8,8,3582
+Shoebill (Kemono Friends),84,79,63,8,8,3583
+Horizon Ariadust,83,79,63,8,8,3584
+Meisho Doto,82,79,63,8,8,3585
+Amemiya Nazuna,82,79,63,8,8,3586
+I-19,81,79,63,8,8,3587
+Vulpix,278,78,62,8,8,3588
+Terezi Pyrope,138,78,62,8,8,3589
+Asriel Dreemurr,131,78,62,8,8,3590
+Minami Mirei,107,78,62,8,8,3591
+Padparadscha,99,78,62,8,8,3592
+Kira Hiroto (Ares),98,78,62,8,8,3593
+Ky Kiske,97,78,62,8,8,3594
+Regis Altare,96,78,62,8,8,3595
+Maribel Hearn,96,78,62,8,8,3596
+Tsunashi Takuto,95,78,62,8,8,3597
+Yuuki Mikan,95,78,62,8,8,3598
+Kenjou Akira,94,78,62,8,8,3599
+Diana Cavendish,93,78,62,8,8,3600
+Rutile (Mahoutsukai no Yakusoku),93,78,62,8,8,3601
+Fiolina Germi,92,78,62,8,8,3602
+Lancer (Ibaraki-douji),92,78,62,8,8,3603
+Kitashirakawa Tamako,90,78,62,8,8,3604
+Mujina (SSSS.DYNAZENON),89,78,62,8,8,3605
+Shou (Pokﾃｩmon),89,78,62,8,8,3606
+Velvet Crowe,89,78,62,8,8,3607
+Archer (Helena Blavatsky),88,78,62,8,8,3608
+Shimamura Charlotte,87,78,62,8,8,3609
+Morikubo Nono,85,78,62,8,8,3610
+Rapi (Red Hood),85,78,62,8,8,3611
+Xin Hua,84,78,62,8,8,3612
+I-13 (Kantai Collection),83,78,62,8,8,3613
+Watari Asuka,82,78,62,8,8,3614
+Fairy Leviathan,82,78,62,8,8,3615
+Anthuria (Granblue Fantasy),80,78,62,8,8,3616
+Sealand,121,77,62,8,7,3617
+Alba Frﾃｼhling,121,77,62,8,7,3618
+Phantom (Arknights),119,77,62,8,7,3619
+Sol Badguy,112,77,62,8,7,3620
+Seras Victoria,111,77,62,8,7,3621
+Tsuzuramaru,105,77,62,8,7,3622
+Rorschach (For All Time),104,77,62,8,7,3623
+Tenma Tsukasa,101,77,62,8,7,3624
+Hakua du Lot Herminium,101,77,62,8,7,3625
+Akashiya Moka,100,77,62,8,7,3626
+Belial (Granblue Fantasy),98,77,62,8,7,3627
+Julianne Stingray,98,77,62,8,7,3628
+Sion Eltnam Atlasia,98,77,62,8,7,3629
+Shiguma Rika,93,77,62,8,7,3630
+Eve (Stellar Blade),93,77,62,8,7,3631
+Entoma Vasilissa Zeta,90,77,62,8,7,3632
+Saint Tail (Character),89,77,62,8,7,3633
+Alisa Boskonovich,88,77,62,8,7,3634
+Olive (Pokﾃｩmon),88,77,62,8,7,3635
+Kearsarge,86,77,62,8,7,3636
+Isshiki Akane,86,77,62,8,7,3637
+Houjou Sophie,86,77,62,8,7,3638
+Mitsurugi Meiya,84,77,62,8,7,3639
+Archetto,83,77,62,8,7,3640
+Fumizuki (Kantai Collection),83,77,62,8,7,3641
+Sajou Yukimi,83,77,62,8,7,3642
+Caster (Medea Lily),81,77,62,8,7,3643
+Alleyne,81,77,62,8,7,3644
+Mint (Arknights),80,77,62,8,7,3645
+Hayakawa Tazuna,80,77,62,8,7,3646
+Zara (Kantai Collection),78,77,62,8,7,3647
+Alphonse Elric,200,76,61,8,7,3648
+Leone Abbacchio,130,76,61,8,7,3649
+Menma (Naruto The Movie: Road To Ninja),120,76,61,8,7,3650
+Calcium,118,76,61,8,7,3651
+Haku (NARUTO),111,76,61,8,7,3652
+Battleship-Symbiotic Hime (Kantai Collection),106,76,61,8,7,3653
+Rebecca Bluegarden,105,76,61,8,7,3654
+Diavolo,102,76,61,8,7,3655
+Nanase Riku,101,76,61,8,7,3656
+Queen (Persona 5),100,76,61,8,7,3657
+Gravity Kitten,99,76,61,8,7,3658
+Tenou Haruka,98,76,61,8,7,3659
+Kohaku (Tsukihime),96,76,61,8,7,3660
+Caulifla,94,76,61,8,7,3661
+Utsugi Uyu,93,76,61,8,7,3662
+Y'shtola Rhul,92,76,61,8,7,3663
+Sakurai Rihoko,91,76,61,8,7,3664
+Takeba Yukari,91,76,61,8,7,3665
+Sorceress (Dragon's Crown),90,76,61,8,7,3666
+Katara,90,76,61,8,7,3667
+Tsuwabuki Daigo,89,76,61,8,7,3668
+Reizei Mako,88,76,61,8,7,3669
+Sen (Granblue Fantasy),87,76,61,8,7,3670
+Oyama Mahiro,86,76,61,8,7,3671
+Crested Ibis (Kemono Friends),85,76,61,8,7,3672
+Erebus,81,76,61,8,7,3673
+Fuuchouin Kazuki,81,76,61,8,7,3674
+Tamaki Ui,80,76,61,8,7,3675
+Naruse Shiroha,80,76,61,8,7,3676
+Snowsant,78,76,61,8,7,3677
+Diesel (NIKKE),78,76,61,8,7,3678
+Amajiki Tamaki,118,75,60,8,7,3679
+Oichi (Sengoku Basara),115,75,60,8,7,3680
+Miyamoto Rei,107,75,60,8,7,3681
+Hibiki (Pokﾃｩmon),107,75,60,8,7,3682
+Tayuya,106,75,60,8,7,3683
+Suenaga Mirai,106,75,60,8,7,3684
+Pomni,103,75,60,8,7,3685
+Mutsunokami Yoshiyuki,102,75,60,8,7,3686
+Houraiji Kyuushou,101,75,60,8,7,3687
+Spinach Cookie,100,75,60,8,7,3688
+Asirpa,100,75,60,8,7,3689
+Kondo Isao,99,75,60,8,7,3690
+Sakurano Kurimu,96,75,60,8,7,3691
+Regulus Black,96,75,60,8,7,3692
+Berserker (Sakata Kintoki),96,75,60,8,7,3693
+Hibiki Wataru (Ensemble Stars!),95,75,60,8,7,3694
+Kousetsu Samonji,94,75,60,8,7,3695
+Yue (Arifureta Shokugyou de Sekai Saikyou),94,75,60,8,7,3696
+Oryou (Koha-Ace),94,75,60,8,7,3697
+Sajyou Manaka,93,75,60,8,7,3698
+Flora (Winx Club),92,75,60,8,7,3699
+Kumagawa Misogi,90,75,60,8,7,3700
+Momota Kaito,89,75,60,8,7,3701
+Wicke,89,75,60,8,7,3702
+Akashi Kuniyuki,89,75,60,8,7,3703
+Selvaria Bles,89,75,60,8,7,3704
+Diabellstar the Black Witch,89,75,60,8,7,3705
+Toudou Chise,89,75,60,8,7,3706
+Ayabe Kihachirou,87,75,60,8,7,3707
+Aura (Sousou no Frieren),87,75,60,8,7,3708
+Yukinoshita Haruno,86,75,60,8,7,3709
+Berserker (Chacha),86,75,60,8,7,3710
+Haru Urara,85,75,60,8,7,3711
+Gentle (Pretty Cure),85,75,60,8,7,3712
+Hibana (Enen no Shoubotai),84,75,60,8,7,3713
+Sakura Akari,84,75,60,8,7,3714
+Hakamada Hinata,82,75,60,8,7,3715
+Seele (Honkai Star Rail),81,75,60,8,7,3716
+Yuna (Sword Art Online),81,75,60,8,7,3717
+Samantha Samsung,81,75,60,8,7,3718
+Ayanami (Kantai Collection),80,75,60,8,7,3719
+Daitaku Helios,79,75,60,8,7,3720
+Takatsuki Ichika,77,75,60,8,7,3721
+Mogami Shizuka,77,75,60,8,7,3722
+Legato Bluesummers,148,74,59,7,8,3723
+Egypt,128,74,59,7,8,3724
+Matsuno Ichimatsu,116,74,59,7,8,3725
+Amaya Sheran Sharm,116,74,59,7,8,3726
+Trigger (Zenless Zone Zero),111,74,59,7,8,3727
+Cream Unicorn Cookie,107,74,59,7,8,3728
+Revolver (Yu-Gi-Oh! VRAINS),106,74,59,7,8,3729
+Vincent Nightray,103,74,59,7,8,3730
+Ukitake Juushirou,100,74,59,7,8,3731
+Onion (Pokﾃｩmon),99,74,59,7,8,3732
+Harime Nui,98,74,59,7,8,3733
+Jinshi,97,74,59,7,8,3734
+Lyseria Christaria,97,74,59,7,8,3735
+Jibril (No Game No Life),94,74,59,7,8,3736
+Johnathan Mar,91,74,59,7,8,3737
+Nerine (Shuffle!),91,74,59,7,8,3738
+Yumeno Gentarou,88,74,59,7,8,3739
+Solus (PA),87,74,59,7,8,3740
+Reimi Sugimoto,87,74,59,7,8,3741
+Unknown (Mystic Messenger),86,74,59,7,8,3742
+Li Shen,86,74,59,7,8,3743
+Archer (Napoleon Bonaparte),86,74,59,7,8,3744
+Alban Knox,85,74,59,7,8,3745
+Quinella,84,74,59,7,8,3746
+Mew Zakuro,83,74,59,7,8,3747
+Kunikida Doppo (Bungou Stray Dogs),83,74,59,7,8,3748
+Miyafuji Yoshika,81,74,59,7,8,3749
+Sinju,81,74,59,7,8,3750
+Bronya Rand,81,74,59,7,8,3751
+Portland,80,74,59,7,8,3752
+Hiei (Azur Lane),79,74,59,7,8,3753
+Ichinose Rika,78,74,59,7,8,3754
+Colorado,78,74,59,7,8,3755
+Minazuki (Kantai Collection),76,74,59,7,8,3756
+Whislash,75,74,59,7,8,3757
+Szayelaporro Granz,117,73,58,7,8,3758
+Zarc,115,73,58,7,8,3759
+Yotsuya Miko,111,73,58,7,8,3760
+Hikari Saito,108,73,58,7,8,3761
+Elsea de Lute Irma,106,73,58,7,8,3762
+Oktavia von Seckendorff,105,73,58,7,8,3763
+Shirayuki (Arknights),99,73,58,7,8,3764
+Minaho Kazuto,98,73,58,7,8,3765
+Ichii Tooru,93,73,58,7,8,3766
+Rebecca (ONE PIECE),93,73,58,7,8,3767
+Hikawa Iona,92,73,58,7,8,3768
+Pink Pearl Voice,90,73,58,7,8,3769
+Ichinose Kaede,90,73,58,7,8,3770
+Tohzuki Suzuya,90,73,58,7,8,3771
+Mina Tepes,89,73,58,7,8,3772
+Galaco,89,73,58,7,8,3773
+Naganuma-san,87,73,58,7,8,3774
+Arthur (Mahoutsukai no Yakusoku),87,73,58,7,8,3775
+Astarotte Ygvar,86,73,58,7,8,3776
+Marth (Fire Emblem),85,73,58,7,8,3777
+Bad End Happy,83,73,58,7,8,3778
+Himeji Mizuki,83,73,58,7,8,3779
+Lucia (Pangya!),82,73,58,7,8,3780
+Plume (Arknights),82,73,58,7,8,3781
+Germany (Female),82,73,58,7,8,3782
+Kanzaki Aoi,81,73,58,7,8,3783
+Rider (Noah),81,73,58,7,8,3784
+M16A1 (Girls Frontline),81,73,58,7,8,3785
+Hinokuma Ran,81,73,58,7,8,3786
+Pozyomka,80,73,58,7,8,3787
+Moon Cancer (Archetype Earth),80,73,58,7,8,3788
+AK-15 (Girls Frontline),80,73,58,7,8,3789
+Stella (Winx Club),80,73,58,7,8,3790
+Sorai Saki,79,73,58,7,8,3791
+Pamiat Merkuria,78,73,58,7,8,3792
+Momoyama Mirai,77,73,58,7,8,3793
+Massachusetts,76,73,58,7,8,3794
+Yamiyono Moruru,76,73,58,7,8,3795
+Ironmouse,76,73,58,7,8,3796
+Donquixote Doflamingo,183,72,58,7,7,3797
+Dracule Mihawk,165,72,58,7,7,3798
+Ophelia (Pop'n Music),108,72,58,7,7,3799
+Night (The Miyama-Uguisu Mansion Incident),105,72,58,7,7,3800
+Nakajima Youko,104,72,58,7,7,3801
+Mei Mei,104,72,58,7,7,3802
+Chou'un Shiryuu,103,72,58,7,7,3803
+Mutou Toru,102,72,58,7,7,3804
+Matoba Seiji,101,72,58,7,7,3805
+Yuki Onna (Nurarihyon),97,72,58,7,7,3806
+Otomune Kozue,97,72,58,7,7,3807
+Kawakami Sadayo,94,72,58,7,7,3808
+Sistine Fibel,93,72,58,7,7,3809
+Nekoyashiki Mayu,92,72,58,7,7,3810
+Azuki Azusa,91,72,58,7,7,3811
+Oshitari Yuushi,91,72,58,7,7,3812
+Roxy Lalonde,90,72,58,7,7,3813
+Juna Crawford,88,72,58,7,7,3814
+Kei (Ken ga Kimi),88,72,58,7,7,3815
+Luocha,87,72,58,7,7,3816
+Kazama Ryouta,86,72,58,7,7,3817
+Nicola Francesca,86,72,58,7,7,3818
+Yuitsuka Inori,86,72,58,7,7,3819
+Kisume,85,72,58,7,7,3820
+Kiritani Haruka,85,72,58,7,7,3821
+Nanami Kanata,84,72,58,7,7,3822
+Hanasaki Miyabi,84,72,58,7,7,3823
+Bishin,84,72,58,7,7,3824
+Petra Gurin,82,72,58,7,7,3825
+Momohime,82,72,58,7,7,3826
+Lily (Spy Kyoushitsu),79,72,58,7,7,3827
+Silva (Granblue Fantasy),78,72,58,7,7,3828
+Ashley Graham,78,72,58,7,7,3829
+Freminet,77,72,58,7,7,3830
+Ambriel (Arknights),76,72,58,7,7,3831
+Ethel (Xenoblade 3),76,72,58,7,7,3832
+Hatakaze (Kantai Collection),75,72,58,7,7,3833
+Assassin Paraiso,75,72,58,7,7,3834
+Tatsuno Malm,75,72,58,7,7,3835
+Croissant (Arknights),75,72,58,7,7,3836
+Aoi (Ayakashi Koimeguri),74,72,58,7,7,3837
+Hagoromo Kitsune,175,71,57,7,7,3838
+Amaterasu,158,71,57,7,7,3839
+Doudanuki Masakuni,118,71,57,7,7,3840
+Shirou Kamui,115,71,57,7,7,3841
+Hiei,106,71,57,7,7,3842
+Shimizu Megumi,105,71,57,7,7,3843
+Cinnamon Cookie,105,71,57,7,7,3844
+Basil (Omori),104,71,57,7,7,3845
+Yagami Iori,103,71,57,7,7,3846
+Ishikirimaru,101,71,57,7,7,3847
+Aoyagi Ritsuka,100,71,57,7,7,3848
+Kirishiki Sunako,97,71,57,7,7,3849
+Mizuki (DMMd),95,71,57,7,7,3850
+Kishitani Shinra,94,71,57,7,7,3851
+Minase Nayuki,94,71,57,7,7,3852
+Ruler (James Moriarty),93,71,57,7,7,3853
+Miura Haru,92,71,57,7,7,3854
+Trey Clover,91,71,57,7,7,3855
+China (Female),89,71,57,7,7,3856
+Liliruca Arde,89,71,57,7,7,3857
+Mukami Ruki,88,71,57,7,7,3858
+The Candle Knight Viviana,87,71,57,7,7,3859
+Sayo Samonji,86,71,57,7,7,3860
+Evileye (Overlord),86,71,57,7,7,3861
+Angelina Kudou Shields,86,71,57,7,7,3862
+Hanemiya Kazutora,86,71,57,7,7,3863
+Claire Redfield,86,71,57,7,7,3864
+Mukami Yuuma,85,71,57,7,7,3865
+Oginome Ringo,85,71,57,7,7,3866
+Miyamura Miyako,81,71,57,7,7,3867
+Cirno-nee,81,71,57,7,7,3868
+Lan (Rinne no Lagrange),81,71,57,7,7,3869
+Ohara Rinne,80,71,57,7,7,3870
+Cliffheart,80,71,57,7,7,3871
+Diane (Nanatsu no Taizai),80,71,57,7,7,3872
+Dori,78,71,57,7,7,3873
+Naruse Mio,78,71,57,7,7,3874
+Kagami Sumika,78,71,57,7,7,3875
+RO635,76,71,57,7,7,3876
+Hitotsuyanagi Riri,76,71,57,7,7,3877
+Otonose Kanade,76,71,57,7,7,3878
+Crown (NIKKE),76,71,57,7,7,3879
+Nelson,76,71,57,7,7,3880
+Elsa the Fifth Spirit,75,71,57,7,7,3881
+Ruler (Scathach Skadi),74,71,57,7,7,3882
+Daring Tact,73,71,57,7,7,3883
+Ibuki (Azur Lane),73,71,57,7,7,3884
+Usopp,184,70,56,7,7,3885
+Glaceon,165,70,56,7,7,3886
+Gon Freecss,122,70,56,7,7,3887
+Majima Goro,118,70,56,7,7,3888
+Kibutsuji Muzan,107,70,56,7,7,3889
+Herb Cookie,98,70,56,7,7,3890
+Alkaid (For All Time),96,70,56,7,7,3891
+Berserker (Hijikata Toshizou),96,70,56,7,7,3892
+Avenger (Taira no Kagekiyo),94,70,56,7,7,3893
+Amano Touko,93,70,56,7,7,3894
+Etna,91,70,56,7,7,3895
+Doujima Nanako,90,70,56,7,7,3896
+Kuroba Saneaki,89,70,56,7,7,3897
+Yaya (Kikou Shoujo wa Kizutsukanai),88,70,56,7,7,3898
+Unno Rokurou,86,70,56,7,7,3899
+Kenmochi Touya,84,70,56,7,7,3900
+Kanbe Kotori,83,70,56,7,7,3901
+Ninny Spangcole,81,70,56,7,7,3902
+Busujima Mason Riou,81,70,56,7,7,3903
+Justice Committee Club Member,81,70,56,7,7,3904
+Endou Saya (Dagashi Kashi),81,70,56,7,7,3905
+Athanasia De Alger Obelia,79,70,56,7,7,3906
+Taikogane Sadamune,78,70,56,7,7,3907
+Supergirl,78,70,56,7,7,3908
+Martina (Dragon Quest XI),78,70,56,7,7,3909
+Natalia (Idolmaster),77,70,56,7,7,3910
+Shion (Tensei Shitara Slime Datta Ken),76,70,56,7,7,3911
+Beehunter,76,70,56,7,7,3912
+Luna Kindred,76,70,56,7,7,3913
+Guizhong,76,70,56,7,7,3914
+Adagaki Aki,76,70,56,7,7,3915
+Aldora,74,70,56,7,7,3916
+Mikado Nagi,74,70,56,7,7,3917
+Shino (Mahoutsukai no Yakusoku),74,70,56,7,7,3918
+Isonami (Kantai Collection),73,70,56,7,7,3919
+Lucifer (Hazbin),157,69,55,7,7,3920
+Mogami Kyoko,154,69,55,7,7,3921
+Doma Umaru,128,69,55,7,7,3922
+Integra Hellsing,120,69,55,7,7,3923
+Masrur,108,69,55,7,7,3924
+Noel Valmore,102,69,55,7,7,3925
+Prompto Argentum,101,69,55,7,7,3926
+Sucy Manbavaran,96,69,55,7,7,3927
+Sohma Akito,94,69,55,7,7,3928
+Giulio Di Bondone,93,69,55,7,7,3929
+Leo Baskerville,90,69,55,7,7,3930
+Nakagawa Kanon,90,69,55,7,7,3931
+Aozora Hayato,90,69,55,7,7,3932
+Reno,85,69,55,7,7,3933
+Kamishiro Rize,85,69,55,7,7,3934
+Nymph (Arknights),85,69,55,7,7,3935
+Deedlit,84,69,55,7,7,3936
+Shirogane Tsumugi,84,69,55,7,7,3937
+Shigure Kokoro,83,69,55,7,7,3938
+Luna Lovegood,83,69,55,7,7,3939
+Assassin (Ushiwakamaru),83,69,55,7,7,3940
+Layla (Sound Horizon),83,69,55,7,7,3941
+Yomotsu Hisami,82,69,55,7,7,3942
+AKAITO,82,69,55,7,7,3943
+Nino (Arakawa),82,69,55,7,7,3944
+Shin (Black Star),78,69,55,7,7,3945
+Asahina Aoi,78,69,55,7,7,3946
+Corin Wickes,78,69,55,7,7,3947
+Luca (Yu-Gi-Oh! 5D's),78,69,55,7,7,3948
+Hijiri Ageha,77,69,55,7,7,3949
+Wiz (KonoSuba),76,69,55,7,7,3950
+Daruizen,76,69,55,7,7,3951
+Anchorage,76,69,55,7,7,3952
+Amayadori Machi,75,69,55,7,7,3953
+Kanzaki Hideri,73,69,55,7,7,3954
+Kasumi Mahiru,73,69,55,7,7,3955
+Katou Marika,73,69,55,7,7,3956
+Kuroshio (Kantai Collection),72,69,55,7,7,3957
+Ellen Baker,72,69,55,7,7,3958
+Rindou (Black Star),72,69,55,7,7,3959
+Hatsukaze (Kantai Collection),71,69,55,7,7,3960
+Kyougoku Satsuki,70,69,55,7,7,3961
+Jirachi,263,68,54,7,7,3962
+Kent (AMNESIA),105,68,54,7,7,3963
+Sieg (Fate/Apocrypha),102,68,54,7,7,3964
+Kohinata Kanade,98,68,54,7,7,3965
+Bokuto Koutarou,96,68,54,7,7,3966
+Ichihara Nina,90,68,54,7,7,3967
+Misaka Imouto,87,68,54,7,7,3968
+Musashi (Pokﾃｩmon),86,68,54,7,7,3969
+Kan'u Unchou (Koihime Musou),86,68,54,7,7,3970
+Rider (Bartholomew Roberts),86,68,54,7,7,3971
+Kanakubo Homare,86,68,54,7,7,3972
+Homika,82,68,54,7,7,3973
+Ootori Eiji,81,68,54,7,7,3974
+Dazai Osamu (Bungou to Alchemist),81,68,54,7,7,3975
+Fa Mulan (Disney),81,68,54,7,7,3976
+Monaco,80,68,54,7,7,3977
+Asuka (Senran Kagura),79,68,54,7,7,3978
+Sakamoto Mio,78,68,54,7,7,3979
+Ryuenji Tasuku,78,68,54,7,7,3980
+Suzuki Jun,78,68,54,7,7,3981
+Tamura Manami,76,68,54,7,7,3982
+Yurizaki Mira,75,68,54,7,7,3983
+Shylock,75,68,54,7,7,3984
+Haramura Nodoka,75,68,54,7,7,3985
+Amagi Hiiro,75,68,54,7,7,3986
+Mercedes von Martlitz,75,68,54,7,7,3987
+Kooh,74,68,54,7,7,3988
+Tomoe (Queen's Blade),74,68,54,7,7,3989
+Type 97 (Girls Frontline),73,68,54,7,7,3990
+Five-seveN (Girls Frontline),73,68,54,7,7,3991
+Terror (Azur Lane),73,68,54,7,7,3992
+Littorio (Kantai Collection),71,68,54,7,7,3993
+Oono Akira,71,68,54,7,7,3994
+Mikuma (Kantai Collection),71,68,54,7,7,3995
+Akagi-chan,71,68,54,7,7,3996
+Eevee,326,67,54,7,6,3997
+U-1146,148,67,54,7,6,3998
+Ezio Auditore Da Firenze,133,67,54,7,6,3999
+Mahito (Jujutsu Kaisen),116,67,54,7,6,4000
+Satoshi (Pokﾃｩmon),111,67,54,7,6,4001
+Sasaki Haise,108,67,54,7,6,4002
+Saitou Yakumo,108,67,54,7,6,4003
+Yoshida Hirofumi,107,67,54,7,6,4004
+Sherlock Holmes (Character),103,67,54,7,6,4005
+Suou Tatsuya,98,67,54,7,6,4006
+Sasagawa Ryohei,96,67,54,7,6,4007
+Ayn (For All Time),95,67,54,7,6,4008
+Bradley (Mahoutsukai no Yakusoku),93,67,54,7,6,4009
+Watatsuki no Yorihime,86,67,54,7,6,4010
+Maria Mikhailovna Kujou,86,67,54,7,6,4011
+Ebina Nana,84,67,54,7,6,4012
+Khun Aguero Agnis,84,67,54,7,6,4013
+Mizael,83,67,54,7,6,4014
+Leonhardt (Arknights),80,67,54,7,6,4015
+Scien Brofiise,80,67,54,7,6,4016
+Al-Azif,79,67,54,7,6,4017
+Mu-12,79,67,54,7,6,4018
+Senko (Sewayaki Kitsune no Senko-san),77,67,54,7,6,4019
+Ike,77,67,54,7,6,4020
+Dante Falzone,77,67,54,7,6,4021
+Kagari (Pokﾃｩmon),77,67,54,7,6,4022
+Kusugawa Sasara,77,67,54,7,6,4023
+Kuma Rintaro,76,67,54,7,6,4024
+Hanazono Hakari,76,67,54,7,6,4025
+Nao Mariota Pryderi,76,67,54,7,6,4026
+Match Girl (SINoALICE),76,67,54,7,6,4027
+Alisaie Leveilleur,76,67,54,7,6,4028
+Seiran,75,67,54,7,6,4029
+Hanaoka Yuzu,75,67,54,7,6,4030
+Suzukaze (Kantai Collection),74,67,54,7,6,4031
+Wiﾅ｡adel,74,67,54,7,6,4032
+Furuhashi Fumino,72,67,54,7,6,4033
+Futaba Akane,72,67,54,7,6,4034
+Asami Onohara,71,67,54,7,6,4035
+Emperor Penguin (Kemono Friends),71,67,54,7,6,4036
+Surcouf (Azur Lane),70,67,54,7,6,4037
+Sunny Milk,69,67,54,7,6,4038
+Maikaze (Kantai Collection),69,67,54,7,6,4039
+Futaba Natsuho,67,67,54,7,6,4040
+Luka Crosszeria,130,66,53,7,6,4041
+Itoshiki Nozomu,116,66,53,7,6,4042
+Yakushi Kabuto,112,66,53,7,6,4043
+Arietta Elfinrine,104,66,53,7,6,4044
+Nikolai Gogol (Bungou Stray Dogs),95,66,53,7,6,4045
+Murasaki Shizuku,95,66,53,7,6,4046
+Tuxedo Kamen,92,66,53,7,6,4047
+Yogi,92,66,53,7,6,4048
+Broly,91,66,53,7,6,4049
+Tail Red,91,66,53,7,6,4050
+El,90,66,53,7,6,4051
+Lagi El Nagil,89,66,53,7,6,4052
+Lara Croft,89,66,53,7,6,4053
+Isayama Yomi,86,66,53,7,6,4054
+Angelya (Wakfu),86,66,53,7,6,4055
+Bilal Asad Ithnan Faranbald,86,66,53,7,6,4056
+Scotland,85,66,53,7,6,4057
+Mew Pudding,84,66,53,7,6,4058
+Leila Malcal,83,66,53,7,6,4059
+Kaguya Hime (SINoALICE),83,66,53,7,6,4060
+Iris (Mega Man X),82,66,53,7,6,4061
+Akashiya Moka (Vampire),82,66,53,7,6,4062
+Lucas Proust,80,66,53,7,6,4063
+Provence,79,66,53,7,6,4064
+Poison Ivy,78,66,53,7,6,4065
+Cartethyia,78,66,53,7,6,4066
+Rider (Carmilla),78,66,53,7,6,4067
+Kirihara Atom,77,66,53,7,6,4068
+Kyouka (Princess Connect),75,66,53,7,6,4069
+Kurugaya Yuiko,73,66,53,7,6,4070
+Udagawa Tomoe,73,66,53,7,6,4071
+Ebisuzawa Kurumi,72,66,53,7,6,4072
+Lynette Bishop,72,66,53,7,6,4073
+Cesario (Uma Musume),72,66,53,7,6,4074
+Moira (VTuber),70,66,53,7,6,4075
+Tamade Chiyu,69,66,53,7,6,4076
+Berserker (Sei Shounagon),69,66,53,7,6,4077
+Rider (Andromeda),67,66,53,7,6,4078
+Mari (Omori),115,65,52,6,7,4079
+Tyki Mikk,112,65,52,6,7,4080
+Cagalli Yula Athha,101,65,52,6,7,4081
+Alice (Deemo),100,65,52,6,7,4082
+Takenaka Hanbei (Sengoku Basara),86,65,52,6,7,4083
+Arsﾃｨne Lupin (Code: Realize),86,65,52,6,7,4084
+Marik Ishtar,86,65,52,6,7,4085
+Osanai Yuki,85,65,52,6,7,4086
+Akaba Ray,84,65,52,6,7,4087
+Yennefer of Vengerberg,83,65,52,6,7,4088
+Akame (Akame ga Kill!),83,65,52,6,7,4089
+Miketsukami Soushi,82,65,52,6,7,4090
+Shirayuki Mizore,81,65,52,6,7,4091
+Imayoshi Shouichi,81,65,52,6,7,4092
+Defoko,81,65,52,6,7,4093
+Julius Fortner,80,65,52,6,7,4094
+Chasca,80,65,52,6,7,4095
+Zatsune Miku,80,65,52,6,7,4096
+Kurosawa Rin,79,65,52,6,7,4097
+Assassin (Fuuma Kotarou),78,65,52,6,7,4098
+Musse Egret,78,65,52,6,7,4099
+Leizi,77,65,52,6,7,4100
+Kishido Temma,77,65,52,6,7,4101
+Kiseki Raki,77,65,52,6,7,4102
+Oogami Kouga,76,65,52,6,7,4103
+Narukami Arashi,76,65,52,6,7,4104
+Ayase Seiko,76,65,52,6,7,4105
+Sanzenin Nagi,75,65,52,6,7,4106
+Blue Mary,75,65,52,6,7,4107
+Mima,75,65,52,6,7,4108
+Erika (Pokﾃｩmon),74,65,52,6,7,4109
+Veliona,74,65,52,6,7,4110
+Chika Komari,74,65,52,6,7,4111
+Fubuki (Azur Lane),73,65,52,6,7,4112
+Ashihara Chihiro,73,65,52,6,7,4113
+Hinomori Shizuku,73,65,52,6,7,4114
+Matsuno Chifuyu,72,65,52,6,7,4115
+Courier (Arknights),72,65,52,6,7,4116
+Daiba Nana,72,65,52,6,7,4117
+Elma (Kobayashi-san Chi no Maid Dragon),70,65,52,6,7,4118
+Aketa Mikoto,70,65,52,6,7,4119
+Fujimiya Kaori,69,65,52,6,7,4120
+Eternity Larva,69,65,52,6,7,4121
+Mochizuki (Kantai Collection),69,65,52,6,7,4122
+Yomi (Senran Kagura),68,65,52,6,7,4123
+Neo Universe,65,65,52,6,7,4124
+Soul Eater Evans,110,64,51,6,7,4125
+Beta (Inazuma Eleven GO),105,64,51,6,7,4126
+Jiraiya,104,64,51,6,7,4127
+Fan Character,100,64,51,6,7,4128
+Yone (League Of Legends),100,64,51,6,7,4129
+Kevin Kaslana,92,64,51,6,7,4130
+Monet (ONE PIECE),90,64,51,6,7,4131
+Placido,89,64,51,6,7,4132
+Lust (FMA),88,64,51,6,7,4133
+Aak,88,64,51,6,7,4134
+Sakayanagi Arisu,87,64,51,6,7,4135
+Leonardo Watch,87,64,51,6,7,4136
+Vivy (Character),85,64,51,6,7,4137
+Tian-zi,85,64,51,6,7,4138
+Sango,82,64,51,6,7,4139
+Myne (Honzuki no Gekokujou),81,64,51,6,7,4140
+Nile (Doubutsu no Mori),81,64,51,6,7,4141
+Ash Lynx,81,64,51,6,7,4142
+Logos (Arknights),79,64,51,6,7,4143
+Riquet,79,64,51,6,7,4144
+Amagi Rinne,78,64,51,6,7,4145
+Kohaku (Dr. STONE),77,64,51,6,7,4146
+Fear Kubrick,77,64,51,6,7,4147
+Elise,77,64,51,6,7,4148
+Ray (Arknights),74,64,51,6,7,4149
+ﾃ・clair Martinozzi,73,64,51,6,7,4150
+Jamil (Granblue Fantasy),73,64,51,6,7,4151
+Kefla,71,64,51,6,7,4152
+Shouhou (Kantai Collection),71,64,51,6,7,4153
+Hatsuharu (Kantai Collection),71,64,51,6,7,4154
+Nagase Minato,71,64,51,6,7,4155
+Nightingale (Santa),70,64,51,6,7,4156
+Machita Chima,70,64,51,6,7,4157
+Flametail,69,64,51,6,7,4158
+Liliya Olenyeva,69,64,51,6,7,4159
+Harukaze (Kantai Collection),69,64,51,6,7,4160
+Fusou (Azur Lane),69,64,51,6,7,4161
+Noel (Sora no Method),68,64,51,6,7,4162
+Lancer (Britomart),68,64,51,6,7,4163
+Eirik (Fire Emblem),68,64,51,6,7,4164
+Mao (Pokﾃｩmon),67,64,51,6,7,4165
+TAR-21 (Girls Frontline),66,64,51,6,7,4166
+Nase Hiroomi,66,64,51,6,7,4167
+Vodka (Uma Musume),65,64,51,6,7,4168
+Sunohara Kokona,65,64,51,6,7,4169
+Furen E Lustario,65,64,51,6,7,4170
+Yasuo,150,63,50,6,7,4171
+Reiner Braun,108,63,50,6,7,4172
+Johnny Joestar,105,63,50,6,7,4173
+RockMan (Character),101,63,50,6,7,4174
+Midousuji Akira,90,63,50,6,7,4175
+Cuddles (HTF),90,63,50,6,7,4176
+Baam,90,63,50,6,7,4177
+Kiibo (New Danganronpa V3),89,63,50,6,7,4178
+Ragna the Bloodedge,87,63,50,6,7,4179
+Iruma Jyuto,85,63,50,6,7,4180
+Nishikage Seiya,85,63,50,6,7,4181
+Tenjouin Fubuki,84,63,50,6,7,4182
+Kukuchi Heisuke,82,63,50,6,7,4183
+Orlok,80,63,50,6,7,4184
+Shidou Mariya,79,63,50,6,7,4185
+Minamoto Chizuru,78,63,50,6,7,4186
+Hanazono Karin,78,63,50,6,7,4187
+Meiou Setsuna,77,63,50,6,7,4188
+Eri (Boku no Hero Academia),77,63,50,6,7,4189
+Urushibara Ruka,76,63,50,6,7,4190
+Catherine (Character),76,63,50,6,7,4191
+Jolly (Arcana Famiglia),76,63,50,6,7,4192
+Inukai Iroha,74,63,50,6,7,4193
+Mika (GIRLS und PANZER),74,63,50,6,7,4194
+Celes Chere,74,63,50,6,7,4195
+Arle Nadja,73,63,50,6,7,4196
+Haku (P&D),73,63,50,6,7,4197
+Asakura Otome,73,63,50,6,7,4198
+Kenzaki Tsurugi,72,63,50,6,7,4199
+Kumashiro Maya,71,63,50,6,7,4200
+Houshou Hanon,71,63,50,6,7,4201
+Ingrid Brandol Galatea,71,63,50,6,7,4202
+Nina Williams,71,63,50,6,7,4203
+Pope Johanna,71,63,50,6,7,4204
+Sakasaki Natsume,71,63,50,6,7,4205
+Kanzaki Kaori,71,63,50,6,7,4206
+Zani,70,63,50,6,7,4207
+Zen (Mystic Messenger),70,63,50,6,7,4208
+Lillia (League Of Legends),70,63,50,6,7,4209
+Ristarte,69,63,50,6,7,4210
+Ronye Arabel,69,63,50,6,7,4211
+Uzen Kyouka,68,63,50,6,7,4212
+Nogi Sonoko,68,63,50,6,7,4213
+Narita Brian,67,63,50,6,7,4214
+Senju Muramasa,67,63,50,6,7,4215
+Maya (Azur Lane),65,63,50,6,7,4216
+Kurosaki Chitose,65,63,50,6,7,4217
+Waraku Chise,64,63,50,6,7,4218
+Melona,64,63,50,6,7,4219
+Beelzebub (Yondemasuyo Azazel-san),118,62,50,6,6,4220
+Prosciutto,96,62,50,6,6,4221
+Ymir (Shingeki no Kyojin),95,62,50,6,6,4222
+Zack Fair,93,62,50,6,6,4223
+Black Tiger,93,62,50,6,6,4224
+Night Elf,91,62,50,6,6,4225
+Leona (League of Legends),90,62,50,6,6,4226
+Mine Fujiko,88,62,50,6,6,4227
+Lu Xun,85,62,50,6,6,4228
+Ootengu (Onmyoji),85,62,50,6,6,4229
+Carly Nagisa,82,62,50,6,6,4230
+Necro (Ch@r),82,62,50,6,6,4231
+Chouno Hina,81,62,50,6,6,4232
+Assassin (Huyan Zhuo),81,62,50,6,6,4233
+Rider (Alexander),81,62,50,6,6,4234
+Rixia Mao,80,62,50,6,6,4235
+Yamada Anna,80,62,50,6,6,4236
+Chi-Chi,79,62,50,6,6,4237
+Nepgear (Choujigen Game Neptune),78,62,50,6,6,4238
+Otegine,77,62,50,6,6,4239
+Usuta Sumire,77,62,50,6,6,4240
+Yuna (Kuma Kuma Kuma Bear),75,62,50,6,6,4241
+Kohinata Miku,75,62,50,6,6,4242
+Virgilia,73,62,50,6,6,4243
+Shinkai Kanata,71,62,50,6,6,4244
+Sakuramori Kaori,71,62,50,6,6,4245
+Muso Jin,71,62,50,6,6,4246
+Yagyuu (Senran Kagura),71,62,50,6,6,4247
+Nijou Aki,71,62,50,6,6,4248
+Remon Yakishio,70,62,50,6,6,4249
+Pharah,70,62,50,6,6,4250
+Terraria (PA),70,62,50,6,6,4251
+Arthur Alter,70,62,50,6,6,4252
+Ichinose Hajime,70,62,50,6,6,4253
+Caster (Fate/Prototype: Sougin no Fragments),70,62,50,6,6,4254
+Aijou Karen,68,62,50,6,6,4255
+Fennec (Kemono Friends),68,62,50,6,6,4256
+Kobayakawa Takakage,67,62,50,6,6,4257
+High Priestess,67,62,50,6,6,4258
+Li Sushang,67,62,50,6,6,4259
+Leina Vance,67,62,50,6,6,4260
+Izumo Kasumi (VTuber),66,62,50,6,6,4261
+Swiftsure,66,62,50,6,6,4262
+Rider (Murasaki Shikibu),66,62,50,6,6,4263
+Hoshizora Ikuyo,66,62,50,6,6,4264
+Assassin (Mata Hari),65,62,50,6,6,4265
+Himuro Sena,65,62,50,6,6,4266
+Fuyuki Minami,65,62,50,6,6,4267
+Son Biten,65,62,50,6,6,4268
+Ushimi Ichigo,64,62,50,6,6,4269
+Manaka Ao,63,62,50,6,6,4270
+Yorita Yoshino,63,62,50,6,6,4271
+Leafeon,150,61,49,6,6,4272
+Insane Black・・・Rock Shooter,125,61,49,6,6,4273
+Aiba Asagi,103,61,49,6,6,4274
+Elizabeth Ethel Cordelia Midford,98,61,49,6,6,4275
+Alita,97,61,49,6,6,4276
+Risotto Nero,92,61,49,6,6,4277
+Kanamori Sayaka,91,61,49,6,6,4278
+Shibusawa Tatsuhiko,88,61,49,6,6,4279
+Lunch (DRAGON BALL),88,61,49,6,6,4280
+Alice Margatroid (Young),87,61,49,6,6,4281
+Genda Koujirou,87,61,49,6,6,4282
+Feferi Peixes,86,61,49,6,6,4283
+Kiki (Majo no Takkyuubin),86,61,49,6,6,4284
+Princess Mﾃｩrida,85,61,49,6,6,4285
+Nagasone Kotetsu,82,61,49,6,6,4286
+Hasegawa Chisato,80,61,49,6,6,4287
+Rider (Constantine XI),80,61,49,6,6,4288
+Sophie Neuenmuller,79,61,49,6,6,4289
+Koito Yuu,78,61,49,6,6,4290
+Kogarasumaru (Touken Ranbu),78,61,49,6,6,4291
+Rumiho Akiha,78,61,49,6,6,4292
+Kikumaru Eiji,78,61,49,6,6,4293
+Sena Airi,77,61,49,6,6,4294
+Asuka Momoko,76,61,49,6,6,4295
+Pyocola Analogue,76,61,49,6,6,4296
+Niwatari Kutaka,74,61,49,6,6,4297
+Cornelia li Britannia,74,61,49,6,6,4298
+Ex Rumia,73,61,49,6,6,4299
+Snow White (Disney) (Character),73,61,49,6,6,4300
+Yahisa Tsukiko,72,61,49,6,6,4301
+Isurugi Mio,72,61,49,6,6,4302
+Chocolat Meilleure,71,61,49,6,6,4303
+Arisu Yurika,71,61,49,6,6,4304
+Senkawa Chihiro,70,61,49,6,6,4305
+Female Protagonist (Pokﾃｩmon GO),70,61,49,6,6,4306
+Unlovely,70,61,49,6,6,4307
+Lyney,70,61,49,6,6,4308
+Prince of Wales,67,61,49,6,6,4309
+Degenbrecher,67,61,49,6,6,4310
+Hakaze Kaoru,67,61,49,6,6,4311
+Hermione (Azur Lane),67,61,49,6,6,4312
+Nowaki (Kantai Collection),66,61,49,6,6,4313
+Popukar,66,61,49,6,6,4314
+Ingrid,65,61,49,6,6,4315
+Fuji Kiseki,65,61,49,6,6,4316
+Tsugumi (GUILTY CROWN),65,61,49,6,6,4317
+Mizutani Eri,65,61,49,6,6,4318
+Tiese Shtolienen,65,61,49,6,6,4319
+Sothis (Fire Emblem),64,61,49,6,6,4320
+Kurokami Fubuki,64,61,49,6,6,4321
+Neptune (Azur Lane),64,61,49,6,6,4322
+Commandant Teste (Kantai Collection),64,61,49,6,6,4323
+Sovetskaya Belorussiya,64,61,49,6,6,4324
+Kuroe Shizuku,64,61,49,6,6,4325
+Katagiri Sanae,64,61,49,6,6,4326
+Matsuwa (Kantai Collection),63,61,49,6,6,4327
+Susan Grace,105,60,48,6,6,4328
+Walnut Cookie,104,60,48,6,6,4329
+Yogurt Cream Cookie,95,60,48,6,6,4330
+Nihongou,91,60,48,6,6,4331
+Boris Airay,89,60,48,6,6,4332
+Katakura Kojuurou (Sengoku Basara),89,60,48,6,6,4333
+Viola (ONE PIECE),84,60,48,6,6,4334
+Badarp Slead,81,60,48,6,6,4335
+Reigen Arataka,81,60,48,6,6,4336
+Lumpy,81,60,48,6,6,4337
+Orion (AMNESIA),79,60,48,6,6,4338
+Ame-chan,78,60,48,6,6,4339
+Koleda Belobog,75,60,48,6,6,4340
+Lulu (Final Fantasy),74,60,48,6,6,4341
+Destroyer Hime (Kantai Collection),74,60,48,6,6,4342
+Kujou Tenn,74,60,48,6,6,4343
+Totooria Helmold,73,60,48,6,6,4344
+Zelos Wilder,73,60,48,6,6,4345
+Haiyi,73,60,48,6,6,4346
+Kimishima Ayano,70,60,48,6,6,4347
+Void Princess (Aisha),70,60,48,6,6,4348
+T.M. Opera O,69,60,48,6,6,4349
+Nakagawa Natsuki,69,60,48,6,6,4350
+Helvetica Orsted,69,60,48,6,6,4351
+Gitano,68,60,48,6,6,4352
+Isuzu Hana,68,60,48,6,6,4353
+Heath (Black Star),67,60,48,6,6,4354
+Nisshin (Kantai Collection),67,60,48,6,6,4355
+Tsurumaki Maki,67,60,48,6,6,4356
+Claire Bernardus,67,60,48,6,6,4357
+Yoroizuka Mizore,67,60,48,6,6,4358
+Heathcliff (Mahoutsukai no Yakusoku),67,60,48,6,6,4359
+Felt (Re:Zero),67,60,48,6,6,4360
+Aquila Yuna,67,60,48,6,6,4361
+Starfire,66,60,48,6,6,4362
+Richard Ranashinha Dvorpian,66,60,48,6,6,4363
+Akira (Black Star),66,60,48,6,6,4364
+Yuri Touichirou,66,60,48,6,6,4365
+Senpai (Tejina-senpai),66,60,48,6,6,4366
+Galahad (Fate/Grand Order),65,60,48,6,6,4367
+ONE (CeVIO),65,60,48,6,6,4368
+Akizuki Mikoto,65,60,48,6,6,4369
+Ark Royal (Kantai Collection),64,60,48,6,6,4370
+Ajax,64,60,48,6,6,4371
+Ginnojou,63,60,48,6,6,4372
+Nanael,63,60,48,6,6,4373
+Plymouth (Azur Lane),63,60,48,6,6,4374
+Hinazuki Kayo,63,60,48,6,6,4375
+Yuzuki Saya,62,60,48,6,6,4376
+Takanami (Kantai Collection),62,60,48,6,6,4377
+Ayunda Risu,62,60,48,6,6,4378
+Selen Tatsuki,62,60,48,6,6,4379
+Urushibara Kaguya,60,60,48,6,6,4380
+Mu Qing,109,59,47,6,6,4381
+Guido Mista,102,59,47,6,6,4382
+Yamato (NARUTO),102,59,47,6,6,4383
+Sabito,92,59,47,6,6,4384
+Captain America,91,59,47,6,6,4385
+Zenpouji Isaku,90,59,47,6,6,4386
+Melone (Vento Aureo),89,59,47,6,6,4387
+Koala (ONE PIECE),87,59,47,6,6,4388
+Daisuke Umon,85,59,47,6,6,4389
+Tashigi,81,59,47,6,6,4390
+Teufel Diabolos,79,59,47,6,6,4391
+Irie Shouichi,78,59,47,6,6,4392
+Kuroh Nadeshiko,77,59,47,6,6,4393
+A-ya,76,59,47,6,6,4394
+Daki,75,59,47,6,6,4395
+Sengo Muramasa (Touken Ranbu),75,59,47,6,6,4396
+Izayoi Miku,74,59,47,6,6,4397
+Uzumaki Himawari,74,59,47,6,6,4398
+Lyna the Light Charmer,74,59,47,6,6,4399
+Ryone Yami,74,59,47,6,6,4400
+Ibuki Ryuunosuke,73,59,47,6,6,4401
+Natsume Zange,73,59,47,6,6,4402
+Shimizu Keiichi,73,59,47,6,6,4403
+Hiiragi Yanosuke,72,59,47,6,6,4404
+Matsudappoiyo,72,59,47,6,6,4405
+Moana (Character),72,59,47,6,6,4406
+Magni Dezmond,71,59,47,6,6,4407
+Ara Haan,71,59,47,6,6,4408
+Midna (True Form),71,59,47,6,6,4409
+Minakata Hizuru,70,59,47,6,6,4410
+Valentine (Skullgirls),69,59,47,6,6,4411
+Chrom (Fire Emblem),69,59,47,6,6,4412
+Ayazuki Mei,69,59,47,6,6,4413
+Yui Shousetsu (Fate/Samurai Remnant),68,59,47,6,6,4414
+Bonne Jenet,68,59,47,6,6,4415
+Marciana,68,59,47,6,6,4416
+InuYasha (Human Form),68,59,47,6,6,4417
+Gangut (Kantai Collection),67,59,47,6,6,4418
+Julio (Pretty Cure),67,59,47,6,6,4419
+Absinthe (Arknights),66,59,47,6,6,4420
+Pascal (Tales of Graces),66,59,47,6,6,4421
+Yukine (Noragami),66,59,47,6,6,4422
+Reno (Azur Lane),66,59,47,6,6,4423
+Closure,65,59,47,6,6,4424
+Blemishine,65,59,47,6,6,4425
+Nito Nazuna,65,59,47,6,6,4426
+Kawakaze (Azur Lane),64,59,47,6,6,4427
+Kurumi (Lycoris Recoil),62,59,47,6,6,4428
+South Dakota,62,59,47,6,6,4429
+Mizuha Mimori,61,59,47,6,6,4430
+Kuon (Utawarerumono),61,59,47,6,6,4431
+Cellica (Fire Emblem),61,59,47,6,6,4432
+G41 (Girls Frontline),61,59,47,6,6,4433
+Ooshio (Kantai Collection),61,59,47,6,6,4434
+Nagatsuki (Kantai Collection),60,59,47,6,6,4435
+Kasane Ao,60,59,47,6,6,4436
+Master Artoria,60,59,47,6,6,4437
+Lucid,59,59,47,6,6,4438
+Koiwai Yotsuba,107,58,46,6,6,4439
+Avenger (Fate/hollow ataraxia),104,58,46,6,6,4440
+Nier (Character),98,58,46,6,6,4441
+Jiggy Pepper,95,58,46,6,6,4442
+Arsene Lupin III,93,58,46,6,6,4443
+Lucifel,90,58,46,6,6,4444
+Nepeta Leijon,90,58,46,6,6,4445
+Dalian,83,58,46,6,6,4446
+Olivier Mira Armstrong,81,58,46,6,6,4447
+Gaming,80,58,46,6,6,4448
+Caster (Elizabeth Bathory),80,58,46,6,6,4449
+Oga Tatsumi,79,58,46,6,6,4450
+Tao Ren,78,58,46,6,6,4451
+Madobe Nanami,77,58,46,6,6,4452
+Iwatooshi,77,58,46,6,6,4453
+Harai Kuko,76,58,46,6,6,4454
+Oozora Hiro,75,58,46,6,6,4455
+Aida Riko,75,58,46,6,6,4456
+Ray (Yakusoku no Neverland),75,58,46,6,6,4457
+Jane Crocker,73,58,46,6,6,4458
+Reinare,72,58,46,6,6,4459
+Amu (nico Nico Singer),72,58,46,6,6,4460
+Souda Kazuichi,72,58,46,6,6,4461
+Hizamaru,71,58,46,6,6,4462
+Canada (Female),71,58,46,6,6,4463
+Youko Kurama,71,58,46,6,6,4464
+Justice (Helltaker),71,58,46,6,6,4465
+Ko-gil,70,58,46,6,6,4466
+Mashu,70,58,46,6,6,4467
+Tomoegata Naginata,70,58,46,6,6,4468
+Ning Hai,70,58,46,6,6,4469
+Tanaka Kotoha,69,58,46,6,6,4470
+Kaitou Jeanne,69,58,46,6,6,4471
+Zelda (Twilight Princess),68,58,46,6,6,4472
+Menace,68,58,46,6,6,4473
+Kazesawa Sora,67,58,46,6,6,4474
+Bastet (P&D),67,58,46,6,6,4475
+Pinecone (Arknights),67,58,46,6,6,4476
+Nui Sociere,66,58,46,6,6,4477
+Silver Soldier Anby,66,58,46,6,6,4478
+Tenma Gabriel White,66,58,46,6,6,4479
+Shirayuki Chiyo,66,58,46,6,6,4480
+Mitotsudaira Nate,66,58,46,6,6,4481
+Suzuka Utako,65,58,46,6,6,4482
+Ogata Rizu,65,58,46,6,6,4483
+Rider (Elizabeth Bathory),65,58,46,6,6,4484
+Sakuraba Aoi,64,58,46,6,6,4485
+Komaki Manaka,64,58,46,6,6,4486
+Meteorite (Arknights),64,58,46,6,6,4487
+Kawashima Ami,63,58,46,6,6,4488
+Kusunoki Yukimura,62,58,46,6,6,4489
+Kyouno Madoka,62,58,46,6,6,4490
+Ushimaki Riko,61,58,46,6,6,4491
+Shirogane Lily,61,58,46,6,6,4492
+Bad End Peace,60,58,46,6,6,4493
+Himesaki Rinami,60,58,46,6,6,4494
+Hakase Fuyuki,60,58,46,6,6,4495
+Kadenokouji Yukari,60,58,46,6,6,4496
+Sandaime Muramasa,59,58,46,6,6,4497
+Thor Odinson,113,57,46,6,5,4498
+Tiger Lily Cookie,101,57,46,6,5,4499
+Kuma,98,57,46,6,5,4500
+Alina Clover,98,57,46,6,5,4501
+Uchiha Shisui,96,57,46,6,5,4502
+Snufkin,91,57,46,6,5,4503
+Kadota Kyouhei,89,57,46,6,5,4504
+Shiraishi Kageyuki,82,57,46,6,5,4505
+Sora Naegino,81,57,46,6,5,4506
+Katsuragi Keima,81,57,46,6,5,4507
+Rolo Lamperouge,80,57,46,6,5,4508
+Shyvana,80,57,46,6,5,4509
+Barok van Zieks,79,57,46,6,5,4510
+Katrielle Layton,78,57,46,6,5,4511
+Aurora Sya Lis Goodereste,77,57,46,6,5,4512
+Belle (Beauty and the Beast),76,57,46,6,5,4513
+Kujo Hikari,76,57,46,6,5,4514
+Lalafell,76,57,46,6,5,4515
+Kayo (Ken ga Kimi),75,57,46,6,5,4516
+Lancer (Gareth),75,57,46,6,5,4517
+Ishimori Uka,74,57,46,6,5,4518
+Marinette Dupain-Cheng,74,57,46,6,5,4519
+Goku Black,73,57,46,6,5,4520
+Blueberry Pie Cookie,73,57,46,6,5,4521
+Rider (Fate/Samurai Remnant),73,57,46,6,5,4522
+Yamanbagiri Chougi,72,57,46,6,5,4523
+Lenneth (Valkyrie Profile),71,57,46,6,5,4524
+Roll Caskett,71,57,46,6,5,4525
+Elen,71,57,46,6,5,4526
+Himari (Omamori Himari),70,57,46,6,5,4527
+Utsushimi Camie,70,57,46,6,5,4528
+Yumizuka Satsuki,69,57,46,6,5,4529
+Sasa Kazamori,69,57,46,6,5,4530
+Rider (Koha-Ace),68,57,46,6,5,4531
+Saber (Lancelot),68,57,46,6,5,4532
+Ark Royal,68,57,46,6,5,4533
+Abraham Van Helsing,67,57,46,6,5,4534
+Ibuki Tsubasa,67,57,46,6,5,4535
+Daenerys Targaryen,66,57,46,6,5,4536
+Uiharu Kazari,66,57,46,6,5,4537
+Yuno (Hidamari Sketch),66,57,46,6,5,4538
+Theresa (Arknights),66,57,46,6,5,4539
+Lisanna Strauss,66,57,46,6,5,4540
+Minase Rio,65,57,46,6,5,4541
+Douki-chan,65,57,46,6,5,4542
+Yakuo (Black Star),64,57,46,6,5,4543
+Yura (Ayakashi Koimeguri),64,57,46,6,5,4544
+Yuzuriha (Jigokuraku),63,57,46,6,5,4545
+Hitomi (Dead or Alive),62,57,46,6,5,4546
+Juliet Persia,62,57,46,6,5,4547
+Yuuki Sakuna,62,57,46,6,5,4548
+Nikaidou Shinku,62,57,46,6,5,4549
+Fediel,62,57,46,6,5,4550
+El Condor Pasa,62,57,46,6,5,4551
+Enna Alouette,61,57,46,6,5,4552
+Ilsa (Granblue Fantasy),61,57,46,6,5,4553
+Yashio Rui,61,57,46,6,5,4554
+Mukai Takumi,60,57,46,6,5,4555
+Ibaraki Yoshimi,59,57,46,6,5,4556
+Miyaura Sanshio,59,57,46,6,5,4557
+London (Azur Lane),58,57,46,6,5,4558
+Charlotte Katakuri,147,56,45,6,5,4559
+Shigaraki Tomura,119,56,45,6,5,4560
+Ryan Goldsmith,93,56,45,6,5,4561
+Shinguuji Korekiyo,84,56,45,6,5,4562
+Sakuramori Akane,80,56,45,6,5,4563
+Takao Ameku,79,56,45,6,5,4564
+Son Goku (Saiyuki),79,56,45,6,5,4565
+Cherry Cookie,79,56,45,6,5,4566
+Serizawa Momoka (Tokyo 7th Sisters),77,56,45,6,5,4567
+Kaf,74,56,45,6,5,4568
+Snow (Mahoutsukai no Yakusoku),73,56,45,6,5,4569
+Lan XiChen,72,56,45,6,5,4570
+Buran-ko,71,56,45,6,5,4571
+Creamy Mami,69,56,45,6,5,4572
+Jahy,69,56,45,6,5,4573
+Echo,69,56,45,6,5,4574
+Shinjou Hinaki,68,56,45,6,5,4575
+Lambdadelta,68,56,45,6,5,4576
+Hisui (Tsukihime),68,56,45,6,5,4577
+Kaede (Pokﾃｩmon),68,56,45,6,5,4578
+Bai Qi (Koi to Producer),67,56,45,6,5,4579
+Kiryu Moeka,67,56,45,6,5,4580
+Asta,67,56,45,6,5,4581
+Hyuuga Hanabi,66,56,45,6,5,4582
+Yamada Saburou,66,56,45,6,5,4583
+Hyacine,66,56,45,6,5,4584
+Chabashira Tenko,66,56,45,6,5,4585
+Komano Aunn,66,56,45,6,5,4586
+Elly,66,56,45,6,5,4587
+Akatsuki (Log Horizon),66,56,45,6,5,4588
+Sougetsu Gakuto,66,56,45,6,5,4589
+Nemo (Pokﾃｩmon),65,56,45,6,5,4590
+Saionji Hiyoko,65,56,45,6,5,4591
+Avenger (Nitocris Alter),65,56,45,6,5,4592
+Musa,65,56,45,6,5,4593
+Evil・・・Twin Kisikil,64,56,45,6,5,4594
+Renjouji Bell,64,56,45,6,5,4595
+Gotou Jun,63,56,45,6,5,4596
+Rororina Fryxell,63,56,45,6,5,4597
+Dorothea Arnold,63,56,45,6,5,4598
+Mikono Suzushiro,63,56,45,6,5,4599
+Ootori Eiichi,63,56,45,6,5,4600
+South Italy (Female),62,56,45,6,5,4601
+Yumekawa Yui,62,56,45,6,5,4602
+Chel,62,56,45,6,5,4603
+Lei Fang,62,56,45,6,5,4604
+Percival (Granblue Fantasy),62,56,45,6,5,4605
+Kirigaya Touko,61,56,45,6,5,4606
+Yaia (Granblue Fantasy),61,56,45,6,5,4607
+Nio (Granblue Fantasy),61,56,45,6,5,4608
+Sasaki Chie,61,56,45,6,5,4609
+Tosa,60,56,45,6,5,4610
+Shirakawa Kotori,60,56,45,6,5,4611
+Princess (Princess Principal),60,56,45,6,5,4612
+Tsukinose Vignette April,59,56,45,6,5,4613
+Leon Magnus,59,56,45,6,5,4614
+Lecia (Shingeki no Bahamut),59,56,45,6,5,4615
+Menjou Hare,58,56,45,6,5,4616
+Catherine Savasula,58,56,45,6,5,4617
+Rain (ALO),58,56,45,6,5,4618
+Suzuya (Kantai Collection),58,56,45,6,5,4619
+Kazagumo (Kantai Collection),58,56,45,6,5,4620
+Yat Sen,58,56,45,6,5,4621
+Yumesaki Kaede,57,56,45,6,5,4622
+Sunny (Omori),168,55,44,6,5,4623
+Franky,142,55,44,6,5,4624
+Inuzuka Kiba,109,55,44,6,5,4625
+Nicholas D. Wolfwood,95,55,44,6,5,4626
+Cavendish,93,55,44,6,5,4627
+Kira Izuru,88,55,44,6,5,4628
+La Folia Rihavein,87,55,44,6,5,4629
+Ash Phoenix,84,55,44,6,5,4630
+Fon,83,55,44,6,5,4631
+Morichika Rinnosuke,82,55,44,6,5,4632
+Legolas,77,55,44,6,5,4633
+Sairenji Haruna,77,55,44,6,5,4634
+Dante (Ninja Theory),75,55,44,6,5,4635
+Alice Claudia,73,55,44,6,5,4636
+Aohitsugi Nemu,72,55,44,6,5,4637
+Hosshiiwa,69,55,44,6,5,4638
+Tachibana Sylphynford,69,55,44,6,5,4639
+Jyahnar,69,55,44,6,5,4640
+Yaotome Gaku,68,55,44,6,5,4641
+Satellizer L. Bridget,68,55,44,6,5,4642
+France (Female),67,55,44,6,5,4643
+Tatsumi Takeshi,67,55,44,6,5,4644
+Pace (Arcana Famiglia),67,55,44,6,5,4645
+Rukia (Sound Horizon),67,55,44,6,5,4646
+Shindoine,66,55,44,6,5,4647
+Nomura L,65,55,44,6,5,4648
+Fiora,65,55,44,6,5,4649
+Yarai Miu,65,55,44,6,5,4650
+Pekomama,65,55,44,6,5,4651
+Nakata Sae,65,55,44,6,5,4652
+Platinum Berlitz,64,55,44,6,5,4653
+Kobayashi Rindou,64,55,44,6,5,4654
+Evil・・・Twin Lilla,64,55,44,6,5,4655
+Meme (ME!ME!ME!),63,55,44,6,5,4656
+Midori (Greenwood),63,55,44,6,5,4657
+Cassandra Alexandra,62,55,44,6,5,4658
+Kuuya (Ayakashi Koimeguri),61,55,44,6,5,4659
+Annelotte,61,55,44,6,5,4660
+Viper (Valorant),61,55,44,6,5,4661
+Ines (Arknights),60,55,44,6,5,4662
+Avenger (Mysterious Ranmaru X),60,55,44,6,5,4663
+Helel ben Shalem,59,55,44,6,5,4664
+Lan Yan,59,55,44,6,5,4665
+Tokiwa Nanaka,59,55,44,6,5,4666
+Welrod MkII (Girls Frontline),59,55,44,6,5,4667
+Lilliel,59,55,44,6,5,4668
+Kongou (Azur Lane),58,55,44,6,5,4669
+Dorothy (Princess Principal),58,55,44,6,5,4670
+Nagara,57,55,44,6,5,4671
+Kagami Masara,57,55,44,6,5,4672
+9A-91 (Girls Frontline),57,55,44,6,5,4673
+Kohaku (Yua),57,55,44,6,5,4674
+Ichihara Yuuko,159,54,43,5,6,4675
+Reborn,144,54,43,5,6,4676
+Osaki Nana,127,54,43,5,6,4677
+Lancer of Black,102,54,43,5,6,4678
+Franken Stein,101,54,43,5,6,4679
+Largo Lloyd,98,54,43,5,6,4680
+Castiel,88,54,43,5,6,4681
+Kitagawa Yuusuke,87,54,43,5,6,4682
+Road Kamelot,84,54,43,5,6,4683
+Jack (Nico Nico Singer),83,54,43,5,6,4684
+Elliot Nightray,82,54,43,5,6,4685
+Nanaba (Shingeki no Kyojin),79,54,43,5,6,4686
+Imai Nobume,79,54,43,5,6,4687
+Nishi Joichiro,78,54,43,5,6,4688
+Ogiwara Sayu,76,54,43,5,6,4689
+Niizuma Eiji,75,54,43,5,6,4690
+Yami Marik,75,54,43,5,6,4691
+Kakei Sumire,74,54,43,5,6,4692
+Aisha (Elsword),74,54,43,5,6,4693
+Lafrenze,73,54,43,5,6,4694
+Kome-Kome,73,54,43,5,6,4695
+Koizumi Itsuki,73,54,43,5,6,4696
+Necrass,72,54,43,5,6,4697
+Axel (Kingdom Hearts),71,54,43,5,6,4698
+Tsuyuri Kumin,69,54,43,5,6,4699
+Amamiya Yuuko,69,54,43,5,6,4700
+Shining Dream,69,54,43,5,6,4701
+Assassin (Fate/stay night),68,54,43,5,6,4702
+Shadow Queen,67,54,43,5,6,4703
+Kicchou Yachie,67,54,43,5,6,4704
+Miyouji,67,54,43,5,6,4705
+Shizue (Doubutsu no Mori),67,54,43,5,6,4706
+Chariot (Black・・・Rock Shooter),65,54,43,5,6,4707
+Nova (Arcana Famiglia),65,54,43,5,6,4708
+Sweet S.,65,54,43,5,6,4709
+Kurebayashi Juri,65,54,43,5,6,4710
+Hoshihara Hikaru,64,54,43,5,6,4711
+Yarizui Sen,64,54,43,5,6,4712
+Shidou Hikaru,64,54,43,5,6,4713
+Kasaki Nozomi,64,54,43,5,6,4714
+Suou Pavlichenko,63,54,43,5,6,4715
+Mozu Shepherd,63,54,43,5,6,4716
+Toujou Koneko,63,54,43,5,6,4717
+Tinasha,63,54,43,5,6,4718
+Cure Tomorrow,63,54,43,5,6,4719
+Mikoshiba Momotaro,63,54,43,5,6,4720
+Aila Jyrkiﾃ､inen,62,54,43,5,6,4721
+Felix Argyle,62,54,43,5,6,4722
+Hanazono Shuuka,62,54,43,5,6,4723
+Shy (Character),62,54,43,5,6,4724
+Pepe (Arknights),62,54,43,5,6,4725
+Ruler (Himiko),61,54,43,5,6,4726
+Tamura Yukari (Character),61,54,43,5,6,4727
+Aina Rive,61,54,43,5,6,4728
+Shiomiya Shiori,61,54,43,5,6,4729
+Chen Hai (Azur Lane),61,54,43,5,6,4730
+Blue Girl,60,54,43,5,6,4731
+Kokonoe,60,54,43,5,6,4732
+Izmir (Granblue Fantasy),60,54,43,5,6,4733
+Sanzu Haruchiyo,60,54,43,5,6,4734
+Herrscher of Reason,60,54,43,5,6,4735
+Shigure Hakka,60,54,43,5,6,4736
+Beatrice (Princess Principal),60,54,43,5,6,4737
+Hoshina Mizuho,60,54,43,5,6,4738
+Fuyutsuki (Kantai Collection),59,54,43,5,6,4739
+Hibiscus (Arknights),59,54,43,5,6,4740
+Mayer (Arknights),59,54,43,5,6,4741
+Sophie Twilight,58,54,43,5,6,4742
+Hiromachi Nanami,58,54,43,5,6,4743
+Chizuru Maki (Dream!Ing),58,54,43,5,6,4744
+Amamiya Rizumu,58,54,43,5,6,4745
+Azusa Mifuyu,58,54,43,5,6,4746
+Le Temeraire,58,54,43,5,6,4747
+Shibuya Tomochika,57,54,43,5,6,4748
+Mizumoto Yukari,56,54,43,5,6,4749
+Hina (Kamisama ni Natta hi),56,54,43,5,6,4750
+Olivia (Shingeki no Bahamut),56,54,43,5,6,4751
+Alpha (Kage No Jitsuryokusha Ni Naritakute),56,54,43,5,6,4752
+Ruler (Melusine),56,54,43,5,6,4753
+Tsukishiro Hitomi,56,54,43,5,6,4754
+Saotome Shino (Chigusa Minori),55,54,43,5,6,4755
+Berserker (Brynhild),55,54,43,5,6,4756
+Hornet (Kantai Collection),54,54,43,5,6,4757
+Tony Tony Chopper,247,53,42,5,6,4758
+Zero (Megaman X),122,53,42,5,6,4759
+Timekeeper Cookie,98,53,42,5,6,4760
+Minamiya Natsuki,93,53,42,5,6,4761
+Ren (Human),92,53,42,5,6,4762
+Tatsumi Kanji,88,53,42,5,6,4763
+Red (Pokﾃｩmon SPECIAL),87,53,42,5,6,4764
+Suzutsuki Kanade,83,53,42,5,6,4765
+Yuki (Kimi wa Meido-sama),79,53,42,5,6,4766
+Graham Aker,77,53,42,5,6,4767
+Yanagi Aiji,77,53,42,5,6,4768
+Estelle Bright,76,53,42,5,6,4769
+Rock Briefers,73,53,42,5,6,4770
+Pannacotta Fugo,72,53,42,5,6,4771
+Sakuraba Neku,72,53,42,5,6,4772
+Kofune Ushio,70,53,42,5,6,4773
+Ishikawa Goemon XIII,69,53,42,5,6,4774
+Kamisaki Hikaru,69,53,42,5,6,4775
+Oerba Dia Vanille,68,53,42,5,6,4776
+Reina (Tekken),68,53,42,5,6,4777
+Shanoa,68,53,42,5,6,4778
+Lilith (Hazbin),68,53,42,5,6,4779
+clear (Nico Nico Singer),68,53,42,5,6,4780
+Gowther (Nanatsu no Taizai),67,53,42,5,6,4781
+Otto Suwen,67,53,42,5,6,4782
+Hildegard,66,53,42,5,6,4783
+Saeki Yuzuru,66,53,42,5,6,4784
+Villetta Nu,65,53,42,5,6,4785
+Daryl Yan,65,53,42,5,6,4786
+37 (Reverse: 1999),64,53,42,5,6,4787
+Hell Kaiser Ryou,63,53,42,5,6,4788
+Pallas (Arknights),63,53,42,5,6,4789
+Tokugawa Iemitsu,62,53,42,5,6,4790
+Baobao Feng,62,53,42,5,6,4791
+Principality of Wy,62,53,42,5,6,4792
+Kogami Akira,62,53,42,5,6,4793
+Koizumi Mahiru,61,53,42,5,6,4794
+Tenjin Kotone,61,53,42,5,6,4795
+Grayfia Lucifuge,61,53,42,5,6,4796
+Lisbeth (ALO),60,53,42,5,6,4797
+Oz (Mahoutsukai no Yakusoku),60,53,42,5,6,4798
+Nyubara Reona,59,53,42,5,6,4799
+Rodney,57,53,42,5,6,4800
+Harmonie (Arknights),57,53,42,5,6,4801
+Wayu (Fire Emblem),56,53,42,5,6,4802
+Irisu Fuyumi,56,53,42,5,6,4803
+Kyouko (River City Girls),56,53,42,5,6,4804
+Asagumo (Kantai Collection),55,53,42,5,6,4805
+Galleon,55,53,42,5,6,4806
+Iri Flina,55,53,42,5,6,4807
+Montpelier,55,53,42,5,6,4808
+Nishizono Chigusa,53,53,42,5,6,4809
+Demiurge (Overlord),92,52,42,5,5,4810
+Albert Wesker,90,52,42,5,5,4811
+Isaac Foster,89,52,42,5,5,4812
+Hyuuga Junpei,82,52,42,5,5,4813
+White・・・Rock Shooter,82,52,42,5,5,4814
+Sun Quan,82,52,42,5,5,4815
+Matsuno Osomatsu,79,52,42,5,5,4816
+Miyanagi Chinami,78,52,42,5,5,4817
+Okabe Rintarou,73,52,42,5,5,4818
+Lewin Light,73,52,42,5,5,4819
+Sakaki (Azumanga Daioh),72,52,42,5,5,4820
+Sakine Meiko,70,52,42,5,5,4821
+Hihara Kazuki,70,52,42,5,5,4822
+Kuzuryuu Fuyuhiko,70,52,42,5,5,4823
+Umino Iruka,69,52,42,5,5,4824
+Nausicaa,68,52,42,5,5,4825
+Tidus,67,52,42,5,5,4826
+Archer of Black,67,52,42,5,5,4827
+Reed the Flame Shadow,66,52,42,5,5,4828
+Kisara,66,52,42,5,5,4829
+Fire Keeper,66,52,42,5,5,4830
+Rozﾃｩ (CODE GEASS),66,52,42,5,5,4831
+Soukaku,66,52,42,5,5,4832
+Li Zeyan,65,52,42,5,5,4833
+Urabe Mikoto,65,52,42,5,5,4834
+Aurora (League Of Legends),65,52,42,5,5,4835
+Ryuuzaki Umi,65,52,42,5,5,4836
+Yamanaka Sawako,64,52,42,5,5,4837
+Yunoha Thrul,64,52,42,5,5,4838
+Renﾃｩ Tamaki Richard de Grantaine,64,52,42,5,5,4839
+Ikusaba Mukuro,63,52,42,5,5,4840
+Soulburner,63,52,42,5,5,4841
+Gran (Granblue Fantasy),63,52,42,5,5,4842
+Black Heart,62,52,42,5,5,4843
+Vanitas (Vanitas no Shuki),62,52,42,5,5,4844
+Tachibana Marika,62,52,42,5,5,4845
+Vita (Houkai 3rd),62,52,42,5,5,4846
+Herrscher Of Finality,62,52,42,5,5,4847
+Remus Lupin,61,52,42,5,5,4848
+Yellow Diamond,61,52,42,5,5,4849
+Ruru-chan,61,52,42,5,5,4850
+Akutagawa Ryuunosuke (Bungou to Alchemist),61,52,42,5,5,4851
+Julie Sigtuna,61,52,42,5,5,4852
+Charlotte E. Yeager,60,52,42,5,5,4853
+Maria Grace Fleed,60,52,42,5,5,4854
+Emma Grace Frost,59,52,42,5,5,4855
+Micaiah,59,52,42,5,5,4856
+Wahira Nagomi,59,52,42,5,5,4857
+Kishinami (Kantai Collection),59,52,42,5,5,4858
+Sonny Brisko,59,52,42,5,5,4859
+Orie Ballardiae,59,52,42,5,5,4860
+Silica (ALO),58,52,42,5,5,4861
+Fidio Aldena,58,52,42,5,5,4862
+Fujibayashi Ryou,58,52,42,5,5,4863
+Takao (Aoki Hagane no Arpeggio),58,52,42,5,5,4864
+Lyrica Prismriver,58,52,42,5,5,4865
+Saijou Claudine,57,52,42,5,5,4866
+Amagami Yae,57,52,42,5,5,4867
+Kitamikado Kouga,57,52,42,5,5,4868
+Furen (Fire Emblem),57,52,42,5,5,4869
+Nono (Fire Emblem),57,52,42,5,5,4870
+Tsubakuro Yume,57,52,42,5,5,4871
+Shylily,56,52,42,5,5,4872
+Jakuri,56,52,42,5,5,4873
+Shuna (Tensei Shitara Slime Datta Ken),56,52,42,5,5,4874
+Takafuji Kako,55,52,42,5,5,4875
+Fartooth,54,52,42,5,5,4876
+Tosen Jordan,53,52,42,5,5,4877
+Hibiki Ao,53,52,42,5,5,4878
+Shirayuri Sakura,53,52,42,5,5,4879
+Shinomiya Runa,53,52,42,5,5,4880
+Aizono Manami,52,52,42,5,5,4881
+Sumeragi Subaru (X),107,51,41,5,5,4882
+Hoshigaki Kisame,102,51,41,5,5,4883
+Alucard (Castlevania),93,51,41,5,5,4884
+Clare,83,51,41,5,5,4885
+Chris Redfield,79,51,41,5,5,4886
+Parfait Cookie,78,51,41,5,5,4887
+Saitou Kon,77,51,41,5,5,4888
+Rean Schwarzer,76,51,41,5,5,4889
+Oda Nobuna (Oda Nobuna no Yabou),74,51,41,5,5,4890
+K',74,51,41,5,5,4891
+Black Jack (Character),73,51,41,5,5,4892
+Otomiya Haine,72,51,41,5,5,4893
+Ibuki (Street Fighter),71,51,41,5,5,4894
+Takagi-san,71,51,41,5,5,4895
+Hameln (SINoALICE),70,51,41,5,5,4896
+Silver (Twisted Wonderland),69,51,41,5,5,4897
+Michﾃｨle Malebranche,69,51,41,5,5,4898
+Sawamura Eijun,68,51,41,5,5,4899
+Mizushima Iku,68,51,41,5,5,4900
+V (Devil May Cry),67,51,41,5,5,4901
+Tendouji Musubi,67,51,41,5,5,4902
+Sun Shang Xiang,67,51,41,5,5,4903
+Enomoto Mineo,66,51,41,5,5,4904
+Yonaga Soushirou,65,51,41,5,5,4905
+Qin Che,65,51,41,5,5,4906
+Makishima Shy,65,51,41,5,5,4907
+Misaka Shiori,65,51,41,5,5,4908
+Aya Dravis,64,51,41,5,5,4909
+Vanellope von Schweetz,64,51,41,5,5,4910
+Yorigami Jo'on,63,51,41,5,5,4911
+Shimura Tae,63,51,41,5,5,4912
+Chloe (Mahoutsukai no Yakusoku),62,51,41,5,5,4913
+Shindou Sugata,62,51,41,5,5,4914
+Multi,62,51,41,5,5,4915
+Vert (Choujigen Game Neptune),61,51,41,5,5,4916
+Haze (Arknights),61,51,41,5,5,4917
+Asbel Lhant,61,51,41,5,5,4918
+Aiba Rui,60,51,41,5,5,4919
+Fudou Yukimitsu,60,51,41,5,5,4920
+Towa (Slow Damage),60,51,41,5,5,4921
+CZ2128 Delta,60,51,41,5,5,4922
+Futami Ami,59,51,41,5,5,4923
+Miyazawa Kenji (Bungou Stray Dogs),59,51,41,5,5,4924
+Hortense,59,51,41,5,5,4925
+Karino Shuka,58,51,41,5,5,4926
+Ushiromiya Natsuhi,58,51,41,5,5,4927
+Myrrh (Arknights),58,51,41,5,5,4928
+Karma (League of Legends),58,51,41,5,5,4929
+Tsukioka Tsumugi,58,51,41,5,5,4930
+Yamanobe Tomo,57,51,41,5,5,4931
+Risty,57,51,41,5,5,4932
+Sivir,57,51,41,5,5,4933
+Dlanor A. Knox,57,51,41,5,5,4934
+Tokido Saya,57,51,41,5,5,4935
+Xianghua,57,51,41,5,5,4936
+Hayasaka Mirei,56,51,41,5,5,4937
+Tsukishiro Yanagi,55,51,41,5,5,4938
+Kikkou Sadamune,55,51,41,5,5,4939
+Poison,55,51,41,5,5,4940
+Sachi (Sword Art Online),55,51,41,5,5,4941
+Yangyang,55,51,41,5,5,4942
+Narita Taishin,55,51,41,5,5,4943
+Socie (Granblue Fantasy),55,51,41,5,5,4944
+Sakura (Fire Emblem),54,51,41,5,5,4945
+Andreana,54,51,41,5,5,4946
+Caster (Charlotte Corday),53,51,41,5,5,4947
+Manya (Dragon Quest IV),53,51,41,5,5,4948
+Amagami Asahi,53,51,41,5,5,4949
+Sims,52,51,41,5,5,4950
+Glasgow,52,51,41,5,5,4951
+Watanuki Kimihiro,116,50,40,5,5,4952
+Badou Nails,88,50,40,5,5,4953
+Hitoshura,84,50,40,5,5,4954
+Otonashi Saya,80,50,40,5,5,4955
+Stefano Valentini,78,50,40,5,5,4956
+Chandelure,77,50,40,5,5,4957
+Vanitas,75,50,40,5,5,4958
+Ogata Hyakunosuke,71,50,40,5,5,4959
+Sylvanas Windrunner,70,50,40,5,5,4960
+Kazehaya Shouta,69,50,40,5,5,4961
+Laxus Dreyar,69,50,40,5,5,4962
+Archer (Nikola Tesla),68,50,40,5,5,4963
+Mitsurugi Reiji,68,50,40,5,5,4964
+Hanabusa Kokoro,67,50,40,5,5,4965
+Lloyd Bannings,67,50,40,5,5,4966
+North Italy (Female),67,50,40,5,5,4967
+Flonne,67,50,40,5,5,4968
+Nogizaka Haruka,67,50,40,5,5,4969
+Wakuri Kaoruko,67,50,40,5,5,4970
+Momoi Airi,66,50,40,5,5,4971
+Trixie Lulamoon,64,50,40,5,5,4972
+Sherlock Holmes (Dai Gyakuten Saiban),64,50,40,5,5,4973
+Liberta,63,50,40,5,5,4974
+Aura Bella Fiora,63,50,40,5,5,4975
+Jack Vessalius,63,50,40,5,5,4976
+Faputa,63,50,40,5,5,4977
+Zhou Qiluo,63,50,40,5,5,4978
+Futaba Rio,62,50,40,5,5,4979
+Gneisenau,62,50,40,5,5,4980
+Kamijou Tatsuhisa,61,50,40,5,5,4981
+Espresso Cookie,61,50,40,5,5,4982
+Sarutobi Sasuke (Sengoku Musou),61,50,40,5,5,4983
+Guel Jeturk,60,50,40,5,5,4984
+Shiranui Nanami,60,50,40,5,5,4985
+Fujiwara Hazuki,60,50,40,5,5,4986
+Chidouin Sara,60,50,40,5,5,4987
+Kuronuma Aoba,59,50,40,5,5,4988
+Yachi Hitoka,59,50,40,5,5,4989
+Watatsuki no Toyohime,58,50,40,5,5,4990
+Tachibana Miya,58,50,40,5,5,4991
+Ushizaki Urumi,58,50,40,5,5,4992
+Rustica,58,50,40,5,5,4993
+Lady (Devil May Cry),58,50,40,5,5,4994
+White (Mahoutsukai no Yakusoku),58,50,40,5,5,4995
+Voyager (Reverse:1999),57,50,40,5,5,4996
+Kokonoe Rin,57,50,40,5,5,4997
+Shigino Kisumi,57,50,40,5,5,4998
+Kakusei Miki,56,50,40,5,5,4999
+Scylla,56,50,40,5,5,5000
+Merlin Prismriver,56,50,40,5,5,5001
+Solution Epsilon,56,50,40,5,5,5002
+Ezo Red Fox (Kemono Friends),56,50,40,5,5,5003
+Shirakawa Nanaka,55,50,40,5,5,5004
+Takumi (Fire Emblem),55,50,40,5,5,5005
+Miria Mackenzie,55,50,40,5,5,5006
+Haneda Kobato,55,50,40,5,5,5007
+Hasuta,54,50,40,5,5,5008
+Ymir (Queen's Blade),54,50,40,5,5,5009
+Ninian (Fire Emblem),54,50,40,5,5,5010
+Mine Riko,54,50,40,5,5,5011
+Fang (Arknights),54,50,40,5,5,5012
+Kazama Mana,54,50,40,5,5,5013
+Takeya Yuki,54,50,40,5,5,5014
+Metera (Granblue Fantasy),54,50,40,5,5,5015
+Houchou Toushirou,54,50,40,5,5,5016
+Andou Ringo,53,50,40,5,5,5017
+Sakurakouji Luna,53,50,40,5,5,5018
+Lucifer (Sister of Purgatory),53,50,40,5,5,5019
+G11 (Girls Frontline),53,50,40,5,5,5020
+Duramente,53,50,40,5,5,5021
+Elina Vance,52,50,40,5,5,5022
+Hinoa,52,50,40,5,5,5023
+Yakumo Mikage,52,50,40,5,5,5024
+Alicia (Queen's Blade),52,50,40,5,5,5025
+Mikazuki (Kantai Collection),52,50,40,5,5,5026
+Linkle,52,50,40,5,5,5027
+Duke of York,52,50,40,5,5,5028
+Tsukahara Hibiki,51,50,40,5,5,5029
+Satyr (Granblue Fantasy),51,50,40,5,5,5030
+Kazamine Setsugekka,50,50,40,5,5,5031
