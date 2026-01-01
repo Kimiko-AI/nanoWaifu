@@ -1,6 +1,9 @@
 import torch
 import torch.nn as nn
 import torch.optim as optim
+import torch.distributed as dist
+from torch.nn.parallel import DistributedDataParallel as DDP
+from torch.utils.data.distributed import DistributedSampler
 import yaml
 import os
 import argparse
@@ -9,11 +12,29 @@ from torchvision.utils import make_grid
 from tqdm import tqdm
 import wandb
 import glob
+import builtins
 
 from model import DiT
 from dataset import WDSLoader
 
-def cleanup_checkpoints(output_dir, max_checkpoints):
+def setup_ddp():
+    if "RANK" in os.environ and "WORLD_SIZE" in os.environ:
+        dist.init_process_group(backend="nccl")
+        rank = int(os.environ["RANK"])
+        local_rank = int(os.environ["LOCAL_RANK"])
+        world_size = int(os.environ["WORLD_SIZE"])
+        torch.cuda.set_device(local_rank)
+        device = torch.device("cuda", local_rank)
+        return True, rank, local_rank, world_size, device
+    else:
+        return False, 0, 0, 1, torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+def cleanup_ddp():
+    if dist.is_initialized():
+        dist.destroy_process_group()
+
+def cleanup_checkpoints(output_dir, max_checkpoints, rank):
+    if rank != 0: return
     # Find all checkpoints
     checkpoints = glob.glob(os.path.join(output_dir, "ckpt_step_*.pth"))
     # Sort by step number (extracted from filename)
@@ -33,21 +54,18 @@ def cleanup_checkpoints(output_dir, max_checkpoints):
 def sample_flow(model, image_size, batch_size, classes, coords, device, steps=50, cfg_scale=4.0):
     """
     Sample using Euler integration of the flow ODE with Classifier-Free Guidance.
-    dx/dt = v(x, t)
-    x_1 = x_0 + int_0^1 v(x_t, t) dt
-    
-    v_cfg = v_uncond + cfg_scale * (v_cond - v_uncond)
     """
+    # Handle DDP model wrapper
+    model_engine = model.module if isinstance(model, DDP) else model
+    
     # Start from noise x_0
     x = torch.randn((batch_size, 3, image_size, image_size), device=device)
     
     dt = 1.0 / steps
     indices = torch.linspace(0, 1, steps, device=device)
     
-    # Pre-prepare null classes for unconditioned pass (index = num_classes)
-    # We can assume model.num_classes is available or pass it. 
-    # model.num_classes corresponds to the unconditioned token index.
-    null_classes = torch.full_like(classes, model.num_classes, device=device)
+    # Pre-prepare null classes for unconditioned pass
+    null_classes = torch.full_like(classes, model_engine.num_classes, device=device)
     
     for i in tqdm(range(steps), desc='Sampling', leave=False):
         t = indices[i]
@@ -59,7 +77,6 @@ def sample_flow(model, image_size, batch_size, classes, coords, device, steps=50
         coords_in = torch.cat([coords, coords])
         
         # Predict velocity field v_t
-        # Scale t by 1000 to match the frequency range expected by the embedder
         v_pred = model(x_in, t_batch * 1000, c_in, coords_in)
         
         v_cond, v_uncond = v_pred.chunk(2)
@@ -71,14 +88,22 @@ def sample_flow(model, image_size, batch_size, classes, coords, device, steps=50
     return x
 
 def train(config_path):
+    is_ddp, rank, local_rank, world_size, device = setup_ddp()
+    
+    # Suppress printing on non-master ranks
+    if rank != 0:
+        def print_pass(*args, **kwargs):
+            pass
+        builtins.print = print_pass
+
     with open(config_path, 'r') as f:
         config = yaml.safe_load(f)
 
-    device = "cuda" if torch.cuda.is_available() else "cpu"
-    print(f"Using device: {device}")
+    print(f"Using device: {device}, Rank: {rank}, World Size: {world_size}")
     
-    # Initialize WandB
-    wandb.init(project=config.get('wandb_project', 'nanoWaifu-DiT'), config=config)
+    # Initialize WandB only on rank 0
+    if rank == 0:
+        wandb.init(project=config.get('wandb_project', 'nanoWaifu-DiT'), config=config)
     
     # Load Data
     wds_loader = WDSLoader(
@@ -105,51 +130,71 @@ def train(config_path):
         class_dropout_prob=config['training']['class_dropout_prob']
     ).to(device)
     
+    optimizer = optim.AdamW(model.parameters(), lr=config['training']['learning_rate'])
+    
     # Resume from checkpoint if specified
+    start_epoch = 0
+    global_step = 0
     resume_path = config.get('resume_from', "")
+    
     if resume_path and os.path.exists(resume_path):
         print(f"Resuming from checkpoint: {resume_path}")
         try:
             state_dict = torch.load(resume_path, map_location=device)
-            model.load_state_dict(state_dict)
-            print("Successfully loaded model weights.")
+            
+            # Load model weights
+            if "model_state_dict" in state_dict:
+                model.load_state_dict(state_dict["model_state_dict"])
+            else:
+                model.load_state_dict(state_dict) # Legacy support
+            
+            # Load optimizer state
+            if "optimizer_state_dict" in state_dict:
+                optimizer.load_state_dict(state_dict["optimizer_state_dict"])
+                print("Loaded optimizer state.")
+                
+            # Load global step
+            if "global_step" in state_dict:
+                global_step = state_dict["global_step"]
+                print(f"Resuming from global step: {global_step}")
+
+            print("Successfully loaded checkpoint.")
         except Exception as e:
             print(f"Error loading checkpoint: {e}")
-    
-    optimizer = optim.AdamW(model.parameters(), lr=config['training']['learning_rate'])
+
+    # Wrap model in DDP
+    if is_ddp:
+        model = DDP(model, device_ids=[local_rank])
     
     os.makedirs(config['training']['output_dir'], exist_ok=True)
     
-    global_step = 0
     cfg_scale = config['training'].get('cfg_scale', 4.0)
-
-    for epoch in range(config['training']['num_epochs']):
+    
+    # Training Loop
+    for epoch in range(start_epoch, config['training']['num_epochs']):
         print(f"Epoch {epoch+1}/{config['training']['num_epochs']}")
-        for batch in dataloader:
+        
+        # Create progress bar only on rank 0
+        if rank == 0:
+            pbar = tqdm(dataloader, desc=f"Epoch {epoch+1}", dynamic_ncols=True)
+            batch_iterator = pbar
+        else:
+            batch_iterator = dataloader
+
+        for batch in batch_iterator:
             x1, class_ids, coords = batch
             x1 = x1.to(device)
             class_ids = class_ids.to(device)
             coords = coords.to(device)
             
             # Flow Matching Training
-            # 1. Sample t uniform [0, 1]
             t = torch.rand((x1.shape[0],), device=device)
-            
-            # 2. Sample noise x0
             x0 = torch.randn_like(x1)
-            
-            # 3. Compute x_t (Linear interpolation / Optimal Transport path)
-            # x_t = (1 - t) * x0 + t * x1
             t_reshaped = t.view(-1, 1, 1, 1)
             xt = (1 - t_reshaped) * x0 + t_reshaped * x1
-            
-            # 4. Target vector field v_t = dx_t/dt = x1 - x0
             ut = x1 - x0
             
-            # 5. Predict vector field
-            # Scale t by 1000 for embedding frequency compatibility
             vt = model(xt, t * 1000, class_ids, coords)
-            
             loss = torch.mean((vt - ut) ** 2)
             
             optimizer.zero_grad()
@@ -158,43 +203,54 @@ def train(config_path):
             
             global_step += 1
             
-            if global_step % config['training']['log_every_steps'] == 0:
-                print(f"Step {global_step}, Loss: {loss.item():.4f}")
-                wandb.log({"train/loss": loss.item()}, step=global_step)
-            
-            if global_step % config['training']['save_image_every_steps'] == 0:
-                print("Sampling and Saving Checkpoint...")
+            if rank == 0:
+                if global_step % config['training']['log_every_steps'] == 0:
+                    pbar.set_postfix({"loss": f"{loss.item():.4f}"})
+                    wandb.log({"train/loss": loss.item()}, step=global_step)
                 
-                # Save Checkpoint
-                ckpt_path = os.path.join(config['training']['output_dir'], f'ckpt_step_{global_step}.pth')
-                torch.save(model.state_dict(), ckpt_path)
-                cleanup_checkpoints(config['training']['output_dir'], config.get('max_checkpoints', 3))
-                
-                # Sample
-                model.eval()
-                sample_classes = torch.randint(0, num_classes, (4,), device=device)
-                sample_coords = torch.tensor([[0.0, 0.0, 1.0, 1.0]] * 4, device=device)
-                
-                samples = sample_flow(model, config['training']['image_size'], 4, sample_classes, sample_coords, device, cfg_scale=cfg_scale)
-                
-                samples = (samples + 1) / 2.0
-                samples = torch.clamp(samples, 0, 1)
-                
-                grid = make_grid(samples, nrow=2)
-                # Log image to wandb
-                wandb_image = wandb.Image(grid, caption=f"Sample Step {global_step} (CFG={cfg_scale})")
-                wandb.log({"samples": wandb_image}, step=global_step)
-                
-                model.train()
+                if global_step % config['training']['save_image_every_steps'] == 0:
+                    print("Sampling and Saving Checkpoint...")
+                    
+                    # Save Checkpoint (Unwrap DDP)
+                    model_to_save = model.module if is_ddp else model
+                    ckpt_state = {
+                        "model_state_dict": model_to_save.state_dict(),
+                        "optimizer_state_dict": optimizer.state_dict(),
+                        "global_step": global_step,
+                        "config": config
+                    }
+                    ckpt_path = os.path.join(config['training']['output_dir'], f'ckpt_step_{global_step}.pth')
+                    torch.save(ckpt_state, ckpt_path)
+                    cleanup_checkpoints(config['training']['output_dir'], config.get('max_checkpoints', 3), rank)
+                    
+                    # Sample
+                    model.eval()
+                    sample_classes = torch.randint(0, num_classes, (4,), device=device)
+                    sample_coords = torch.tensor([[0.0, 0.0, 1.0, 1.0]] * 4, device=device)
+                    
+                    samples = sample_flow(model, config['training']['image_size'], 4, sample_classes, sample_coords, device, cfg_scale=cfg_scale)
+                    
+                    samples = (samples + 1) / 2.0
+                    samples = torch.clamp(samples, 0, 1)
+                    
+                    grid = make_grid(samples, nrow=2)
+                    wandb_image = wandb.Image(grid, caption=f"Sample Step {global_step} (CFG={cfg_scale})")
+                    wandb.log({"samples": wandb_image}, step=global_step)
+                    
+                    model.train()
 
     print("Training Complete.")
-    final_path = os.path.join(config['training']['output_dir'], 'dit_model_final.pth')
-    torch.save(model.state_dict(), final_path)
-    wandb.finish()
+    if rank == 0:
+        final_path = os.path.join(config['training']['output_dir'], 'dit_model_final.pth')
+        model_to_save = model.module if is_ddp else model
+        torch.save(model_to_save.state_dict(), final_path)
+        wandb.finish()
+    
+    cleanup_ddp()
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", type=str, default="config.yaml", help="Path to config file")
     args = parser.parse_args()
     
-    train(args.config)
+        train(args.config)

@@ -72,11 +72,11 @@ class WDSLoader:
 
     def make_loader(self):
         dataset = (
-            wds.WebDataset(self.url)
+            wds.WebDataset(self.url, nodesplitter=wds.split_by_node, splitter=wds.split_by_worker, handler=warn_and_continue,)
             .shuffle(1000)
-            .map(self.preprocess)
+            .map(self.preprocess, handler=warn_and_continue,)
             .select(lambda x: x is not None)
-            .to_tuple("image", "class_id", "coords")
+            .to_tuple("image", "class_id", "coords", handler=warn_and_continue,)
             .batched(self.batch_size, partial=False)
         )
         
