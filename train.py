@@ -184,6 +184,15 @@ def train(config_path):
                 
             missing, unexpected = model.load_state_dict(new_state_dict, strict=False)
             print(f"Loaded checkpoint. Missing keys (expected for new head): {len(missing)}")
+            if missing:
+                print("Missing keys:")
+                for key in sorted(missing):
+                    print(f"  - {key}")
+            
+            if unexpected:
+                print(f"Unexpected keys: {len(unexpected)}")
+                for key in sorted(unexpected):
+                    print(f"  - {key}")
 
             # Attempt to load optimizer state if available and compatible
             if isinstance(checkpoint, dict) and "optimizer_state_dict" in checkpoint:
