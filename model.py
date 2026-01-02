@@ -218,20 +218,21 @@ class SmallUNet(nn.Module):
         )
         temb_dim = 4 * hidden_size
 
-        # Encoder
-        self.enc1 = nn.Conv2d(in_channels, hidden_size, 3, padding=1) # 64x64
-        self.block1 = ResBlock(hidden_size, hidden_size, temb_dim)
+        # Encoder - Stage 1 (Aggressive Downsample)
+        # 64x64 -> 32x32
+        self.enc1 = nn.Conv2d(in_channels, hidden_size * 2, kernel_size=7, stride=2, padding=3)
+        self.block1 = ResBlock(hidden_size * 2, hidden_size * 2, temb_dim)
         
-        self.down1 = nn.Conv2d(hidden_size, hidden_size * 2, 3, stride=2, padding=1) # 32x32
-        self.block2 = ResBlock(hidden_size * 2, hidden_size * 2, temb_dim)
-        
-        self.down2 = nn.Conv2d(hidden_size * 2, hidden_size * 4, 3, stride=2, padding=1) # 16x16
+        # 32x32 -> 16x16
+        self.down2 = nn.Conv2d(hidden_size * 2, hidden_size * 4, 3, stride=2, padding=1)
         self.block3 = ResBlock(hidden_size * 4, hidden_size * 4, temb_dim)
 
-        self.down3 = nn.Conv2d(hidden_size * 4, hidden_size * 4, 3, stride=2, padding=1) # 8x8
+        # 16x16 -> 8x8
+        self.down3 = nn.Conv2d(hidden_size * 4, hidden_size * 4, 3, stride=2, padding=1)
         self.block4 = ResBlock(hidden_size * 4, hidden_size * 4, temb_dim)
 
-        self.down4 = nn.Conv2d(hidden_size * 4, hidden_size * 4, 3, stride=2, padding=1) # 4x4
+        # 8x8 -> 4x4
+        self.down4 = nn.Conv2d(hidden_size * 4, hidden_size * 4, 3, stride=2, padding=1)
         self.block5 = ResBlock(hidden_size * 4, hidden_size * 4, temb_dim)
 
         # Bottleneck with conditioning (4x4)
@@ -239,71 +240,65 @@ class SmallUNet(nn.Module):
         self.mid_block2 = ResBlock(hidden_size * 4, hidden_size * 4, temb_dim)
         
         # Decoder
-        self.up1 = nn.Upsample(scale_factor=2, mode='nearest') # 8x8
+        # 4x4 -> 8x8
+        self.up1 = nn.Upsample(scale_factor=2, mode='nearest')
         self.conv_up1 = nn.Conv2d(hidden_size * 4, hidden_size * 4, 3, padding=1)
         self.block6 = ResBlock(hidden_size * 4 + hidden_size * 4, hidden_size * 4, temb_dim)
         
-        self.up2 = nn.Upsample(scale_factor=2, mode='nearest') # 16x16
+        # 8x8 -> 16x16
+        self.up2 = nn.Upsample(scale_factor=2, mode='nearest')
         self.conv_up2 = nn.Conv2d(hidden_size * 4, hidden_size * 4, 3, padding=1)
         self.block7 = ResBlock(hidden_size * 4 + hidden_size * 4, hidden_size * 4, temb_dim)
         
-        self.up3 = nn.Upsample(scale_factor=2, mode='nearest') # 32x32
+        # 16x16 -> 32x32
+        self.up3 = nn.Upsample(scale_factor=2, mode='nearest')
         self.conv_up3 = nn.Conv2d(hidden_size * 4, hidden_size * 2, 3, padding=1)
         self.block8 = ResBlock(hidden_size * 2 + hidden_size * 2, hidden_size * 2, temb_dim)
         
-        self.up4 = nn.Upsample(scale_factor=2, mode='nearest') # 64x64
-        self.conv_up4 = nn.Conv2d(hidden_size * 2, hidden_size, 3, padding=1)
-        self.block9 = ResBlock(hidden_size + hidden_size, hidden_size, temb_dim)
-        
+        # Final Upsample: 32x32 -> 64x64
+        self.up_out = nn.ConvTranspose2d(hidden_size * 2, hidden_size, kernel_size=4, stride=2, padding=1)
         self.out_conv = nn.Conv2d(hidden_size, out_channels, 3, padding=1)
 
     def forward(self, x, t, cond_features):
         temb = self.time_embed(TimestepEmbedder.timestep_embedding(t, self.hidden_size))
         
         # Encoder
-        x1 = self.enc1(x) # 64
+        x1 = self.enc1(x) # 32x32
         x1 = self.block1(x1, temb)
         
-        x2 = self.down1(x1) # 32
-        x2 = self.block2(x2, temb)
+        x2 = self.down2(x1) # 16x16
+        x2 = self.block3(x2, temb)
         
-        x3 = self.down2(x2) # 16
-        x3 = self.block3(x3, temb)
+        x3 = self.down3(x2) # 8x8
+        x3 = self.block4(x3, temb)
         
-        x4 = self.down3(x3) # 8
-        x4 = self.block4(x4, temb)
-        
-        x5 = self.down4(x4) # 4
-        x5 = self.block5(x5, temb)
+        x4 = self.down4(x3) # 4x4
+        x4 = self.block5(x4, temb)
         
         # Bottleneck - Inject conditioning
-        # cond_features: (N, C_cond, 4, 4) if patch_size=16
-        x_mid = torch.cat([x5, cond_features], dim=1)
+        x_mid = torch.cat([x4, cond_features], dim=1)
         x_mid = self.mid_block1(x_mid, temb)
         x_mid = self.mid_block2(x_mid, temb)
         
         # Decoder
-        x_up = self.up1(x_mid) # 8
+        x_up = self.up1(x_mid) # 8x8
         x_up = self.conv_up1(x_up)
-        x_up = torch.cat([x_up, x4], dim=1)
+        x_up = torch.cat([x_up, x3], dim=1)
         x_up = self.block6(x_up, temb)
         
-        x_up = self.up2(x_up) # 16
+        x_up = self.up2(x_up) # 16x16
         x_up = self.conv_up2(x_up)
-        x_up = torch.cat([x_up, x3], dim=1)
+        x_up = torch.cat([x_up, x2], dim=1)
         x_up = self.block7(x_up, temb)
         
-        x_up = self.up3(x_up) # 32
+        x_up = self.up3(x_up) # 32x32
         x_up = self.conv_up3(x_up)
-        x_up = torch.cat([x_up, x2], dim=1)
+        x_up = torch.cat([x_up, x1], dim=1)
         x_up = self.block8(x_up, temb)
         
-        x_up = self.up4(x_up) # 64
-        x_up = self.conv_up4(x_up)
-        x_up = torch.cat([x_up, x1], dim=1)
-        x_up = self.block9(x_up, temb)
-        
-        out = self.out_conv(x_up)
+        # Final Upsample
+        out = self.up_out(x_up) # 64x64
+        out = self.out_conv(out)
         return out
 
 class DiT(nn.Module):

@@ -4,7 +4,7 @@ training:
   num_epochs: 100
   max_train_steps: 1000000
   gradient_checkpointing: true
-  freeze_backbone: true
+  freeze_backbone: false
   log_every_steps: 10
 
   save_image_every_steps: 5000
