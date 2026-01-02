@@ -150,7 +150,7 @@ def train(config_path):
     # Resume from checkpoint if specified
     start_epoch = 0
     global_step = 0
-    resume_path = config.get('resume_from', "")
+    resume_path = config.get('resume_from', "/workspace/shinon/t2i/nanoWaifu/outputs/ckpt_step_65000.pth")
 
     if resume_path and os.path.exists(resume_path):
         print(f"Resuming from checkpoint: {resume_path}")
@@ -184,6 +184,12 @@ def train(config_path):
                 
             missing, unexpected = model.load_state_dict(new_state_dict, strict=False)
             print(f"Loaded checkpoint. Missing keys (expected for new head): {len(missing)}")
+
+            if new_state_dict:
+                print(f"Loaded keys: {len(new_state_dict)}")
+                for key in sorted(new_state_dict.keys()):
+                    print(f"  + {key}")
+
             if missing:
                 print("Missing keys:")
                 for key in sorted(missing):
