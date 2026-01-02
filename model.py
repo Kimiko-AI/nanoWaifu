@@ -318,6 +318,8 @@ class DiT(nn.Module):
         class_dropout_prob=0.1,
     ):
         super().__init__()
+        self.num_classes = num_classes
+        self.class_dropout_prob = class_dropout_prob
         self.backbone = DiTBackbone(
             input_size, patch_size, in_channels, hidden_size,
             depth, num_heads, mlp_ratio, num_classes, class_dropout_prob
