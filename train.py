@@ -152,16 +152,40 @@ def train(config_path):
         try:
             state_dict = torch.load(resume_path, map_location=device)
 
-            # Load model weights
+            # Load model weights with smart remapping and shape check
             if "model_state_dict" in state_dict:
-                model.load_state_dict(state_dict["model_state_dict"])
-            else:
-                model.load_state_dict(state_dict)  # Legacy support
+                loaded_state = state_dict["model_state_dict"]
+                model_state = model.state_dict()
+                new_state_dict = {}
+                
+                for k, v in loaded_state.items():
+                    target_key = None
+                    if k in model_state:
+                        target_key = k
+                    elif f"backbone.{k}" in model_state:
+                        target_key = f"backbone.{k}"
+                    
+                    if target_key:
+                        if model_state[target_key].shape == v.shape:
+                            new_state_dict[target_key] = v
+                        else:
+                            print(f"Skipping key {k} -> {target_key} due to shape mismatch: {v.shape} vs {model_state[target_key].shape}")
+                
+                missing, unexpected = model.load_state_dict(new_state_dict, strict=False)
+                print(f"Loaded checkpoint. Missing keys: {len(missing)}")
+                # Optional: print(f"Missing keys: {missing}")
 
-            # Load optimizer state
+            else:
+                # Legacy direct load
+                model.load_state_dict(state_dict, strict=False) 
+
+            # Load optimizer state (try-except as it might fail if parameters changed)
             if "optimizer_state_dict" in state_dict:
-                optimizer.load_state_dict(state_dict["optimizer_state_dict"])
-                print("Loaded optimizer state.")
+                try:
+                    optimizer.load_state_dict(state_dict["optimizer_state_dict"])
+                    print("Loaded optimizer state.")
+                except Exception as e:
+                    print(f"Could not load optimizer state (expected if model architecture changed): {e}")
 
             # Load global step
             if "global_step" in state_dict:
@@ -175,14 +199,14 @@ def train(config_path):
     # Wrap model in DDP
     if is_ddp:
         model = DDP(model, device_ids=[local_rank])
-    model.compile()
+    
+    # model.compile() # Optional, can enable if needed
     os.makedirs(config['training']['output_dir'], exist_ok=True)
 
     cfg_scale = config['training'].get('cfg_scale', 4.0)
 
     # Training Loop
     # Calculate max_train_steps if not explicitly provided
-    # Default to 1000 steps per epoch as a placeholder if not specified
     max_train_steps = config['training'].get('max_train_steps', config['training']['num_epochs'] * 1000)
 
     # Create progress bar only on rank 0
@@ -263,7 +287,6 @@ def train(config_path):
                         "model_state_dict": model_to_save.state_dict(),
                         "optimizer_state_dict": optimizer.state_dict(),
                         "global_step": global_step,
-                        "epoch": epoch,
                         "config": config
                     }
                     ckpt_path = os.path.join(config['training']['output_dir'], f'ckpt_step_{global_step}.pth')
