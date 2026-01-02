@@ -1,12 +1,12 @@
 training:
   batch_size: 128
-  learning_rate: 1.0e-4
+  learning_rate: 3.0e-4
   num_epochs: 100
-  max_train_steps: 100000
+  max_train_steps: 1000000
   gradient_checkpointing: true
   log_every_steps: 10
 
-  save_image_every_steps: 500
+  save_image_every_steps: 5000
   image_size: 256  # Small for testing/raw pixel speed
   patch_size: 16   # Small patch size since image is small (64/4 = 16 patches per side)
   num_workers: 2
@@ -14,7 +14,7 @@ training:
   cfg_scale: 4.0
   output_dir: "outputs"
   wandb_project: "nanoWaifu-DiT"
-  resume_from: "" # Path to checkpoint to resume from (e.g. "outputs/ckpt_step_1000.pth"), empty for new run
+  resume_from: "outputs/ckpt_step_65000.pth" # Path to checkpoint to resume from (e.g. "outputs/ckpt_step_1000.pth"), empty for new run
   max_checkpoints: 3 # Keep only top N latest checkpoints
 
 model:

@@ -157,29 +157,30 @@ def train(config_path):
                 loaded_state = state_dict["model_state_dict"]
                 model_state = model.state_dict()
                 new_state_dict = {}
-                
+
                 for k, v in loaded_state.items():
                     target_key = None
                     if k in model_state:
                         target_key = k
                     elif f"backbone.{k}" in model_state:
                         target_key = f"backbone.{k}"
-                    
+
                     if target_key:
                         if model_state[target_key].shape == v.shape:
                             new_state_dict[target_key] = v
                         else:
-                            print(f"Skipping key {k} -> {target_key} due to shape mismatch: {v.shape} vs {model_state[target_key].shape}")
-                
+                            print(
+                                f"Skipping key {k} -> {target_key} due to shape mismatch: {v.shape} vs {model_state[target_key].shape}")
+
                 missing, unexpected = model.load_state_dict(new_state_dict, strict=False)
                 print(f"Loaded checkpoint. Missing keys: {len(missing)}")
                 # Optional: print(f"Missing keys: {missing}")
 
             else:
                 # Legacy direct load
-                model.load_state_dict(state_dict, strict=False) 
+                model.load_state_dict(state_dict, strict=False)
 
-            # Load optimizer state (try-except as it might fail if parameters changed)
+                # Load optimizer state (try-except as it might fail if parameters changed)
             if "optimizer_state_dict" in state_dict:
                 try:
                     optimizer.load_state_dict(state_dict["optimizer_state_dict"])
@@ -199,7 +200,7 @@ def train(config_path):
     # Wrap model in DDP
     if is_ddp:
         model = DDP(model, device_ids=[local_rank])
-    
+
     # model.compile() # Optional, can enable if needed
     os.makedirs(config['training']['output_dir'], exist_ok=True)
 
@@ -258,7 +259,7 @@ def train(config_path):
         # Update progress bar and logs
         if rank == 0:
             pbar.update(1)
-            
+
             current_lr = optimizer.param_groups[0]['lr']
             logs = {
                 "loss": loss.item(),
@@ -274,46 +275,45 @@ def train(config_path):
 
         # Sample and save checkpoint (only on rank 0)
         if global_step % config['training']['save_image_every_steps'] == 0:
-                # Synchronize all processes before checkpoint
-                if is_ddp:
-                    dist.barrier()
+            # Synchronize all processes before checkpoint
+            if is_ddp:
+                dist.barrier()
 
-                if rank == 0:
-                    print("\nSampling and Saving Checkpoint...")
+            if rank == 0:
+                print("\nSampling and Saving Checkpoint...")
 
-                    # Save Checkpoint (Unwrap DDP)
-                    model_to_save = model.module if is_ddp else model
-                    ckpt_state = {
-                        "model_state_dict": model_to_save.state_dict(),
-                        "optimizer_state_dict": optimizer.state_dict(),
-                        "global_step": global_step,
-                        "config": config
-                    }
-                    ckpt_path = os.path.join(config['training']['output_dir'], f'ckpt_step_{global_step}.pth')
-                    torch.save(ckpt_state, ckpt_path)
-                    cleanup_checkpoints(config['training']['output_dir'], config.get('max_checkpoints', 3), rank)
+                # Save Checkpoint (Unwrap DDP)
+                model_to_save = model.module if is_ddp else model
+                ckpt_state = {
+                    "model_state_dict": model_to_save.state_dict(),
+                    "global_step": global_step,
+                    "config": config
+                }
+                ckpt_path = os.path.join(config['training']['output_dir'], f'ckpt_step_{global_step}.pth')
+                torch.save(ckpt_state, ckpt_path)
+                cleanup_checkpoints(config['training']['output_dir'], config.get('max_checkpoints', 3), rank)
 
-                    # Sample
-                    model.eval()
-                    optimizer.eval()
-                    with torch.no_grad():
-                        sample_classes = torch.randint(0, num_classes, (4,), device=device)
-                        sample_coords = torch.tensor([[0.0, 0.0, 1.0, 1.0]] * 4, device=device)
-                        samples = sample_flow(model, config['training']['image_size'], 4,
-                                              sample_classes, sample_coords, device, cfg_scale=cfg_scale)
-                        samples = (samples + 1) / 2.0
-                        samples = torch.clamp(samples, 0, 1)
-                        grid = make_grid(samples, nrow=2)
-                        wandb_image = wandb.Image(grid, caption=f"Sample Step {global_step} (CFG={cfg_scale})")
-                        wandb.log({"samples": wandb_image}, step=global_step)
+                # Sample
+                model.eval()
+                optimizer.eval()
+                with torch.no_grad():
+                    sample_classes = torch.randint(0, num_classes, (4,), device=device)
+                    sample_coords = torch.tensor([[0.0, 0.0, 1.0, 1.0]] * 4, device=device)
+                    samples = sample_flow(model, config['training']['image_size'], 4,
+                                          sample_classes, sample_coords, device, cfg_scale=cfg_scale)
+                    samples = (samples + 1) / 2.0
+                    samples = torch.clamp(samples, 0, 1)
+                    grid = make_grid(samples, nrow=2)
+                    wandb_image = wandb.Image(grid, caption=f"Sample Step {global_step} (CFG={cfg_scale})")
+                    wandb.log({"samples": wandb_image}, step=global_step)
 
-                    model.train()
-                    optimizer.train()
-                    print("Checkpoint and sampling complete.\n")
+                model.train()
+                optimizer.train()
+                print("Checkpoint and sampling complete.\n")
 
-                # Synchronize again after checkpoint
-                if is_ddp:
-                    dist.barrier()
+            # Synchronize again after checkpoint
+            if is_ddp:
+                dist.barrier()
 
     print("Training Complete.")
     if rank == 0:
