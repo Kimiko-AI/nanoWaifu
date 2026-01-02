@@ -81,7 +81,7 @@ def sample_flow(model, image_size, batch_size, classes, coords, device, steps=50
         coords_in = torch.cat([coords, coords])
 
         # Predict velocity field v_t
-        v_pred = model(x_in, t_batch * 1000, c_in, coords_in)
+        v_pred, _ = model(x_in, t_batch * 1000, c_in, coords_in)
 
         v_cond, v_uncond = v_pred.chunk(2)
         v = v_uncond + cfg_scale * (v_cond - v_uncond)
@@ -263,8 +263,10 @@ def train(config_path):
         ut = x1 - x0
 
         with torch.cuda.amp.autocast(dtype=torch.bfloat16):
-            vt = model(xt, t * 1000, class_ids, coords)
-            loss = torch.mean((vt - ut) ** 2)
+            v_head, x_backbone = model(xt, t * 1000, class_ids, coords)
+            loss_head = torch.mean((v_head - ut) ** 2)
+            loss_backbone = torch.mean((x_backbone - x1) ** 2)
+            loss = loss_head + loss_backbone
 
         optimizer.zero_grad()
         loss.backward()
@@ -283,6 +285,8 @@ def train(config_path):
             current_lr = optimizer.param_groups[0]['lr']
             logs = {
                 "loss": loss.item(),
+                "loss_head_v": loss_head.item(),
+                "loss_backbone_x": loss_backbone.item(),
                 "lr": current_lr,
                 "grad_norm": grad_norm.item() if torch.is_tensor(grad_norm) else grad_norm,
             }

@@ -67,6 +67,25 @@ class DiTBlock(nn.Module):
         x = x + gate_mlp.unsqueeze(1) * mlp_out
         return x
 
+class FinalLayer(nn.Module):
+    """
+    The final layer of DiT.
+    """
+    def __init__(self, hidden_size, patch_size, out_channels):
+        super().__init__()
+        self.norm_final = nn.LayerNorm(hidden_size, elementwise_affine=False, eps=1e-6)
+        self.linear = nn.Linear(hidden_size, patch_size * patch_size * out_channels, bias=True)
+        self.adaLN_modulation = nn.Sequential(
+            nn.SiLU(),
+            nn.Linear(hidden_size, 2 * hidden_size, bias=True)
+        )
+
+    def forward(self, x, c):
+        shift, scale = self.adaLN_modulation(c).chunk(2, dim=1)
+        x = modulate(self.norm_final(x), shift, scale)
+        x = self.linear(x)
+        return x
+
 class PatchEmbed(nn.Module):
     def __init__(self, img_size, patch_size, in_chans, embed_dim):
         super().__init__()
@@ -82,7 +101,7 @@ class PatchEmbed(nn.Module):
 
 class DiTBackbone(nn.Module):
     """
-    Modified DiT to act as a backbone, returning feature maps.
+    Modified DiT to act as a backbone, returning feature maps and its own prediction.
     """
     def __init__(
         self,
@@ -120,6 +139,7 @@ class DiTBackbone(nn.Module):
         self.blocks = nn.ModuleList([
             DiTBlock(hidden_size, num_heads, mlp_ratio=mlp_ratio) for _ in range(depth)
         ])
+        self.final_layer = FinalLayer(hidden_size, patch_size, out_channels=in_channels)
         
         self.gradient_checkpointing = False
         self.initialize_weights()
@@ -148,9 +168,33 @@ class DiTBackbone(nn.Module):
         for block in self.blocks:
             nn.init.constant_(block.adaLN_modulation[-1].weight, 0)
             nn.init.constant_(block.adaLN_modulation[-1].bias, 0)
+            
+        # Zero-out output layers:
+        nn.init.constant_(self.final_layer.adaLN_modulation[-1].weight, 0)
+        nn.init.constant_(self.final_layer.adaLN_modulation[-1].bias, 0)
+        nn.init.constant_(self.final_layer.linear.weight, 0)
+        nn.init.constant_(self.final_layer.linear.bias, 0)
+
+    def unpatchify(self, x):
+        """
+        x: (N, T, patch_size**2 * C)
+        imgs: (N, H, W, C)
+        """
+        p = self.patch_size
+        h = w = int(x.shape[1] ** .5)
+        c = self.in_channels
+        
+        x = x.reshape(shape=(x.shape[0], h, w, p, p, c))
+        x = torch.einsum('nhwpqc->nchpwq', x)
+        imgs = x.reshape(shape=(x.shape[0], c, h * p, h * p))
+        return imgs
 
     def forward(self, x, t, class_labels, crop_coords):
         x = self.x_embedder(x) + self.pos_embed
+        
+        # Save initial embedding for skip connection (N, T, D)
+        x_start = x
+
         t_emb = self.t_embedder(t)
         
         if self.training:
@@ -167,10 +211,16 @@ class DiTBackbone(nn.Module):
             else:
                 x = block(x, c)
         
-        # Output x is (N, T, D). Reshape to feature map.
+        # Compute DiT prediction
+        x_pred = self.final_layer(x, c)
+        x_pred = self.unpatchify(x_pred)
+
+        # Reshape both to feature maps: (N, D, H_grid, W_grid)
         H_grid = W_grid = int(x.shape[1] ** 0.5)
+        x_start = x_start.transpose(1, 2).reshape(x_start.shape[0], self.hidden_size, H_grid, W_grid)
         x = x.transpose(1, 2).reshape(x.shape[0], self.hidden_size, H_grid, W_grid)
-        return x, t_emb # Return t_emb to reuse in UNet if desired, though UNet usually makes its own.
+        
+        return x_pred, x_start, x, t_emb
 
 class ResBlock(nn.Module):
     def __init__(self, in_channels, out_channels, temb_channels=None):
@@ -203,107 +253,57 @@ class ResBlock(nn.Module):
         
         return h + self.shortcut(x)
 
-class SmallUNet(nn.Module):
-    def __init__(self, in_channels, out_channels, cond_channels, hidden_size=64):
+class ResNetHead(nn.Module):
+    def __init__(self, in_channels, out_channels, patch_size, hidden_size=1024, num_blocks=4):
         super().__init__()
         self.in_channels = in_channels
-        self.out_channels = out_channels
+        self.patch_size = patch_size
         self.hidden_size = hidden_size
         
-        # Timestep embedding
-        self.time_embed = nn.Sequential(
-            nn.Linear(hidden_size, 4 * hidden_size),
+        # Timestep embedding (re-created here to match interface, or reused)
+        # We'll expect t_emb to be passed in, but we need to project it
+        # Actually, DiTBackbone returns t_emb (size backbone_hidden), we need to project it to 4*hidden_size?
+        # Or we can just project the raw t_emb to fit ResBlock. ResBlock expects `temb_channels` input.
+        # Let's say we receive the raw t_emb from backbone (size `backbone_hidden`).
+        # We'll project it to `hidden_size` for the ResBlocks.
+        
+        self.temb_proj = nn.Sequential(
             nn.SiLU(),
-            nn.Linear(4 * hidden_size, 4 * hidden_size),
+            nn.Linear(in_channels, hidden_size), 
         )
-        temb_dim = 4 * hidden_size
 
-        # Encoder - Stage 1 (Aggressive Downsample)
-        # 64x64 -> 32x32
-        self.enc1 = nn.Conv2d(in_channels, hidden_size * 2, kernel_size=7, stride=2, padding=3)
-        self.block1 = ResBlock(hidden_size * 2, hidden_size * 2, temb_dim)
+        # Input projection: Combine start + end features (2 * in_channels) -> hidden_size
+        self.input_proj = nn.Conv2d(in_channels * 2, hidden_size, 3, padding=1)
         
-        # 32x32 -> 16x16
-        self.down2 = nn.Conv2d(hidden_size * 2, hidden_size * 4, 3, stride=2, padding=1)
-        self.block3 = ResBlock(hidden_size * 4, hidden_size * 4, temb_dim)
+        self.blocks = nn.ModuleList([
+            ResBlock(hidden_size, hidden_size, temb_channels=hidden_size) 
+            for _ in range(num_blocks)
+        ])
+        
+        # PixelShuffle Upscaling
+        # Output dim needs to be out_channels * patch_size^2
+        self.final_conv = nn.Conv2d(hidden_size, out_channels * patch_size**2, 3, padding=1)
+        self.pixel_shuffle = nn.PixelShuffle(patch_size)
 
-        # 16x16 -> 8x8
-        self.down3 = nn.Conv2d(hidden_size * 4, hidden_size * 4, 3, stride=2, padding=1)
-        self.block4 = ResBlock(hidden_size * 4, hidden_size * 4, temb_dim)
-
-        # 8x8 -> 4x4
-        self.down4 = nn.Conv2d(hidden_size * 4, hidden_size * 4, 3, stride=2, padding=1)
-        self.block5 = ResBlock(hidden_size * 4, hidden_size * 4, temb_dim)
-
-        # Bottleneck with conditioning (4x4)
-        self.mid_block1 = ResBlock(hidden_size * 4 + cond_channels, hidden_size * 4, temb_dim)
-        self.mid_block2 = ResBlock(hidden_size * 4, hidden_size * 4, temb_dim)
+    def forward(self, x_start, x_end, t_emb):
+        # x_start, x_end: (N, C, H, W)
+        # t_emb: (N, C)
         
-        # Decoder
-        # 4x4 -> 8x8
-        self.up1 = nn.Upsample(scale_factor=2, mode='nearest')
-        self.conv_up1 = nn.Conv2d(hidden_size * 4, hidden_size * 4, 3, padding=1)
-        self.block6 = ResBlock(hidden_size * 4 + hidden_size * 4, hidden_size * 4, temb_dim)
+        x = torch.cat([x_start, x_end], dim=1)
+        x = self.input_proj(x)
         
-        # 8x8 -> 16x16
-        self.up2 = nn.Upsample(scale_factor=2, mode='nearest')
-        self.conv_up2 = nn.Conv2d(hidden_size * 4, hidden_size * 4, 3, padding=1)
-        self.block7 = ResBlock(hidden_size * 4 + hidden_size * 4, hidden_size * 4, temb_dim)
+        t_emb = self.temb_proj(t_emb)
         
-        # 16x16 -> 32x32
-        self.up3 = nn.Upsample(scale_factor=2, mode='nearest')
-        self.conv_up3 = nn.Conv2d(hidden_size * 4, hidden_size * 2, 3, padding=1)
-        self.block8 = ResBlock(hidden_size * 2 + hidden_size * 2, hidden_size * 2, temb_dim)
-        
-        # Final Upsample: 32x32 -> 64x64
-        self.up_out = nn.ConvTranspose2d(hidden_size * 2, hidden_size, kernel_size=4, stride=2, padding=1)
-        self.out_conv = nn.Conv2d(hidden_size, out_channels, 3, padding=1)
-
-    def forward(self, x, t, cond_features):
-        temb = self.time_embed(TimestepEmbedder.timestep_embedding(t, self.hidden_size))
-        
-        # Encoder
-        x1 = self.enc1(x) # 32x32
-        x1 = self.block1(x1, temb)
-        
-        x2 = self.down2(x1) # 16x16
-        x2 = self.block3(x2, temb)
-        
-        x3 = self.down3(x2) # 8x8
-        x3 = self.block4(x3, temb)
-        
-        x4 = self.down4(x3) # 4x4
-        x4 = self.block5(x4, temb)
-        
-        # Bottleneck - Inject conditioning
-        x_mid = torch.cat([x4, cond_features], dim=1)
-        x_mid = self.mid_block1(x_mid, temb)
-        x_mid = self.mid_block2(x_mid, temb)
-        
-        # Decoder
-        x_up = self.up1(x_mid) # 8x8
-        x_up = self.conv_up1(x_up)
-        x_up = torch.cat([x_up, x3], dim=1)
-        x_up = self.block6(x_up, temb)
-        
-        x_up = self.up2(x_up) # 16x16
-        x_up = self.conv_up2(x_up)
-        x_up = torch.cat([x_up, x2], dim=1)
-        x_up = self.block7(x_up, temb)
-        
-        x_up = self.up3(x_up) # 32x32
-        x_up = self.conv_up3(x_up)
-        x_up = torch.cat([x_up, x1], dim=1)
-        x_up = self.block8(x_up, temb)
-        
-        # Final Upsample
-        out = self.up_out(x_up) # 64x64
-        out = self.out_conv(out)
-        return out
+        for block in self.blocks:
+            x = block(x, t_emb)
+            
+        x = self.final_conv(x)
+        x = self.pixel_shuffle(x)
+        return x
 
 class DiT(nn.Module):
     """
-    Composite model: DiT Backbone + SmallUNet Head
+    Composite model: DiT Backbone + ResNet Head
     """
     def __init__(
         self,
@@ -322,14 +322,13 @@ class DiT(nn.Module):
             input_size, patch_size, in_channels, hidden_size,
             depth, num_heads, mlp_ratio, num_classes, class_dropout_prob
         )
-        # UNet input channels = in_channels (image)
-        # UNet output channels = in_channels (velocity)
-        # UNet cond channels = hidden_size (DiT output)
-        self.head = SmallUNet(
-            in_channels=in_channels,
-            out_channels=in_channels,
-            cond_channels=hidden_size,
-            hidden_size=64 
+        
+        self.head = ResNetHead(
+            in_channels=hidden_size, # Backbone output dim
+            out_channels=in_channels, # Image channels
+            patch_size=patch_size,
+            hidden_size=1024,
+            num_blocks=3
         )
 
     def enable_gradient_checkpointing(self):
@@ -337,11 +336,11 @@ class DiT(nn.Module):
 
     def forward(self, x, t, class_labels, crop_coords):
         # DiT Backbone forward
-        features, _ = self.backbone(x, t, class_labels, crop_coords)
+        x_pred, x_start, x_end, t_emb = self.backbone(x, t, class_labels, crop_coords)
         
-        # UNet Forward
-        out = self.head(x, t, features)
-        return out
+        # Head Forward
+        out = self.head(x_start, x_end, t_emb)
+        return out, x_pred
 
 def get_2d_sincos_pos_embed(embed_dim, grid_size, cls_token=False):
     grid_h = np.arange(grid_size, dtype=np.float32)
