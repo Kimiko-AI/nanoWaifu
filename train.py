@@ -136,11 +136,16 @@ def train(config_path):
         class_dropout_prob=config['training']['class_dropout_prob']
     ).to(device)
 
-    optimizer = ScheduleFreeAdamW(model.parameters(), lr=config['training']['learning_rate'], weight_decay=1e-2)
-
     if config['training'].get('gradient_checkpointing', False):
         model.enable_gradient_checkpointing()
         print("Gradient checkpointing enabled.")
+
+    if config['training'].get('freeze_backbone', False):
+        print("Freezing backbone parameters...")
+        for param in model.backbone.parameters():
+            param.requires_grad = False
+
+    optimizer = ScheduleFreeAdamW(filter(lambda p: p.requires_grad, model.parameters()), lr=config['training']['learning_rate'], weight_decay=1e-2)
 
     # Resume from checkpoint if specified
     start_epoch = 0
@@ -150,47 +155,47 @@ def train(config_path):
     if resume_path and os.path.exists(resume_path):
         print(f"Resuming from checkpoint: {resume_path}")
         try:
-            state_dict = torch.load(resume_path, map_location=device)
+            checkpoint = torch.load(resume_path, map_location=device)
 
-            # Load model weights with smart remapping and shape check
-            if "model_state_dict" in state_dict:
-                loaded_state = state_dict["model_state_dict"]
-                model_state = model.state_dict()
-                new_state_dict = {}
-
-                for k, v in loaded_state.items():
-                    target_key = None
-                    if k in model_state:
-                        target_key = k
-                    elif f"backbone.{k}" in model_state:
-                        target_key = f"backbone.{k}"
-
-                    if target_key:
-                        if model_state[target_key].shape == v.shape:
-                            new_state_dict[target_key] = v
-                        else:
-                            print(
-                                f"Skipping key {k} -> {target_key} due to shape mismatch: {v.shape} vs {model_state[target_key].shape}")
-
-                missing, unexpected = model.load_state_dict(new_state_dict, strict=False)
-                print(f"Loaded checkpoint. Missing keys: {len(missing)}")
-                # Optional: print(f"Missing keys: {missing}")
-
+            # Extract state dict whether it's wrapped or raw
+            if isinstance(checkpoint, dict) and "model_state_dict" in checkpoint:
+                state_dict = checkpoint["model_state_dict"]
             else:
-                # Legacy direct load
-                model.load_state_dict(state_dict, strict=False)
+                state_dict = checkpoint
 
-                # Load optimizer state (try-except as it might fail if parameters changed)
-            if "optimizer_state_dict" in state_dict:
+            model_state = model.state_dict()
+            new_state_dict = {}
+
+            # Remap keys
+            for k, v in state_dict.items():
+                target_key = None
+                # Try direct match
+                if k in model_state:
+                    target_key = k
+                # Try backbone prefix match (Old DiT -> New DiTBackbone)
+                elif f"backbone.{k}" in model_state:
+                    target_key = f"backbone.{k}"
+
+                if target_key:
+                    if model_state[target_key].shape == v.shape:
+                        new_state_dict[target_key] = v
+                    else:
+                        print(f"Skipping key {k} -> {target_key} due to shape mismatch: {v.shape} vs {model_state[target_key].shape}")
+                
+            missing, unexpected = model.load_state_dict(new_state_dict, strict=False)
+            print(f"Loaded checkpoint. Missing keys (expected for new head): {len(missing)}")
+
+            # Attempt to load optimizer state if available and compatible
+            if isinstance(checkpoint, dict) and "optimizer_state_dict" in checkpoint:
                 try:
-                    optimizer.load_state_dict(state_dict["optimizer_state_dict"])
+                    optimizer.load_state_dict(checkpoint["optimizer_state_dict"])
                     print("Loaded optimizer state.")
                 except Exception as e:
-                    print(f"Could not load optimizer state (expected if model architecture changed): {e}")
+                    print(f"Could not load optimizer state (expected since architecture changed): {e}")
 
             # Load global step
-            if "global_step" in state_dict:
-                global_step = state_dict["global_step"]
+            if isinstance(checkpoint, dict) and "global_step" in checkpoint:
+                global_step = checkpoint["global_step"]
                 print(f"Resuming from global step: {global_step}")
 
             print("Successfully loaded checkpoint.")
