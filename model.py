@@ -40,18 +40,51 @@ class TimestepEmbedder(nn.Module):
         t_emb = self.mlp(t_freq)
         return t_emb
 
+class Attention(nn.Module):
+    def __init__(self, dim, num_heads=8, qkv_bias=True, attn_drop=0., proj_drop=0.):
+        super().__init__()
+        self.num_heads = num_heads
+        head_dim = dim // num_heads
+        self.scale = head_dim ** -0.5
+
+        self.qkv = nn.Linear(dim, dim * 3, bias=qkv_bias)
+        self.attn_drop = nn.Dropout(attn_drop)
+        self.proj = nn.Linear(dim, dim)
+        self.proj_drop = nn.Dropout(proj_drop)
+        
+        self.q_norm = nn.LayerNorm(head_dim)
+        self.k_norm = nn.LayerNorm(head_dim)
+
+    def forward(self, x):
+        B, N, C = x.shape
+        qkv = self.qkv(x).reshape(B, N, 3, self.num_heads, C // self.num_heads).permute(2, 0, 3, 1, 4)
+        q, k, v = qkv.unbind(0)
+
+        q = self.q_norm(q)
+        k = self.k_norm(k)
+
+        attn = (q @ k.transpose(-2, -1)) * self.scale
+        attn = attn.softmax(dim=-1)
+        attn = self.attn_drop(attn)
+
+        x = (attn @ v).transpose(1, 2).reshape(B, N, C)
+        x = self.proj(x)
+        x = self.proj_drop(x)
+        return x, attn
+
 class DiTBlock(nn.Module):
     def __init__(self, hidden_size, num_heads, mlp_ratio=4.0):
         super().__init__()
         self.norm1 = nn.LayerNorm(hidden_size, elementwise_affine=False, eps=1e-6)
-        self.attn = nn.MultiheadAttention(hidden_size, num_heads=num_heads, batch_first=True)
+        self.attn = Attention(hidden_size, num_heads=num_heads, qkv_bias=True)
         self.norm2 = nn.LayerNorm(hidden_size, elementwise_affine=False, eps=1e-6)
         mlp_hidden_dim = int(hidden_size * mlp_ratio)
-        self.mlp = nn.Sequential(
-            nn.Linear(hidden_size, mlp_hidden_dim),
-            nn.GELU(),
-            nn.Linear(mlp_hidden_dim, hidden_size),
-        )
+        
+        self.fc1 = nn.Linear(hidden_size, mlp_hidden_dim)
+        self.dwconv = nn.Conv2d(mlp_hidden_dim, mlp_hidden_dim, kernel_size=3, padding=1, groups=mlp_hidden_dim)
+        self.act = nn.GELU()
+        self.fc2 = nn.Linear(mlp_hidden_dim, hidden_size)
+        
         self.adaLN_modulation = nn.Sequential(
             nn.SiLU(),
             nn.Linear(hidden_size, 6 * hidden_size, bias=True)
@@ -61,11 +94,22 @@ class DiTBlock(nn.Module):
         shift_msa, scale_msa, gate_msa, shift_mlp, scale_mlp, gate_mlp = self.adaLN_modulation(c).chunk(6, dim=1)
         x_norm1 = self.norm1(x)
         x_norm1 = modulate(x_norm1, shift_msa, scale_msa)
-        attn_out, _ = self.attn(x_norm1, x_norm1, x_norm1)
+        attn_out, _ = self.attn(x_norm1)
         x = x + gate_msa.unsqueeze(1) * attn_out
         x_norm2 = self.norm2(x)
         x_norm2 = modulate(x_norm2, shift_mlp, scale_mlp)
-        mlp_out = self.mlp(x_norm2)
+        
+        # MLP with DW Conv
+        N, T, C = x_norm2.shape
+        H = W = int(T ** 0.5)
+        
+        x_mlp = self.fc1(x_norm2)
+        x_mlp = x_mlp.transpose(1, 2).reshape(N, -1, H, W)
+        x_mlp = self.dwconv(x_mlp)
+        x_mlp = x_mlp.flatten(2).transpose(1, 2)
+        x_mlp = self.act(x_mlp)
+        mlp_out = self.fc2(x_mlp)
+        
         x = x + gate_mlp.unsqueeze(1) * mlp_out
         return x
 

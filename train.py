@@ -123,10 +123,6 @@ def train(config_path):
 
     # Init Model
     num_classes = wds_loader.num_classes
-
-    # SPRINT configuration
-    sprint_config = config.get('sprint', {})
-    sprint_enabled = sprint_config.get('enabled', False)
     
     model = DiT(
         input_size=config['training']['image_size'],
@@ -138,12 +134,6 @@ def train(config_path):
         mlp_ratio=config['model']['mlp_dim'] / config['model']['dim'],
         num_classes=num_classes,
         class_dropout_prob=config['training']['class_dropout_prob'],
-        # SPRINT parameters
-        sprint_enabled=sprint_enabled,
-        token_drop_ratio=sprint_config.get('token_drop_ratio', 0.75),
-        encoder_depth=sprint_config.get('encoder_depth'),
-        middle_depth=sprint_config.get('middle_depth'),
-        decoder_depth=sprint_config.get('decoder_depth'),
     ).to(device)
 
     if config['training'].get('gradient_checkpointing', False):
@@ -235,12 +225,6 @@ def train(config_path):
     os.makedirs(config['training']['output_dir'], exist_ok=True)
 
     cfg_scale = config['training'].get('cfg_scale', 4.0)
-    
-    # SPRINT two-stage training schedule
-    two_stage_training = sprint_config.get('two_stage_training', False)
-    stage1_steps = sprint_config.get('stage1_steps', max_train_steps)
-    stage2_steps = sprint_config.get('stage2_steps', 0)
-    base_token_drop_ratio = sprint_config.get('token_drop_ratio', 0.75)
 
     # Training Loop
     # Calculate max_train_steps if not explicitly provided
@@ -271,17 +255,6 @@ def train(config_path):
         class_ids = class_ids.to(device)
         coords = coords.to(device)
 
-        # SPRINT: Determine current token drop ratio based on training stage
-        if sprint_enabled and two_stage_training:
-            if global_step < stage1_steps:
-                # Stage 1: Use configured token drop ratio
-                current_token_drop_ratio = base_token_drop_ratio
-            else:
-                # Stage 2: No token dropping (fine-tuning)
-                current_token_drop_ratio = 0.0
-        else:
-            current_token_drop_ratio = base_token_drop_ratio if sprint_enabled else 0.0
-        
         # Flow Matching Training
         t = torch.rand((x1.shape[0],), device=device)
         x0 = torch.randn_like(x1)
@@ -290,7 +263,7 @@ def train(config_path):
         ut = x1 - x0
 
         with torch.cuda.amp.autocast(dtype=torch.bfloat16):
-            v_head, x_backbone = model(xt, t * 1000, class_ids, coords, token_drop_ratio=current_token_drop_ratio)
+            v_head, x_backbone = model(xt, t * 1000, class_ids, coords)
             loss_head = torch.mean((v_head - ut) ** 2)
             loss_backbone = torch.mean((x_backbone - x1) ** 2)
             loss = loss_head + loss_backbone
@@ -316,13 +289,6 @@ def train(config_path):
                 "lr": current_lr,
                 "grad_norm": grad_norm.item() if torch.is_tensor(grad_norm) else grad_norm,
             }
-            
-            # Add SPRINT-specific logs
-            if sprint_enabled:
-                logs["token_drop_ratio"] = current_token_drop_ratio
-                if two_stage_training:
-                    current_stage = 1 if global_step < stage1_steps else 2
-                    logs["training_stage"] = current_stage
             
             pbar.set_postfix(**logs)
 
