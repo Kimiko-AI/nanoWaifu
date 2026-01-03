@@ -33,8 +33,8 @@ data:
 sprint:
   enabled: true
   token_drop_ratio: 0.75  # 0.0 to 0.75 - higher = more aggressive dropping
-  encoder_depth: 8        # Number of blocks for encoder (dense shallow)
-  middle_depth:   14       # Number of blocks for middle (sparse deep)
+  encoder_depth: 2        # Number of blocks for encoder (dense shallow)
+  middle_depth:  20       # Number of blocks for middle (sparse deep)
   decoder_depth: 2        # Number of blocks for decoder (dense with fusion)
   
   # Two-stage training schedule
