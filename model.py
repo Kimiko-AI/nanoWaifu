@@ -81,8 +81,7 @@ class DiTBlock(nn.Module):
         mlp_hidden_dim = int(hidden_size * mlp_ratio)
         
         self.fc1 = nn.Linear(hidden_size, mlp_hidden_dim)
-        self.dwconv = nn.Conv2d(mlp_hidden_dim, mlp_hidden_dim, kernel_size=3, padding=1, groups=mlp_hidden_dim)
-        self.act = nn.GELU()
+        self.act = nn.Hardswish()
         self.fc2 = nn.Linear(mlp_hidden_dim, hidden_size)
         
         self.adaLN_modulation = nn.Sequential(
@@ -99,14 +98,7 @@ class DiTBlock(nn.Module):
         x_norm2 = self.norm2(x)
         x_norm2 = modulate(x_norm2, shift_mlp, scale_mlp)
         
-        # MLP with DW Conv
-        N, T, C = x_norm2.shape
-        H = W = int(T ** 0.5)
-        
         x_mlp = self.fc1(x_norm2)
-        x_mlp = x_mlp.transpose(1, 2).reshape(N, -1, H, W)
-        x_mlp = self.dwconv(x_mlp)
-        x_mlp = x_mlp.flatten(2).transpose(1, 2)
         x_mlp = self.act(x_mlp)
         mlp_out = self.fc2(x_mlp)
         
