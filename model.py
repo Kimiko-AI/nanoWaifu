@@ -38,18 +38,40 @@ class TimestepEmbedder(nn.Module):
         t_emb = self.mlp(t_freq)
         return t_emb
 
+class Mlp(nn.Module):
+    def __init__(self, in_features, hidden_features=None, out_features=None, act_layer=nn.GELU):
+        super().__init__()
+        out_features = out_features or in_features
+        hidden_features = hidden_features or in_features
+        self.fc1 = nn.Linear(in_features, hidden_features)
+        self.dwconv = nn.Conv2d(hidden_features, hidden_features, 3, 1, 1, bias=True, groups=hidden_features)
+        self.act = act_layer()
+        self.fc2 = nn.Linear(hidden_features, out_features)
+
+    def forward(self, x):
+        x = self.fc1(x)
+        
+        # DW Conv
+        B, N, C = x.shape
+        H = W = int(N ** 0.5)
+        x = x.transpose(1, 2).view(B, C, H, W)
+        x = self.dwconv(x)
+        x = x.flatten(2).transpose(1, 2)
+        
+        x = self.act(x)
+        x = self.fc2(x)
+        return x
+
+
 class DiTBlock(nn.Module):
     def __init__(self, hidden_size, num_heads, mlp_ratio=4.0):
         super().__init__()
         self.norm1 = nn.LayerNorm(hidden_size, elementwise_affine=False, eps=1e-6)
         self.attn = nn.MultiheadAttention(hidden_size, num_heads=num_heads, batch_first=True)
+        self.attn_norm = nn.LayerNorm(hidden_size)
         self.norm2 = nn.LayerNorm(hidden_size, elementwise_affine=False, eps=1e-6)
         mlp_hidden_dim = int(hidden_size * mlp_ratio)
-        self.mlp = nn.Sequential(
-            nn.Linear(hidden_size, mlp_hidden_dim),
-            nn.GELU(),
-            nn.Linear(mlp_hidden_dim, hidden_size),
-        )
+        self.mlp = Mlp(in_features=hidden_size, hidden_features=mlp_hidden_dim, act_layer=nn.GELU)
         self.adaLN_modulation = nn.Sequential(
             nn.SiLU(),
             nn.Linear(hidden_size, 6 * hidden_size, bias=True)
@@ -60,6 +82,7 @@ class DiTBlock(nn.Module):
         x_norm1 = self.norm1(x)
         x_norm1 = modulate(x_norm1, shift_msa, scale_msa)
         attn_out, _ = self.attn(x_norm1, x_norm1, x_norm1)
+        attn_out = self.attn_norm(attn_out)
         x = x + gate_msa.unsqueeze(1) * attn_out
         x_norm2 = self.norm2(x)
         x_norm2 = modulate(x_norm2, shift_mlp, scale_mlp)
