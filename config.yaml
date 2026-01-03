@@ -22,10 +22,25 @@ model:
   dim: 1536
   depth: 24 # Number of DiT blocks
   heads: 24
-  mlp_dim: 1536 # 4 * dim
+  mlp_dim: 6144 # 4 * dim
   num_classes: 0 # Will be loaded from CSV
   in_channels: 3
 
 data:
   webdataset_url: "/workspace/shinon/t2i/nanoWaifu/anime/train/000{01..47}.tar" # Example URL
   csv_path: "characters.csv"
+
+sprint:
+  enabled: true
+  token_drop_ratio: 0.75  # 0.0 to 0.75 - higher = more aggressive dropping
+  encoder_depth: 8        # Number of blocks for encoder (dense shallow)
+  middle_depth:   14       # Number of blocks for middle (sparse deep)
+  decoder_depth: 2        # Number of blocks for decoder (dense with fusion)
+  
+  # Two-stage training schedule
+  two_stage_training: true
+  stage1_steps: 900000    # Long pre-training with token dropping
+  stage2_steps: 100000    # Short fine-tuning with full tokens (0% drop)
+  
+  # Inference optimization
+  use_pdg: true          # Path-Drop Guidance for inference (not yet implemented)
