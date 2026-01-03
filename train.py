@@ -169,19 +169,46 @@ def train(config_path):
             # Remap keys
             for k, v in state_dict.items():
                 target_key = None
-                # Try direct match
-                if k in model_state:
-                    target_key = k
-                # Try backbone prefix match (Old DiT -> New DiTBackbone)
-                elif f"backbone.{k}" in model_state:
-                    target_key = f"backbone.{k}"
-
-                if target_key:
-                    if model_state[target_key].shape == v.shape:
-                        new_state_dict[target_key] = v
-                    else:
-                        print(f"Skipping key {k} -> {target_key} due to shape mismatch: {v.shape} vs {model_state[target_key].shape}")
                 
+                # Check for old keys and map to new architecture
+                if "attn.in_proj_weight" in k:
+                    target_key = k.replace("attn.in_proj_weight", "attn.qkv.weight")
+                elif "attn.in_proj_bias" in k:
+                    target_key = k.replace("attn.in_proj_bias", "attn.qkv.bias")
+                elif "attn.out_proj.weight" in k:
+                    target_key = k.replace("attn.out_proj.weight", "attn.proj.weight")
+                elif "attn.out_proj.bias" in k:
+                    target_key = k.replace("attn.out_proj.bias", "attn.proj.bias")
+                elif "mlp.0.weight" in k:
+                    target_key = k.replace("mlp.0.weight", "fc1.weight")
+                elif "mlp.0.bias" in k:
+                    target_key = k.replace("mlp.0.bias", "fc1.bias")
+                elif "mlp.2.weight" in k:
+                    target_key = k.replace("mlp.2.weight", "fc2.weight")
+                elif "mlp.2.bias" in k:
+                    target_key = k.replace("mlp.2.bias", "fc2.bias")
+                else:
+                    target_key = k # No change needed for other keys
+
+                # Try backbone prefix match if not found directly
+                if target_key not in model_state and f"backbone.{target_key}" in model_state:
+                     target_key = f"backbone.{target_key}"
+                
+                # Final check if key exists in model
+                if target_key in model_state:
+                     if model_state[target_key].shape == v.shape:
+                        new_state_dict[target_key] = v
+                     else:
+                        print(f"Skipping key {k} -> {target_key} due to shape mismatch: {v.shape} vs {model_state[target_key].shape}")
+                else:
+                    # If we still can't find it, maybe it's an exact match (e.g. non-block params)
+                    if k in model_state:
+                         if model_state[k].shape == v.shape:
+                             new_state_dict[k] = v
+                    elif f"backbone.{k}" in model_state:
+                         if model_state[f"backbone.{k}"].shape == v.shape:
+                             new_state_dict[f"backbone.{k}"] = v
+
             missing, unexpected = model.load_state_dict(new_state_dict, strict=False)
             print(f"Loaded checkpoint. Missing keys (expected for new head): {len(missing)}")
 
