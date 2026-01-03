@@ -79,11 +79,11 @@ class DiTBlock(nn.Module):
         self.attn = Attention(hidden_size, num_heads=num_heads, qkv_bias=True)
         self.norm2 = nn.LayerNorm(hidden_size, elementwise_affine=False, eps=1e-6)
         mlp_hidden_dim = int(hidden_size * mlp_ratio)
-        
-        self.fc1 = nn.Linear(hidden_size, mlp_hidden_dim)
-        self.act = nn.Hardswish()
-        self.fc2 = nn.Linear(mlp_hidden_dim, hidden_size)
-        
+        self.mlp = nn.Sequential(
+            nn.Linear(hidden_size, mlp_hidden_dim),
+            nn.GELU(),
+            nn.Linear(mlp_hidden_dim, hidden_size),
+        )
         self.adaLN_modulation = nn.Sequential(
             nn.SiLU(),
             nn.Linear(hidden_size, 6 * hidden_size, bias=True)
@@ -97,10 +97,8 @@ class DiTBlock(nn.Module):
         x = x + gate_msa.unsqueeze(1) * attn_out
         x_norm2 = self.norm2(x)
         x_norm2 = modulate(x_norm2, shift_mlp, scale_mlp)
-        
-        x_mlp = self.fc1(x_norm2)
-        x_mlp = self.act(x_mlp)
-        mlp_out = self.fc2(x_mlp)
+
+        mlp_out =  self.mlp(x_norm2)
         
         x = x + gate_mlp.unsqueeze(1) * mlp_out
         return x

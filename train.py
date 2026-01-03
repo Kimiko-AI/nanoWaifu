@@ -150,7 +150,7 @@ def train(config_path):
     # Resume from checkpoint if specified
     start_epoch = 0
     global_step = 0
-    resume_path = config.get('resume_from', "/workspace/shinon/t2i/nanoWaifu/outputs/ckpt_step_65000.pth")
+    resume_path = config.get('resume_from', "/workspace/shinon/t2i/nanoWaifu/outputs/ckpt_step_145000.pth")
 
     if resume_path and os.path.exists(resume_path):
         print(f"Resuming from checkpoint: {resume_path}")
