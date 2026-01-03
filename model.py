@@ -97,7 +97,6 @@ class DiTBlock(nn.Module):
         x = x + gate_msa.unsqueeze(1) * attn_out
         x_norm2 = self.norm2(x)
         x_norm2 = modulate(x_norm2, shift_mlp, scale_mlp)
-
         mlp_out =  self.mlp(x_norm2)
         
         x = x + gate_mlp.unsqueeze(1) * mlp_out

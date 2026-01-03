@@ -194,6 +194,14 @@ def train(config_path):
                 if target_key not in model_state and f"backbone.{target_key}" in model_state:
                      target_key = f"backbone.{target_key}"
                 
+                # Debug print for MLP keys
+                if "mlp.0.weight" in k:
+                    print(f"DEBUG: Processing {k} -> {target_key}")
+                    if target_key in model_state:
+                        print(f"  Found in model_state. Shape match: {model_state[target_key].shape == v.shape} ({model_state[target_key].shape} vs {v.shape})")
+                    else:
+                        print(f"  NOT found in model_state. Keys similar to {target_key}: {[x for x in model_state.keys() if 'fc1' in x and 'blocks.0' in x]}")
+
                 # Final check if key exists in model
                 if target_key in model_state:
                      if model_state[target_key].shape == v.shape:
