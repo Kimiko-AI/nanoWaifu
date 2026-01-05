@@ -8,26 +8,28 @@ training:
   log_every_steps: 10
 
   save_image_every_steps: 5000
-  image_size: 256  # Small for testing/raw pixel speed
-  patch_size: 16   # Small patch size since image is small (64/4 = 16 patches per side)
+  image_size: 256
+  patch_size: 2   # For 32x32 latents, patch_size 2 gives 16x16=256 patches
   num_workers: 2
   class_dropout_prob: 0.1
   cfg_scale: 4.0
   output_dir: "outputs"
-  wandb_project: "nanoWaifu-DiT"
-  resume_from: "outputs/ckpt_step_65000.pth" # Path to checkpoint to resume from (e.g. "outputs/ckpt_step_1000.pth"), empty for new run
-  max_checkpoints: 3 # Keep only top N latest checkpoints
+  wandb_project: "nanoWaifu-T2I"
+  resume_from: "" # Starting fresh for T2I
+  max_checkpoints: 3
 
 model:
   dim: 1536
-  depth: 24 # Number of DiT blocks
+  depth: 24
   heads: 24
-  mlp_dim: 6144 # 4 * dim
-  num_classes: 0 # Will be loaded from CSV
-  in_channels: 3
+  mlp_dim: 6144
+  in_channels: 4 # Latents
+  context_dim: 768 # CLIP-L
+  vae_model: "stabilityai/sd-vae-ft-mse"
+  text_encoder_model: "openai/clip-vit-large-patch14"
 
 data:
-  webdataset_url: "/workspace/shinon/t2i/nanoWaifu/anime/train/000{01..47}.tar" # Example URL
+  webdataset_url: "/workspace/shinon/t2i/nanoWaifu/anime/train/000{01..47}.tar"
   csv_path: "characters.csv"
 
 sprint:

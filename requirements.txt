@@ -8,3 +8,6 @@ numpy
 tqdm
 Pillow
 pytorch-optimizer
+diffusers
+transformers
+accelerate

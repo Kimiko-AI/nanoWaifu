@@ -55,18 +55,16 @@ class WDSLoader:
             print(f"Error decoding image: {e}")
             return None # Skip broken images
 
-        # Decode JSON for class
-        # If 'json' key missing, treat as unknown/unconditioned
+        # Decode JSON for character/caption
         try:
             if "json" in sample:
                 meta = json.loads(sample["json"])
             else:
-                meta = {} # Empty meta implies unknown character
+                meta = {}
             
             char_name = meta.get("character", "unknown")
-            # Map to self.num_classes if not found. This aligns with the DiT null token index,
-            # effectively treating unknown characters as "unconditioned" samples.
-            class_id = self.class_map.get(char_name, self.num_classes)
+            # You can expand this to include more descriptive prompts if available
+            prompt = char_name
         except Exception as e:
             print(f"Error parsing metadata: {e}")
             return None
@@ -78,8 +76,6 @@ class WDSLoader:
         W, H = image.size
         
         # Relative coords: top, left, height, width
-        # i (top), j (left), h, w
-        # Normalize by H, W
         rel_coords = [i / H, j / W, h / H, w / W]
         rel_coords = torch.tensor(rel_coords, dtype=torch.float32)
 
@@ -92,7 +88,7 @@ class WDSLoader:
 
         return {
             "image": image,
-            "class_id": class_id,
+            "prompt": prompt,
             "coords": rel_coords
         }
 
@@ -102,7 +98,7 @@ class WDSLoader:
             .shuffle(1000)
             .map(self.preprocess, handler=warn_and_continue,)
             .select(lambda x: x is not None)
-            .to_tuple("image", "class_id", "coords", handler=warn_and_continue,)
+            .to_tuple("image", "prompt", "coords", handler=warn_and_continue,)
             .batched(self.batch_size, partial=False)
         )
         

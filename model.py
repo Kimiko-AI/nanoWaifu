@@ -180,18 +180,18 @@ class PatchEmbed(nn.Module):
 class DiTBackbone(nn.Module):
     """
     Modified DiT to act as a backbone, returning feature maps and its own prediction.
+    Now supports text conditioning and latent space (VAE).
     """
     def __init__(
         self,
-        input_size=64,
-        patch_size=4,
-        in_channels=3,
+        input_size=32, # Latent size (e.g. 256/8)
+        patch_size=2,
+        in_channels=4, # Latent channels
         hidden_size=384,
         depth=6,
         num_heads=6,
         mlp_ratio=4.0,
-        num_classes=100,
-        class_dropout_prob=0.1,
+        context_dim=768, # CLIP VIT-L/14 or similar
         # SPRINT parameters
         sprint_enabled=False,
         token_drop_ratio=0.75,
@@ -205,8 +205,7 @@ class DiTBackbone(nn.Module):
         self.in_channels = in_channels
         self.hidden_size = hidden_size
         self.num_heads = num_heads
-        self.num_classes = num_classes
-        self.class_dropout_prob = class_dropout_prob
+        self.context_dim = context_dim
         
         # SPRINT configuration
         self.sprint_enabled = sprint_enabled
@@ -227,7 +226,14 @@ class DiTBackbone(nn.Module):
 
         self.x_embedder = PatchEmbed(input_size, patch_size, in_channels, hidden_size)
         self.t_embedder = TimestepEmbedder(hidden_size)
-        self.y_embedder = nn.Embedding(num_classes + 1, hidden_size)
+        
+        # Text embedding projection (from context_dim to hidden_size)
+        self.text_embedder = nn.Sequential(
+            nn.Linear(context_dim, hidden_size),
+            nn.SiLU(),
+            nn.Linear(hidden_size, hidden_size),
+        )
+        
         self.coord_embedder = nn.Sequential(
             nn.Linear(4, hidden_size),
             nn.SiLU(),
@@ -282,7 +288,13 @@ class DiTBackbone(nn.Module):
         w = self.x_embedder.proj.weight.data
         nn.init.xavier_uniform_(w.view([w.shape[0], -1]))
         nn.init.constant_(self.x_embedder.proj.bias, 0)
-        nn.init.normal_(self.y_embedder.weight, std=0.02)
+        
+        # Initialize text embedder
+        for layer in self.text_embedder:
+            if isinstance(layer, nn.Linear):
+                nn.init.normal_(layer.weight, std=0.02)
+                nn.init.constant_(layer.bias, 0)
+
         nn.init.normal_(self.t_embedder.mlp[0].weight, std=0.02)
         nn.init.normal_(self.t_embedder.mlp[2].weight, std=0.02)
 
@@ -307,7 +319,7 @@ class DiTBackbone(nn.Module):
     def unpatchify(self, x):
         """
         x: (N, T, patch_size**2 * C)
-        imgs: (N, H, W, C)
+        imgs: (N, C, H, W)
         """
         p = self.patch_size
         h = w = int(x.shape[1] ** .5)
@@ -318,19 +330,20 @@ class DiTBackbone(nn.Module):
         imgs = x.reshape(shape=(x.shape[0], c, h * p, h * p))
         return imgs
 
-    def forward(self, x, t, class_labels, crop_coords, token_drop_ratio=None):
+    def forward(self, x, t, text_embed, crop_coords, token_drop_ratio=None):
+        """
+        x: (N, C, H, W) latents
+        t: (N,) timesteps
+        text_embed: (N, context_dim) pooled text embeddings
+        crop_coords: (N, 4) relative coordinates
+        """
         x = self.x_embedder(x) + self.pos_embed
         
         # Save initial embedding for skip connection (N, T, D)
         x_start = x
 
         t_emb = self.t_embedder(t)
-        
-        if self.training:
-            mask = torch.rand(class_labels.shape[0], device=class_labels.device) < self.class_dropout_prob
-            class_labels = torch.where(mask, torch.tensor(self.num_classes, device=class_labels.device), class_labels)
-        
-        y_emb = self.y_embedder(class_labels)
+        y_emb = self.text_embedder(text_embed)
         coord_emb = self.coord_embedder(crop_coords)
         c = t_emb + y_emb + coord_emb 
 
@@ -469,18 +482,18 @@ class ResNetHead(nn.Module):
 class DiT(nn.Module):
     """
     Composite model: DiT Backbone + ResNet Head
+    Now supports Text and VAE latents.
     """
     def __init__(
         self,
-        input_size=64,
-        patch_size=4,
-        in_channels=3,
+        input_size=32,
+        patch_size=2,
+        in_channels=4,
         hidden_size=384,
         depth=6,
         num_heads=6,
         mlp_ratio=4.0,
-        num_classes=100,
-        class_dropout_prob=0.1,
+        context_dim=768,
         # SPRINT parameters
         sprint_enabled=False,
         token_drop_ratio=0.75,
@@ -489,14 +502,12 @@ class DiT(nn.Module):
         decoder_depth=None,
     ):
         super().__init__()
-        self.num_classes = num_classes
-        self.class_dropout_prob = class_dropout_prob
         self.sprint_enabled = sprint_enabled
         self.token_drop_ratio = token_drop_ratio
         
         self.backbone = DiTBackbone(
             input_size, patch_size, in_channels, hidden_size,
-            depth, num_heads, mlp_ratio, num_classes, class_dropout_prob,
+            depth, num_heads, mlp_ratio, context_dim,
             sprint_enabled=sprint_enabled,
             token_drop_ratio=token_drop_ratio,
             encoder_depth=encoder_depth,
@@ -506,7 +517,7 @@ class DiT(nn.Module):
         
         self.head = ResNetHead(
             in_channels=hidden_size, # Backbone output dim
-            out_channels=in_channels, # Image channels
+            out_channels=in_channels, # Latent channels
             patch_size=patch_size,
             hidden_size=1024,
             num_blocks=3
@@ -515,9 +526,9 @@ class DiT(nn.Module):
     def enable_gradient_checkpointing(self):
         self.backbone.enable_gradient_checkpointing()
 
-    def forward(self, x, t, class_labels, crop_coords, token_drop_ratio=None):
+    def forward(self, x, t, text_embed, crop_coords, token_drop_ratio=None):
         # DiT Backbone forward
-        x_pred, x_start, x_end, t_emb = self.backbone(x, t, class_labels, crop_coords, token_drop_ratio=token_drop_ratio)
+        x_pred, x_start, x_end, t_emb = self.backbone(x, t, text_embed, crop_coords, token_drop_ratio=token_drop_ratio)
         
         # Head Forward
         out = self.head(x_start, x_end, t_emb)
