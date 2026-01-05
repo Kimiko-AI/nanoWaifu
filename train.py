@@ -13,7 +13,7 @@ from tqdm.auto import tqdm
 import wandb
 import glob
 import builtins
-from diffusers import AutoencoderKL
+from diffusers import AutoencoderKLFlux2
 from transformers import AutoTokenizer, AutoModel
 
 from model import DiT
@@ -57,8 +57,26 @@ def cleanup_checkpoints(output_dir, max_checkpoints, rank):
                 print(f"Error removing {ckpt}: {e}")
 
 
+def save_checkpoint(model, optimizer, rank, output_dir, step, config):
+    if rank != 0: return
+    print(f"\nSaving Checkpoint at step {step}...")
+    model_to_save = model.module if hasattr(model, 'module') else model
+    ckpt_path = os.path.join(output_dir, f'ckpt_step_{step}.pth')
+
+    checkpoint = {
+        "model_state_dict": model_to_save.state_dict(),
+        "optimizer_state_dict": optimizer.state_dict(),
+        "global_step": step,
+        "config": config
+    }
+
+    torch.save(checkpoint, ckpt_path)
+    cleanup_checkpoints(output_dir, config.get('max_checkpoints', 3), rank)
+    print(f"Checkpoint saved to {ckpt_path}")
+
+
 @torch.no_grad()
-def sample_flow(model, vae, tokenizer, text_encoder, latent_size, batch_size, prompts, coords, device, 
+def sample_flow(model, vae, tokenizer, text_encoder, latent_size, batch_size, prompts, coords, device,
                 steps=50, cfg_scale=4.0):
     """
     Sample using Euler integration of the flow ODE with Classifier-Free Guidance.
@@ -119,9 +137,9 @@ def train(config_path):
         wandb.init(project=config.get('wandb_project', 'nanoWaifu-T2I'), config=config)
 
     # Load VAE and LLM Text Encoder
-    vae = AutoencoderKL.from_pretrained(config['model']['vae_model']).to(device).eval()
+    vae = AutoencoderKLFlux2.from_pretrained(config['model']['vae_model']).to(device).eval()
     vae.requires_grad_(False)
-    
+
     # Load LLM for sequence embeddings with cross-attention
     tokenizer = AutoTokenizer.from_pretrained(config['model']['text_encoder_model'])
     text_encoder = AutoModel.from_pretrained(config['model']['text_encoder_model']).to(device).eval()
@@ -142,9 +160,9 @@ def train(config_path):
     # SPRINT configuration
     sprint_config = config.get('sprint', {})
     sprint_enabled = sprint_config.get('enabled', False)
-    
+
     latent_size = config['training']['image_size'] // 8
-    
+
     model = DiT(
         input_size=latent_size,
         patch_size=config['training']['patch_size'],
@@ -167,7 +185,8 @@ def train(config_path):
         model.enable_gradient_checkpointing()
         print("Gradient checkpointing enabled.")
 
-    optimizer = ScheduleFreeAdamW(filter(lambda p: p.requires_grad, model.parameters()), lr=config['training']['learning_rate'], weight_decay=1e-2)
+    optimizer = ScheduleFreeAdamW(filter(lambda p: p.requires_grad, model.parameters()),
+                                  lr=config['training']['learning_rate'], weight_decay=1e-1, betas=(0.9, 0.95), )
 
     # Resume logic (simplified for fresh start on T2I)
     start_epoch = 0
@@ -186,7 +205,7 @@ def train(config_path):
 
     cfg_scale = config['training'].get('cfg_scale', 4.0)
     max_train_steps = config['training'].get('max_train_steps', 1000000)
-    
+
     # SPRINT two-stage training schedule
     two_stage_training = sprint_config.get('two_stage_training', False)
     stage1_steps = sprint_config.get('stage1_steps', max_train_steps)
@@ -215,7 +234,7 @@ def train(config_path):
         coords = coords.to(device)
 
         with torch.no_grad():
-            with torch.amp.autocast(dtype=torch.bfloat16)
+            with torch.cuda.amp.autocast(dtype=torch.bfloat16):
                 # Encode images to latents
                 latents = vae.encode(images).latent_dist.sample()
                 latents = latents * 0.62
@@ -239,13 +258,13 @@ def train(config_path):
             current_token_drop_ratio = base_token_drop_ratio if global_step < stage1_steps else 0.0
         else:
             current_token_drop_ratio = base_token_drop_ratio if sprint_enabled else 0.0
-        
+
         # 10% chance to not drop tokens (helps model learn both sparse and dense scenarios)
         # Use global_step as seed for multi-GPU synchronization
         torch.manual_seed(global_step)
         if torch.rand(1).item() < 0.1:
             current_token_drop_ratio = 0.0
-        
+
         # Flow Matching Training
         t = torch.rand((latents.shape[0],), device=device)
         x0 = torch.randn_like(latents)
@@ -255,13 +274,13 @@ def train(config_path):
         ut = x1 - x0
 
         with torch.cuda.amp.autocast(dtype=torch.bfloat16):
-            v_head, x_backbone = model(
-                xt, t * 1000, text_embeds, coords, 
-                text_mask=text_masks, 
+            v_head, v_backbone = model(
+                xt, t * 1000, text_embeds, coords,
+                text_mask=text_masks,
                 token_drop_ratio=current_token_drop_ratio
             )
-            loss_head = torch.mean((v_head - ut) ** 2)
-            loss_backbone = torch.mean((x_backbone - x1) ** 2)
+            loss_head = torch.mean((v_head - ut).abs() + (v_head - ut) ** 2)
+            loss_backbone = torch.mean((v_backbone - ut).abs() + (v_backbone - ut) ** 2)
             loss = loss_head + loss_backbone
 
         optimizer.zero_grad()
@@ -282,7 +301,7 @@ def train(config_path):
             }
             if sprint_enabled:
                 logs["token_drop_ratio"] = current_token_drop_ratio
-            
+
             pbar.set_postfix(**logs)
             if global_step % config['training']['log_every_steps'] == 0:
                 wandb.log({f"train/{k}": v for k, v in logs.items()}, step=global_step)
@@ -290,12 +309,9 @@ def train(config_path):
         if global_step % config['training']['save_image_every_steps'] == 0:
             if is_ddp: dist.barrier()
             if rank == 0:
-                print("\nSampling and Saving Checkpoint...")
-                model_to_save = model.module if is_ddp else model
-                ckpt_path = os.path.join(config['training']['output_dir'], f'ckpt_step_{global_step}.pth')
-                torch.save({"model_state_dict": model_to_save.state_dict(), "global_step": global_step}, ckpt_path)
-                cleanup_checkpoints(config['training']['output_dir'], config.get('max_checkpoints', 3), rank)
+                save_checkpoint(model, optimizer, rank, config['training']['output_dir'], global_step, config)
 
+                print("\nSampling...")
                 model.eval()
                 with torch.no_grad():
                     # Sample with first few prompts from batch
@@ -303,26 +319,23 @@ def train(config_path):
                     sample_coords = torch.tensor([[0.0, 0.0, 1.0, 1.0]] * len(sample_prompts), device=device)
                     samples = sample_flow(
                         model, vae, tokenizer, text_encoder, latent_size, len(sample_prompts),
-                        sample_prompts, sample_coords, device, 
+                        sample_prompts, sample_coords, device,
                         cfg_scale=cfg_scale
                     )
                     samples = (samples + 1) / 2.0
                     samples = torch.clamp(samples, 0, 1)
                     grid = make_grid(samples, nrow=2)
-                    wandb.log({"samples": wandb.Image(grid, caption=f"Step {global_step}: {sample_prompts[0]}")}, step=global_step)
+                    wandb.log({"samples": wandb.Image(grid, caption=f"Step {global_step}: {sample_prompts[0]}")},
+                              step=global_step)
                 model.train()
             if is_ddp: dist.barrier()
 
+    # Save final checkpoint
     if rank == 0:
+        save_checkpoint(model, optimizer, rank, config['training']['output_dir'], global_step, config)
         pbar.close()
         wandb.finish()
     cleanup_ddp()
-
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--config", type=str, default="config.yaml")
-    args = parser.parse_args()
-    train(args.config)
 
 
 if __name__ == "__main__":
