@@ -233,11 +233,17 @@ def train(config_path):
                 max_sequence_length=config['model'].get('llm_max_seq_length', 512)
             )
 
-        # SPRINT token drop ratio
+        # SPRINT token drop ratio with random no-drop
         if sprint_enabled and two_stage_training:
             current_token_drop_ratio = base_token_drop_ratio if global_step < stage1_steps else 0.0
         else:
             current_token_drop_ratio = base_token_drop_ratio if sprint_enabled else 0.0
+        
+        # 10% chance to not drop tokens (helps model learn both sparse and dense scenarios)
+        # Use global_step as seed for multi-GPU synchronization
+        torch.manual_seed(global_step)
+        if torch.rand(1).item() < 0.1:
+            current_token_drop_ratio = 0.0
         
         # Flow Matching Training
         t = torch.rand((latents.shape[0],), device=device)
