@@ -24,13 +24,16 @@ model:
   heads: 24
   mlp_dim: 6144
   in_channels: 4 # Latents
-  context_dim: 768 # CLIP-L
+  context_dim: 768 # LLM hidden size (adjust based on your LLM)
   vae_model: "stabilityai/sd-vae-ft-mse"
-  text_encoder_model: "openai/clip-vit-large-patch14"
+  # LLM text encoder for cross-attention
+  text_encoder_model: "openai/clip-vit-large-patch14"  # Replace with your LLM path
+  llm_max_seq_length: 512  # Maximum sequence length for LLM
 
 data:
   webdataset_url: "/workspace/shinon/t2i/nanoWaifu/anime/train/000{01..47}.tar"
   csv_path: "characters.csv"
+  use_advanced_captions: true  # Enable advanced caption processing with tag dropping
 
 sprint:
   enabled: true

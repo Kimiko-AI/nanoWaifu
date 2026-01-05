@@ -14,10 +14,11 @@ import wandb
 import glob
 import builtins
 from diffusers import AutoencoderKL
-from transformers import CLIPTextModel, CLIPTokenizer
+from transformers import AutoTokenizer, AutoModel
 
 from model import DiT
 from dataset import WDSLoader
+from text_encoder import encode_prompt_with_llm
 
 
 def setup_ddp():
@@ -57,17 +58,11 @@ def cleanup_checkpoints(output_dir, max_checkpoints, rank):
 
 
 @torch.no_grad()
-def encode_text(tokenizer, text_encoder, prompts, device):
-    inputs = tokenizer(prompts, padding="max_length", max_length=tokenizer.model_max_length, truncation=True, return_tensors="pt").to(device)
-    outputs = text_encoder(**inputs)
-    # Use pooled output for simplicity, or we could use sequence output with cross-attention
-    return outputs.pooler_output
-
-
-@torch.no_grad()
-def sample_flow(model, vae, tokenizer, text_encoder, latent_size, batch_size, prompts, coords, device, steps=50, cfg_scale=4.0):
+def sample_flow(model, vae, tokenizer, text_encoder, latent_size, batch_size, prompts, coords, device, 
+                steps=50, cfg_scale=4.0):
     """
     Sample using Euler integration of the flow ODE with Classifier-Free Guidance.
+    Uses LLM with cross-attention.
     """
     # Start from noise x_0 (latents)
     x = torch.randn((batch_size, 4, latent_size, latent_size), device=device)
@@ -75,9 +70,9 @@ def sample_flow(model, vae, tokenizer, text_encoder, latent_size, batch_size, pr
     dt = 1.0 / steps
     indices = torch.linspace(0, 1, steps, device=device)
 
-    # Encode prompts
-    cond_embed = encode_text(tokenizer, text_encoder, prompts, device)
-    uncond_embed = encode_text(tokenizer, text_encoder, [""] * batch_size, device)
+    # Encode prompts with LLM
+    cond_embed, cond_mask = encode_prompt_with_llm(tokenizer, text_encoder, prompts, device)
+    uncond_embed, uncond_mask = encode_prompt_with_llm(tokenizer, text_encoder, [""] * batch_size, device)
 
     for i in tqdm(range(steps), desc='Sampling', leave=False):
         t = indices[i]
@@ -86,10 +81,11 @@ def sample_flow(model, vae, tokenizer, text_encoder, latent_size, batch_size, pr
         x_in = torch.cat([x, x])
         t_batch = torch.full((batch_size * 2,), t.item(), device=device, dtype=torch.float)
         c_in = torch.cat([cond_embed, uncond_embed])
+        mask_in = torch.cat([cond_mask, uncond_mask])
         coords_in = torch.cat([coords, coords])
 
         # Predict velocity field v_t
-        v_pred, _ = model(x_in, t_batch * 1000, c_in, coords_in)
+        v_pred, _ = model(x_in, t_batch * 1000, c_in, coords_in, text_mask=mask_in)
 
         v_cond, v_uncond = v_pred.chunk(2)
         v = v_uncond + cfg_scale * (v_cond - v_uncond)
@@ -122,21 +118,24 @@ def train(config_path):
     if rank == 0:
         wandb.init(project=config.get('wandb_project', 'nanoWaifu-T2I'), config=config)
 
-    # Load VAE and Text Encoder
+    # Load VAE and LLM Text Encoder
     vae = AutoencoderKL.from_pretrained(config['model']['vae_model']).to(device).eval()
     vae.requires_grad_(False)
     
-    tokenizer = CLIPTokenizer.from_pretrained(config['model']['text_encoder_model'])
-    text_encoder = CLIPTextModel.from_pretrained(config['model']['text_encoder_model']).to(device).eval()
+    # Load LLM for sequence embeddings with cross-attention
+    tokenizer = AutoTokenizer.from_pretrained(config['model']['text_encoder_model'])
+    text_encoder = AutoModel.from_pretrained(config['model']['text_encoder_model']).to(device).eval()
     text_encoder.requires_grad_(False)
+    print(f"Using LLM text encoder: {config['model']['text_encoder_model']}")
 
     # Load Data
     wds_loader = WDSLoader(
         url=config['data']['webdataset_url'],
-        csv_path=config['data']['csv_path'],
+        csv_path=config['data'].get('csv_path'),
         image_size=config['training']['image_size'],
         batch_size=config['training']['batch_size'],
-        num_workers=config['training']['num_workers']
+        num_workers=config['training']['num_workers'],
+        use_advanced_captions=config['data'].get('use_advanced_captions', True)
     )
     dataloader = wds_loader.make_loader()
 
@@ -155,6 +154,7 @@ def train(config_path):
         num_heads=config['model']['heads'],
         mlp_ratio=config['model']['mlp_dim'] / config['model']['dim'],
         context_dim=config['model']['context_dim'],
+        use_cross_attn=True,  # Always use cross-attention with LLM
         # SPRINT parameters
         sprint_enabled=sprint_enabled,
         token_drop_ratio=sprint_config.get('token_drop_ratio', 0.75),
@@ -219,7 +219,7 @@ def train(config_path):
             latents = vae.encode(images).latent_dist.sample()
             latents = latents * 0.18215
             
-            # Encode text
+            # Encode text with LLM
             # Randomly drop prompts for CFG
             if config['training'].get('class_dropout_prob', 0.1) > 0:
                 indices = torch.rand(len(prompts)) < config['training']['class_dropout_prob']
@@ -227,7 +227,11 @@ def train(config_path):
             else:
                 train_prompts = prompts
             
-            text_embeds = encode_text(tokenizer, text_encoder, train_prompts, device)
+            # Encode with LLM
+            text_embeds, text_masks = encode_prompt_with_llm(
+                tokenizer, text_encoder, train_prompts, device,
+                max_sequence_length=config['model'].get('llm_max_seq_length', 512)
+            )
 
         # SPRINT token drop ratio
         if sprint_enabled and two_stage_training:
@@ -244,7 +248,11 @@ def train(config_path):
         ut = x1 - x0
 
         with torch.cuda.amp.autocast(dtype=torch.bfloat16):
-            v_head, x_backbone = model(xt, t * 1000, text_embeds, coords, token_drop_ratio=current_token_drop_ratio)
+            v_head, x_backbone = model(
+                xt, t * 1000, text_embeds, coords, 
+                text_mask=text_masks, 
+                token_drop_ratio=current_token_drop_ratio
+            )
             loss_head = torch.mean((v_head - ut) ** 2)
             loss_backbone = torch.mean((x_backbone - x1) ** 2)
             loss = loss_head + loss_backbone
@@ -286,8 +294,11 @@ def train(config_path):
                     # Sample with first few prompts from batch
                     sample_prompts = prompts[:4]
                     sample_coords = torch.tensor([[0.0, 0.0, 1.0, 1.0]] * len(sample_prompts), device=device)
-                    samples = sample_flow(model, vae, tokenizer, text_encoder, latent_size, len(sample_prompts),
-                                          sample_prompts, sample_coords, device, cfg_scale=cfg_scale)
+                    samples = sample_flow(
+                        model, vae, tokenizer, text_encoder, latent_size, len(sample_prompts),
+                        sample_prompts, sample_coords, device, 
+                        cfg_scale=cfg_scale
+                    )
                     samples = (samples + 1) / 2.0
                     samples = torch.clamp(samples, 0, 1)
                     grid = make_grid(samples, nrow=2)
