@@ -94,7 +94,7 @@ def sample_flow(model, vae, tokenizer, text_encoder, latent_size, batch_size, pr
         x = x + v * dt
 
     # Decode latents back to pixels
-    x = x / 0.18215
+    x = x / 0.62
     samples = vae.decode(x).sample
     return samples
 
@@ -215,23 +215,24 @@ def train(config_path):
         coords = coords.to(device)
 
         with torch.no_grad():
-            # Encode images to latents
-            latents = vae.encode(images).latent_dist.sample()
-            latents = latents * 0.18215
-            
-            # Encode text with LLM
-            # Randomly drop prompts for CFG
-            if config['training'].get('class_dropout_prob', 0.1) > 0:
-                indices = torch.rand(len(prompts)) < config['training']['class_dropout_prob']
-                train_prompts = [p if not indices[i] else "" for i, p in enumerate(prompts)]
-            else:
-                train_prompts = prompts
-            
-            # Encode with LLM
-            text_embeds, text_masks = encode_prompt_with_llm(
-                tokenizer, text_encoder, train_prompts, device,
-                max_sequence_length=config['model'].get('llm_max_seq_length', 512)
-            )
+            with torch.amp.autocast(dtype=torch.bfloat16)
+                # Encode images to latents
+                latents = vae.encode(images).latent_dist.sample()
+                latents = latents * 0.62
+
+                # Encode text with LLM
+                # Randomly drop prompts for CFG
+                if config['training'].get('class_dropout_prob', 0.1) > 0:
+                    indices = torch.rand(len(prompts)) < config['training']['class_dropout_prob']
+                    train_prompts = [p if not indices[i] else "" for i, p in enumerate(prompts)]
+                else:
+                    train_prompts = prompts
+
+                # Encode with LLM
+                text_embeds, text_masks = encode_prompt_with_llm(
+                    tokenizer, text_encoder, train_prompts, device,
+                    max_sequence_length=config['model'].get('llm_max_seq_length', 512)
+                )
 
         # SPRINT token drop ratio with random no-drop
         if sprint_enabled and two_stage_training:
