@@ -65,7 +65,6 @@ def save_checkpoint(model, optimizer, rank, output_dir, step, config):
 
     checkpoint = {
         "model_state_dict": model_to_save.state_dict(),
-        "optimizer_state_dict": optimizer.state_dict(),
         "global_step": step,
         "config": config
     }
@@ -83,7 +82,7 @@ def sample_flow(model, vae, tokenizer, text_encoder, latent_size, batch_size, pr
     Uses LLM with cross-attention.
     """
     # Start from noise x_0 (latents)
-    x = torch.randn((batch_size, 4, latent_size, latent_size), device=device)
+    x = torch.randn((batch_size, 32, latent_size, latent_size), device=device)
 
     dt = 1.0 / steps
     indices = torch.linspace(0, 1, steps, device=device)
@@ -111,8 +110,6 @@ def sample_flow(model, vae, tokenizer, text_encoder, latent_size, batch_size, pr
         # Euler step: x_{t+dt} = x_t + v_t * dt
         x = x + v * dt
 
-    # Decode latents back to pixels
-    x = x / 0.62
     samples = vae.decode(x).sample
     return samples
 
@@ -193,12 +190,41 @@ def train(config_path):
     global_step = 0
     resume_path = config.get('resume_from', "")
 
-    if resume_path and os.path.exists(resume_path):
-        # ... existing resume logic could go here if needed ...
-        pass
+    if resume_path:
+        if os.path.isdir(resume_path):
+            # If a directory is provided, find the latest checkpoint
+            ckpt_files = glob.glob(os.path.join(resume_path, "ckpt_step_*.pth"))
+            if ckpt_files:
+                resume_path = sorted(ckpt_files, key=lambda x: int(x.split('_')[-1].split('.')[0]))[-1]
+            else:
+                resume_path = None
+
+        if resume_path and os.path.exists(resume_path):
+            print(f"Resuming from checkpoint: {resume_path}")
+            # Map location to current device to avoid OOM on GPU 0
+            checkpoint = torch.load(resume_path, map_location=device)
+
+            # Load model weights
+            # If using DDP, load into model.module
+            if hasattr(model, 'module'):
+                model.module.load_state_dict(checkpoint["model_state_dict"], strict=False)
+            else:
+                model.load_state_dict(checkpoint["model_state_dict"], strict=False)
+
+            # Load step and RNG
+            global_step = checkpoint["global_step"] - 100
+            if "rng_state" in checkpoint:
+                torch.set_rng_state(checkpoint["rng_state"].cpu())
+            if "cuda_rng_state" in checkpoint:
+                torch.cuda.set_rng_state(checkpoint["cuda_rng_state"].cpu())
+
+            print(f"Successfully resumed at step {global_step}")
+        else:
+            print(f"No checkpoint found at {resume_path}, starting from scratch.")
 
     # Wrap model in DDP
     if is_ddp:
+        dist.barrier()
         model = DDP(model, device_ids=[local_rank])
 
     os.makedirs(config['training']['output_dir'], exist_ok=True)
@@ -237,7 +263,6 @@ def train(config_path):
             with torch.cuda.amp.autocast(dtype=torch.bfloat16):
                 # Encode images to latents
                 latents = vae.encode(images).latent_dist.sample()
-                latents = latents * 0.62
 
                 # Encode text with LLM
                 # Randomly drop prompts for CFG

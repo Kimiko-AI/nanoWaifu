@@ -18,7 +18,7 @@ class TokenDropper(nn.Module):
     def __init__(self, drop_ratio=0.75):
         super().__init__()
         self.drop_ratio = drop_ratio
-    
+
     def forward(self, x, drop_ratio=None):
         """
         Args:
@@ -30,17 +30,17 @@ class TokenDropper(nn.Module):
         """
         if drop_ratio is None:
             drop_ratio = self.drop_ratio
-            
+
         if drop_ratio == 0.0 or not self.training:
             # No dropping during inference or when ratio is 0
             B, N, D = x.shape
             keep_indices = torch.arange(N, device=x.device).unsqueeze(0).expand(B, -1)
             return x, keep_indices
-        
+
         B, N, D = x.shape
         keep_ratio = 1.0 - drop_ratio
         num_keep = max(1, int(N * keep_ratio))
-        
+
         # Structured group-wise subsampling
         # Use uniform sampling with slight randomization to maintain coverage
         if self.training:
@@ -55,18 +55,18 @@ class TokenDropper(nn.Module):
             # Deterministic uniform sampling for inference
             indices = torch.linspace(0, N - 1, num_keep, device=x.device).long()
             indices = indices.unsqueeze(0).expand(B, -1)
-        
+
         # Gather tokens
         indices_expanded = indices.unsqueeze(-1).expand(-1, -1, D)
         x_sparse = torch.gather(x, 1, indices_expanded)
-        
+
         return x_sparse, indices
 
 
 def scatter_tokens(x_sparse, indices, full_shape, fill_value=0.0):
     """
     Scatter sparse tokens back to full sequence.
-    
+
     Args:
         x_sparse: (B, N_sparse, D) sparse tokens
         indices: (B, N_sparse) indices where tokens should be placed
@@ -77,11 +77,11 @@ def scatter_tokens(x_sparse, indices, full_shape, fill_value=0.0):
     """
     B, N_full, D = full_shape
     x_full = torch.full((B, N_full, D), fill_value, device=x_sparse.device, dtype=x_sparse.dtype)
-    
+
     # Scatter tokens back
     indices_expanded = indices.unsqueeze(-1).expand(-1, -1, D)
     x_full.scatter_(1, indices_expanded, x_sparse)
-    
+
     return x_full
 
 
@@ -157,15 +157,15 @@ class DiTBlockWithCrossAttention(nn.Module):
     def __init__(self, hidden_size, num_heads, mlp_ratio=4.0, use_timestep_cond=True):
         super().__init__()
         self.use_timestep_cond = use_timestep_cond
-        
+
         # Self-attention for image tokens
         self.norm1 = nn.LayerNorm(hidden_size, eps=1e-6)
         self.self_attn = nn.MultiheadAttention(hidden_size, num_heads=num_heads, batch_first=True)
-        
+
         # Cross-attention to text tokens
         self.norm2 = nn.LayerNorm(hidden_size, eps=1e-6)
         self.cross_attn = nn.MultiheadAttention(hidden_size, num_heads=num_heads, batch_first=True)
-        
+
         # MLP
         self.norm3 = nn.LayerNorm(hidden_size, eps=1e-6)
         mlp_hidden_dim = int(hidden_size * mlp_ratio)
@@ -174,7 +174,7 @@ class DiTBlockWithCrossAttention(nn.Module):
             nn.GELU(),
             nn.Linear(mlp_hidden_dim, hidden_size),
         )
-        
+
         # Optional timestep conditioning via addition
         if use_timestep_cond:
             self.timestep_proj = nn.Sequential(
@@ -194,12 +194,12 @@ class DiTBlockWithCrossAttention(nn.Module):
         if self.use_timestep_cond and timestep_emb is not None:
             t_cond = self.timestep_proj(timestep_emb).unsqueeze(1)  # (B, 1, D)
             x = x + t_cond
-        
+
         # Self-attention
         x_norm = self.norm1(x)
         attn_out, _ = self.self_attn(x_norm, x_norm, x_norm)
         x = x + attn_out
-        
+
         # Cross-attention to text
         x_norm = self.norm2(x)
         # Convert mask: True (attend) -> False (not masked), False (ignore) -> True (masked)
@@ -207,20 +207,20 @@ class DiTBlockWithCrossAttention(nn.Module):
             attn_mask = ~text_mask  # Invert for PyTorch convention
         else:
             attn_mask = None
-        
+
         cross_out, _ = self.cross_attn(
             query=x_norm,
             key=text_embeds,
             value=text_embeds,
-            key_padding_mask=attn_mask
+           # key_padding_mask=attn_mask
         )
         x = x + cross_out
-        
+
         # MLP
         x_norm = self.norm3(x)
         mlp_out = self.mlp(x_norm)
         x = x + mlp_out
-        
+
         return x
 
 
@@ -233,16 +233,16 @@ class TextRefiner(nn.Module):
         super().__init__()
         self.text_dim = text_dim
         self.hidden_size = hidden_size
-        
+
         # Project text embeddings to hidden size
         self.text_proj = nn.Linear(text_dim, hidden_size)
-        
+
         # Self-attention blocks to refine text (with AdaLN)
         self.blocks = nn.ModuleList([
             DiTBlock(hidden_size, num_heads, mlp_ratio=mlp_ratio)
             for _ in range(num_layers)
         ])
-        
+
     def forward(self, text_embeds, t_coord_emb):
         """
         Args:
@@ -253,11 +253,11 @@ class TextRefiner(nn.Module):
         """
         # Project to hidden size
         x = self.text_proj(text_embeds)  # (B, N_text, hidden_size)
-        
+
         # Process through blocks with AdaLN conditioning
         for block in self.blocks:
             x = block(x, t_coord_emb)
-        
+
         return x
 
 
@@ -271,7 +271,7 @@ class FinalLayer(nn.Module):
         self.use_cross_attn = use_cross_attn
         self.norm_final = nn.LayerNorm(hidden_size, elementwise_affine=False, eps=1e-6)
         self.linear = nn.Linear(hidden_size, patch_size * patch_size * out_channels, bias=True)
-        
+
         if not use_cross_attn:
             # Original AdaLN mode
             self.adaLN_modulation = nn.Sequential(
@@ -292,7 +292,7 @@ class FinalLayer(nn.Module):
             # Cross-attention mode or no conditioning
             x = self.norm_final(x)
             x = x * self.scale + self.shift
-        
+
         x = self.linear(x)
         return x
 
@@ -340,11 +340,11 @@ class DiTBackbone(nn.Module):
         self.num_heads = num_heads
         self.context_dim = context_dim
         self.use_cross_attn = use_cross_attn
-        
+
         # SPRINT configuration
         self.sprint_enabled = sprint_enabled
         self.token_drop_ratio = token_drop_ratio
-        
+
         # Partition blocks into encoder/middle/decoder
         if sprint_enabled and encoder_depth is not None:
             assert encoder_depth + middle_depth + decoder_depth == depth, \
@@ -360,7 +360,7 @@ class DiTBackbone(nn.Module):
 
         self.x_embedder = PatchEmbed(input_size, patch_size, in_channels, hidden_size)
         self.t_embedder = TimestepEmbedder(hidden_size)
-        
+
         # Text refiner: processes LLM embeddings with 2 DiTBlocks
         if use_cross_attn:
             self.text_refiner = TextRefiner(
@@ -377,13 +377,13 @@ class DiTBackbone(nn.Module):
                 nn.SiLU(),
                 nn.Linear(hidden_size, hidden_size),
             )
-        
+
         self.coord_embedder = nn.Sequential(
             nn.Linear(4, hidden_size),
             nn.SiLU(),
             nn.Linear(hidden_size, hidden_size),
         )
-        
+
         num_patches = self.x_embedder.num_patches
         self.pos_embed = nn.Parameter(torch.zeros(1, num_patches, hidden_size), requires_grad=False)
 
@@ -391,45 +391,45 @@ class DiTBackbone(nn.Module):
         if use_cross_attn:
             # Use cross-attention blocks
             self.encoder_blocks = nn.ModuleList([
-                DiTBlockWithCrossAttention(hidden_size, num_heads, mlp_ratio=mlp_ratio, use_timestep_cond=True) 
+                DiTBlockWithCrossAttention(hidden_size, num_heads, mlp_ratio=mlp_ratio, use_timestep_cond=True)
                 for _ in range(self.encoder_depth)
             ])
-            
+
             self.middle_blocks = nn.ModuleList([
-                DiTBlockWithCrossAttention(hidden_size, num_heads, mlp_ratio=mlp_ratio, use_timestep_cond=True) 
+                DiTBlockWithCrossAttention(hidden_size, num_heads, mlp_ratio=mlp_ratio, use_timestep_cond=True)
                 for _ in range(self.middle_depth)
             ])
-            
+
             self.decoder_blocks = nn.ModuleList([
-                DiTBlockWithCrossAttention(hidden_size, num_heads, mlp_ratio=mlp_ratio, use_timestep_cond=True) 
+                DiTBlockWithCrossAttention(hidden_size, num_heads, mlp_ratio=mlp_ratio, use_timestep_cond=True)
                 for _ in range(self.decoder_depth)
             ])
         else:
             # Use original AdaLN blocks
             self.encoder_blocks = nn.ModuleList([
-                DiTBlock(hidden_size, num_heads, mlp_ratio=mlp_ratio) 
+                DiTBlock(hidden_size, num_heads, mlp_ratio=mlp_ratio)
                 for _ in range(self.encoder_depth)
             ])
-            
+
             self.middle_blocks = nn.ModuleList([
-                DiTBlock(hidden_size, num_heads, mlp_ratio=mlp_ratio) 
+                DiTBlock(hidden_size, num_heads, mlp_ratio=mlp_ratio)
                 for _ in range(self.middle_depth)
             ])
-            
+
             self.decoder_blocks = nn.ModuleList([
-                DiTBlock(hidden_size, num_heads, mlp_ratio=mlp_ratio) 
+                DiTBlock(hidden_size, num_heads, mlp_ratio=mlp_ratio)
                 for _ in range(self.decoder_depth)
             ])
-        
+
         # Token dropper for SPRINT
         if sprint_enabled:
             self.token_dropper = TokenDropper(drop_ratio=token_drop_ratio)
             # Residual projection to combine encoder and decoder paths
             if self.decoder_depth > 0:
                 self.residual_proj = nn.Linear(hidden_size, hidden_size)
-        
+
         self.final_layer = FinalLayer(hidden_size, patch_size, out_channels=in_channels, use_cross_attn=use_cross_attn)
-        
+
         self.gradient_checkpointing = False
         self.initialize_weights()
 
@@ -450,7 +450,7 @@ class DiTBackbone(nn.Module):
         w = self.x_embedder.proj.weight.data
         nn.init.xavier_uniform_(w.view([w.shape[0], -1]))
         nn.init.constant_(self.x_embedder.proj.bias, 0)
-        
+
         # Initialize text embedder/refiner
         if self.use_cross_attn:
             # Initialize text_refiner
@@ -478,13 +478,13 @@ class DiTBackbone(nn.Module):
                 if block.use_timestep_cond:
                     nn.init.normal_(block.timestep_proj[-1].weight, std=0.02)
                     nn.init.constant_(block.timestep_proj[-1].bias, 0)
-        
+
         # Initialize SPRINT residual projection if exists
         if self.sprint_enabled and hasattr(self, 'residual_proj'):
             nn.init.xavier_uniform_(self.residual_proj.weight)
             if self.residual_proj.bias is not None:
                 nn.init.constant_(self.residual_proj.bias, 0)
-            
+
         # Zero-out output layers:
         if not self.use_cross_attn:
             nn.init.constant_(self.final_layer.adaLN_modulation[-1].weight, 0)
@@ -500,7 +500,7 @@ class DiTBackbone(nn.Module):
         p = self.patch_size
         h = w = int(x.shape[1] ** .5)
         c = self.in_channels
-        
+
         x = x.reshape(shape=(x.shape[0], h, w, p, p, c))
         x = torch.einsum('nhwpqc->nchpwq', x)
         imgs = x.reshape(shape=(x.shape[0], c, h * p, h * p))
@@ -515,23 +515,23 @@ class DiTBackbone(nn.Module):
         text_mask: (N, N_text) attention mask for text (optional, for cross-attention mode)
         """
         x = self.x_embedder(x) + self.pos_embed
-        
+
         # Save initial embedding for skip connection (N, T, D)
         x_start = x
 
         t_emb = self.t_embedder(t)
         coord_emb = self.coord_embedder(crop_coords)
-        
+
         if self.use_cross_attn:
             # Cross-attention mode: refine text embeddings
             # text_embed should be (N, N_text, context_dim)
             if text_embed.dim() == 2:
                 # If pooled, unsqueeze to (N, 1, context_dim)
                 text_embed = text_embed.unsqueeze(1)
-            
+
             # Combine timestep and coord embeddings for conditioning
             t_coord_emb = t_emb + coord_emb  # (N, hidden_size)
-            
+
             # Refine text through text_refiner with timestep/coord conditioning
             text_refined = self.text_refiner(text_embed, t_coord_emb)  # (N, N_text, hidden_size)
         else:
@@ -539,9 +539,9 @@ class DiTBackbone(nn.Module):
             if text_embed.dim() == 3:
                 # If sequence, pool it
                 text_embed = text_embed.mean(dim=1)
-            
+
             y_emb = self.text_embedder(text_embed)
-            c = t_emb + y_emb + coord_emb 
+            c = t_emb + y_emb + coord_emb
 
         # SPRINT: Encoder (Dense Shallow Path)
         for block in self.encoder_blocks:
@@ -557,17 +557,17 @@ class DiTBackbone(nn.Module):
                     x = torch.utils.checkpoint.checkpoint(block, x, c, use_reentrant=False)
                 else:
                     x = block(x, c)
-        
+
         # Save encoder output for residual connection
         x_encoder = x
-        
+
         # SPRINT: Middle (Sparse Deep Path) with token dropping
         if self.sprint_enabled and self.middle_depth > 0:
             # Apply token dropping
             if token_drop_ratio is None:
                 token_drop_ratio = self.token_drop_ratio
             x_sparse, keep_indices = self.token_dropper(x, drop_ratio=token_drop_ratio)
-            
+
             # Process sparse tokens through middle blocks
             for block in self.middle_blocks:
                 if self.use_cross_attn:
@@ -582,20 +582,20 @@ class DiTBackbone(nn.Module):
                         x_sparse = torch.utils.checkpoint.checkpoint(block, x_sparse, c, use_reentrant=False)
                     else:
                         x_sparse = block(x_sparse, c)
-            
+
             # Scatter sparse tokens back to full sequence
             x_middle = scatter_tokens(x_sparse, keep_indices, x.shape, fill_value=0.0)
         else:
             x_middle = x
-        
+
         # SPRINT: Decoder (Dense Path with Residual Fusion)
         if self.sprint_enabled and self.decoder_depth > 0:
             # Fuse encoder and middle outputs via residual connection
             x = x_middle + self.residual_proj(x_encoder)
         else:
             x = x_middle
-        
-        
+
+
         for block in self.decoder_blocks:
             if self.use_cross_attn:
                 if self.gradient_checkpointing and self.training:
@@ -609,7 +609,7 @@ class DiTBackbone(nn.Module):
                     x = torch.utils.checkpoint.checkpoint(block, x, c, use_reentrant=False)
                 else:
                     x = block(x, c)
-        
+
         # Compute DiT prediction
         if self.use_cross_attn:
             x_pred = self.final_layer(x)
@@ -621,7 +621,7 @@ class DiTBackbone(nn.Module):
         H_grid = W_grid = int(x.shape[1] ** 0.5)
         x_start = x_start.transpose(1, 2).reshape(x_start.shape[0], self.hidden_size, H_grid, W_grid)
         x = x.transpose(1, 2).reshape(x.shape[0], self.hidden_size, H_grid, W_grid)
-        
+
         return x_pred, x_start, x, t_emb
 
 class ResBlock(nn.Module):
@@ -631,10 +631,10 @@ class ResBlock(nn.Module):
         self.conv1 = nn.Conv2d(in_channels, out_channels, 3, padding=1)
         self.norm2 = nn.GroupNorm(32, out_channels)
         self.conv2 = nn.Conv2d(out_channels, out_channels, 3, padding=1)
-        
+
         if temb_channels:
             self.temb_proj = nn.Linear(temb_channels, out_channels)
-        
+
         if in_channels != out_channels:
             self.shortcut = nn.Conv2d(in_channels, out_channels, 1)
         else:
@@ -645,14 +645,14 @@ class ResBlock(nn.Module):
         h = self.norm1(h)
         h = F.silu(h)
         h = self.conv1(h)
-        
+
         if temb is not None:
             h = h + self.temb_proj(F.silu(temb))[:, :, None, None]
-            
+
         h = self.norm2(h)
         h = F.silu(h)
         h = self.conv2(h)
-        
+
         return h + self.shortcut(x)
 
 class ResNetHead(nn.Module):
@@ -661,27 +661,27 @@ class ResNetHead(nn.Module):
         self.in_channels = in_channels
         self.patch_size = patch_size
         self.hidden_size = hidden_size
-        
+
         # Timestep embedding (re-created here to match interface, or reused)
         # We'll expect t_emb to be passed in, but we need to project it
         # Actually, DiTBackbone returns t_emb (size backbone_hidden), we need to project it to 4*hidden_size?
         # Or we can just project the raw t_emb to fit ResBlock. ResBlock expects `temb_channels` input.
         # Let's say we receive the raw t_emb from backbone (size `backbone_hidden`).
         # We'll project it to `hidden_size` for the ResBlocks.
-        
+
         self.temb_proj = nn.Sequential(
             nn.SiLU(),
-            nn.Linear(in_channels, hidden_size), 
+            nn.Linear(in_channels, hidden_size),
         )
 
         # Input projection: Combine start + end features (2 * in_channels) -> hidden_size
         self.input_proj = nn.Conv2d(in_channels * 2, hidden_size, 3, padding=1)
-        
+
         self.blocks = nn.ModuleList([
-            ResBlock(hidden_size, hidden_size, temb_channels=hidden_size) 
+            ResBlock(hidden_size, hidden_size, temb_channels=hidden_size)
             for _ in range(num_blocks)
         ])
-        
+
         # PixelShuffle Upscaling
         # Output dim needs to be out_channels * patch_size^2
         self.final_conv = nn.Conv2d(hidden_size, out_channels * patch_size**2, 3, padding=1)
@@ -690,15 +690,15 @@ class ResNetHead(nn.Module):
     def forward(self, x_start, x_end, t_emb):
         # x_start, x_end: (N, C, H, W)
         # t_emb: (N, C)
-        
+
         x = torch.cat([x_start, x_end], dim=1)
         x = self.input_proj(x)
-        
+
         t_emb = self.temb_proj(t_emb)
-        
+
         for block in self.blocks:
             x = block(x, t_emb)
-            
+
         x = self.final_conv(x)
         x = self.pixel_shuffle(x)
         return x
@@ -730,7 +730,7 @@ class DiT(nn.Module):
         self.sprint_enabled = sprint_enabled
         self.token_drop_ratio = token_drop_ratio
         self.use_cross_attn = use_cross_attn
-        
+
         self.backbone = DiTBackbone(
             input_size, patch_size, in_channels, hidden_size,
             depth, num_heads, mlp_ratio, context_dim,
@@ -741,7 +741,7 @@ class DiT(nn.Module):
             middle_depth=middle_depth,
             decoder_depth=decoder_depth,
         )
-        
+
         self.head = ResNetHead(
             in_channels=hidden_size, # Backbone output dim
             out_channels=in_channels, # Latent channels
@@ -756,11 +756,11 @@ class DiT(nn.Module):
     def forward(self, x, t, text_embed, crop_coords, text_mask=None, token_drop_ratio=None):
         # DiT Backbone forward
         x_pred, x_start, x_end, t_emb = self.backbone(
-            x, t, text_embed, crop_coords, 
-            text_mask=text_mask, 
+            x, t, text_embed, crop_coords,
+            text_mask=text_mask,
             token_drop_ratio=token_drop_ratio
         )
-        
+
         # Head Forward
         out = self.head(x_start, x_end, t_emb)
         return out, x_pred
