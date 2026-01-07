@@ -15,6 +15,7 @@ class MultiheadAttentionWithQKNorm(nn.Module):
     Multi-head attention with QK normalization for improved training stability.
     Normalizes queries and keys before computing attention scores.
     """
+
     def __init__(self, embed_dim, num_heads, batch_first=True, qk_norm=True):
         super().__init__()
         self.embed_dim = embed_dim
@@ -22,20 +23,20 @@ class MultiheadAttentionWithQKNorm(nn.Module):
         self.head_dim = embed_dim // num_heads
         self.batch_first = batch_first
         self.qk_norm = qk_norm
-        
+
         assert self.head_dim * num_heads == embed_dim, "embed_dim must be divisible by num_heads"
-        
+
         # QKV projections
         self.q_proj = nn.Linear(embed_dim, embed_dim)
         self.k_proj = nn.Linear(embed_dim, embed_dim)
         self.v_proj = nn.Linear(embed_dim, embed_dim)
         self.out_proj = nn.Linear(embed_dim, embed_dim)
-        
+
         # QK normalization layers
         if qk_norm:
             self.q_norm = nn.RMSNorm(self.head_dim, eps=1e-6)
             self.k_norm = nn.RMSNorm(self.head_dim, eps=1e-6)
-    
+
     def forward(self, query, key, value, key_padding_mask=None, need_weights=False, attn_mask=None):
         """
         Args:
@@ -53,20 +54,20 @@ class MultiheadAttentionWithQKNorm(nn.Module):
             query = query.transpose(0, 1)
             key = key.transpose(0, 1)
             value = value.transpose(0, 1)
-        
+
         B, N_q, D = query.shape
         N_k = key.shape[1]
-        
+
         # Project and reshape to (B, num_heads, N, head_dim)
         q = self.q_proj(query).reshape(B, N_q, self.num_heads, self.head_dim).transpose(1, 2)
         k = self.k_proj(key).reshape(B, N_k, self.num_heads, self.head_dim).transpose(1, 2)
         v = self.v_proj(value).reshape(B, N_k, self.num_heads, self.head_dim).transpose(1, 2)
-        
+
         # Apply QK normalization
         if self.qk_norm:
             q = self.q_norm(q)
             k = self.k_norm(k)
-        
+
         # Use PyTorch's optimized scaled_dot_product_attention
         # Automatically uses Flash Attention 2 when available
         attn_output = F.scaled_dot_product_attention(
@@ -75,16 +76,15 @@ class MultiheadAttentionWithQKNorm(nn.Module):
             dropout_p=0.0,
             is_causal=False,
         )  # (B, num_heads, N_q, head_dim)
-        
+
         # Reshape and project output
         attn_output = attn_output.transpose(1, 2).reshape(B, N_q, D)
         attn_output = self.out_proj(attn_output)
-        
+
         if not self.batch_first:
             attn_output = attn_output.transpose(0, 1)
-        
-        return attn_output, None
 
+        return attn_output, None
 
 
 class TokenDropper(nn.Module):
@@ -155,7 +155,7 @@ def scatter_tokens(x_sparse, indices, full_shape, mask_token=None):
         x_full: (B, N_full, D) full sequence with scattered tokens
     """
     B, N_full, D = full_shape
-    
+
     # Initialize with mask tokens or zeros
     if mask_token is not None:
         # Broadcast mask_token to full shape
@@ -238,24 +238,31 @@ class DiTBlock(nn.Module):
 
 class DiTBlockWithCrossAttention(nn.Module):
     """
-    DiT Block with cross-attention to text embeddings instead of AdaLN.
-    Supports attention masks for variable-length text sequences.
+    DiT block with:
+      - Self-attention (AdaLN-modulated)
+      - Cross-attention to text (AdaLN-modulated)
+      - MLP (AdaLN-modulated)
+
+    Conditioning vector c drives AdaLN (e.g. timestep embedding).
     """
 
-    def __init__(self, hidden_size, num_heads, mlp_ratio=4.0, use_timestep_cond=True):
+    def __init__(self, hidden_size, num_heads, mlp_ratio=4.0):
         super().__init__()
-        self.use_timestep_cond = use_timestep_cond
 
-        # Self-attention for image tokens
-        self.norm1 = nn.RMSNorm(hidden_size, eps=1e-6)
-        self.self_attn = MultiheadAttentionWithQKNorm(hidden_size, num_heads=num_heads, batch_first=True, qk_norm=True)
+        # --- Normalizations ---
+        self.norm1 = nn.RMSNorm(hidden_size, elementwise_affine=False, eps=1e-6)
+        self.norm2 = nn.RMSNorm(hidden_size, elementwise_affine=False, eps=1e-6)
+        self.norm3 = nn.RMSNorm(hidden_size, elementwise_affine=False, eps=1e-6)
 
-        # Cross-attention to text tokens
-        self.norm2 = nn.RMSNorm(hidden_size, eps=1e-6)
-        self.cross_attn = MultiheadAttentionWithQKNorm(hidden_size, num_heads=num_heads, batch_first=True, qk_norm=True)
+        # --- Attention ---
+        self.self_attn = MultiheadAttentionWithQKNorm(
+            hidden_size, num_heads=num_heads, batch_first=True, qk_norm=True
+        )
+        self.cross_attn = MultiheadAttentionWithQKNorm(
+            hidden_size, num_heads=num_heads, batch_first=True, qk_norm=True
+        )
 
-        # MLP
-        self.norm3 = nn.RMSNorm(hidden_size, eps=1e-6)
+        # --- MLP ---
         mlp_hidden_dim = int(hidden_size * mlp_ratio)
         self.mlp = nn.Sequential(
             nn.Linear(hidden_size, mlp_hidden_dim),
@@ -263,44 +270,49 @@ class DiTBlockWithCrossAttention(nn.Module):
             nn.Linear(mlp_hidden_dim, hidden_size),
         )
 
-        # Optional timestep conditioning via addition
-        if use_timestep_cond:
-            self.timestep_proj = nn.Sequential(
-                nn.SiLU(),
-                nn.Linear(hidden_size, hidden_size)
-            )
+        # --- AdaLN modulation ---
+        # 3 blocks × (shift, scale, gate) = 9 * hidden_size
+        self.adaLN_modulation = nn.Sequential(
+            nn.SiLU(),
+            nn.Linear(hidden_size, 9 * hidden_size, bias=True),
+        )
 
-    def forward(self, x, text_embeds, text_mask=None, timestep_emb=None):
+    def forward(self, x, text_embeds, text_mask, c):
         """
         Args:
             x: (B, N_img, D) image tokens
             text_embeds: (B, N_text, D) text embeddings
-            text_mask: Ignored (kept for API compatibility)
-            timestep_emb: (B, D) timestep embedding (optional)
+            c: (B, D) conditioning vector (e.g. timestep embedding)
+            text_mask: optional text attention mask (currently unused)
         """
-        # Timestep conditioning (additive)
-        if self.use_timestep_cond and timestep_emb is not None:
-            t_cond = self.timestep_proj(timestep_emb).unsqueeze(1)  # (B, 1, D)
-            x = x + t_cond
 
-        # Self-attention
+        (
+            shift_sa, scale_sa, gate_sa,
+            shift_ca, scale_ca, gate_ca,
+            shift_mlp, scale_mlp, gate_mlp,
+        ) = self.adaLN_modulation(c).chunk(9, dim=1)
+
+        # --- Self-attention ---
         x_norm = self.norm1(x)
-        attn_out, _ = self.self_attn(x_norm, x_norm, x_norm)
-        x = x + attn_out
+        x_norm = modulate(x_norm, shift_sa, scale_sa)
+        sa_out, _ = self.self_attn(x_norm, x_norm, x_norm)
+        x = x + gate_sa.unsqueeze(1) * sa_out
 
-        # Cross-attention to text (mask ignored)
+        # --- Cross-attention ---
         x_norm = self.norm2(x)
-        cross_out, _ = self.cross_attn(
+        x_norm = modulate(x_norm, shift_ca, scale_ca)
+        ca_out, _ = self.cross_attn(
             query=x_norm,
             key=text_embeds,
             value=text_embeds,
         )
-        x = x + cross_out
+        x = x + gate_ca.unsqueeze(1) * ca_out
 
-        # MLP
+        # --- MLP ---
         x_norm = self.norm3(x)
+        x_norm = modulate(x_norm, shift_mlp, scale_mlp)
         mlp_out = self.mlp(x_norm)
-        x = x + mlp_out
+        x = x + gate_mlp.unsqueeze(1) * mlp_out
 
         return x
 
@@ -477,17 +489,17 @@ class DiTBackbone(nn.Module):
         if use_cross_attn:
             # Use cross-attention blocks
             self.encoder_blocks = nn.ModuleList([
-                DiTBlockWithCrossAttention(hidden_size, num_heads, mlp_ratio=mlp_ratio, use_timestep_cond=True)
+                DiTBlockWithCrossAttention(hidden_size, num_heads, mlp_ratio=mlp_ratio)
                 for _ in range(self.encoder_depth)
             ])
 
             self.middle_blocks = nn.ModuleList([
-                DiTBlockWithCrossAttention(hidden_size, num_heads, mlp_ratio=mlp_ratio, use_timestep_cond=True)
+                DiTBlockWithCrossAttention(hidden_size, num_heads, mlp_ratio=mlp_ratio)
                 for _ in range(self.middle_depth)
             ])
 
             self.decoder_blocks = nn.ModuleList([
-                DiTBlockWithCrossAttention(hidden_size, num_heads, mlp_ratio=mlp_ratio, use_timestep_cond=True)
+                DiTBlockWithCrossAttention(hidden_size, num_heads, mlp_ratio=mlp_ratio)
                 for _ in range(self.decoder_depth)
             ])
         else:
@@ -558,22 +570,17 @@ class DiTBackbone(nn.Module):
         # Initialize all blocks (encoder, middle, decoder)
         all_blocks = list(self.encoder_blocks) + list(self.middle_blocks) + list(self.decoder_blocks)
         for block in all_blocks:
-            if isinstance(block, DiTBlock):
+            if isinstance(block, DiTBlock) or isinstance(block, DiTBlockWithCrossAttention):
                 # AdaLN blocks
                 nn.init.constant_(block.adaLN_modulation[-1].weight, 0)
                 nn.init.constant_(block.adaLN_modulation[-1].bias, 0)
-            elif isinstance(block, DiTBlockWithCrossAttention):
-                # Cross-attention blocks - initialize timestep projection
-                if block.use_timestep_cond:
-                    nn.init.normal_(block.timestep_proj[-1].weight, std=0.02)
-                    nn.init.constant_(block.timestep_proj[-1].bias, 0)
 
         # Initialize SPRINT residual projection if exists
         if self.sprint_enabled and hasattr(self, 'residual_proj'):
             nn.init.xavier_uniform_(self.residual_proj.weight)
             if self.residual_proj.bias is not None:
                 nn.init.constant_(self.residual_proj.bias, 0)
-        
+
         # Initialize SPRINT mask token
         if self.sprint_enabled and hasattr(self, 'mask_token'):
             nn.init.normal_(self.mask_token, std=0.02)
@@ -768,7 +775,7 @@ class DiT(nn.Module):
             token_drop_ratio=token_drop_ratio
         )
 
-        return x_pred, x_pred
+        return x_pred
 
 
 def get_2d_sincos_pos_embed(embed_dim, grid_size, cls_token=False):
