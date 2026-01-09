@@ -392,8 +392,8 @@ def train(config_path):
                         noise=use_noise
                     )
 
-                    samples = (samples + 1) / 2.0
-                    samples = torch.clamp(samples, 0, 1)
+                    # samples = (samples + 1) / 2.0
+                    # samples = torch.clamp(samples, 0, 1)
                     grid = make_grid(samples, nrow=4)
 
                     wandb.log({"samples": wandb.Image(grid,
