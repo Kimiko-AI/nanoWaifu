@@ -10,9 +10,11 @@ from PIL import Image
 import json
 import numpy as np
 
+
 def warn_and_continue(exn):
     print(f"Warning: {exn}")
     return True
+
 
 # --- 1. Preprocessing Function ---
 def transform_sample(sample):
@@ -32,7 +34,7 @@ def transform_sample(sample):
 
     if image is None:
         raise ValueError("No image found in sample")
-    
+
     # Handle prompts
     # Assuming 'json' or 'txt' or 'caption'
     prompt = ""
@@ -40,22 +42,24 @@ def transform_sample(sample):
 
     if "json" in sample:
         json_data = sample["json"]
+        if isinstance(json_data, bytes):
+            json_data = json.loads(json_data.decode("utf-8"))
         # User specific tag logic from previous file
         if isinstance(json_data, dict):
             parts = []
             full_parts = []
-            
+
             # --- Pixiv Extraction ---
             pixiv_tags_str = ""
             pixiv_title_str = ""
-            
+
             if "pixiv" in json_data:
                 p_data = json_data["pixiv"]
-                
+
                 # Extract Title
                 if "work" in p_data and "titl" in p_data["work"]:
                     pixiv_title_str = str(p_data["work"]["titl"])
-                    
+
                 # Extract Tags (Eng > Romaji > Orig)
                 if "tags" in p_data and "tags" in p_data["tags"]:
                     p_tags_list = p_data["tags"]["tags"]
@@ -67,7 +71,7 @@ def transform_sample(sample):
                                 t_val = t_obj.get("romaji")
                             if not t_val:
                                 t_val = t_obj.get("orig")
-                            
+
                             if t_val:
                                 extracted_p_tags.append(str(t_val))
                     pixiv_tags_str = " ".join(extracted_p_tags)
@@ -157,22 +161,22 @@ def transform_sample(sample):
                 parts.extend(gen_parts)
 
             prompt = " ".join(parts)[:512]
-            
+
             # --- Replacement Logic ---
             # 20% chance to replace with Title
             # 20% chance to replace with Pixiv Tags
             # Independent events. If both occur, we combine them.
-            
+
             replace_with_title = (pixiv_title_str != "") and (np.random.random() < 0.2)
             replace_with_ptags = (pixiv_tags_str != "") and (np.random.random() < 0.2)
-            
+
             if replace_with_title and replace_with_ptags:
                 prompt = f"{pixiv_title_str} {pixiv_tags_str}"[:512]
             elif replace_with_title:
                 prompt = pixiv_title_str[:512]
             elif replace_with_ptags:
                 prompt = pixiv_tags_str[:512]
-            
+
         else:
             prompt = str(json_data)
             full_prompt = prompt
@@ -182,7 +186,7 @@ def transform_sample(sample):
     elif "caption" in sample:
         prompt = sample["caption"]
         full_prompt = prompt
-    
+
     return {
         "image": image,
         "prompts": prompt,
@@ -195,7 +199,7 @@ class WDSLoader:
     def __init__(self, url, csv_path=None, image_size=64, batch_size=16, num_workers=4, use_advanced_captions=True):
         """
         WebDataset Loader for nanoWaifu.
-        
+
         Args:
             url: WebDataset URL or path
             csv_path: Path to CSV for class mapping (optional, for backward compatibility)
@@ -209,7 +213,7 @@ class WDSLoader:
         self.batch_size = batch_size
         self.num_workers = num_workers
         self.use_advanced_captions = use_advanced_captions
-        
+
         # Optional class map for backward compatibility
         self.class_map = None
         self.num_classes = 0
@@ -245,10 +249,10 @@ class WDSLoader:
                     if key in sample:
                         image = sample[key]
                         break
-                
+
                 if image is None:
                     return None
-                
+
                 # Simple prompt extraction
                 if "json" in sample:
                     meta = sample["json"] if isinstance(sample["json"], dict) else json.loads(sample["json"])
@@ -263,7 +267,7 @@ class WDSLoader:
                 else:
                     prompt = ""
                     full_prompt = ""
-            
+
             # Decode image if it's bytes
             if isinstance(image, bytes):
                 image = Image.open(io.BytesIO(image)).convert("RGB")
@@ -272,46 +276,49 @@ class WDSLoader:
 
             # Random Resized Crop logic
             i, j, h, w = transforms.RandomResizedCrop.get_params(image, scale=self.scale, ratio=self.ratio)
-            
+
             # Original size
             W, H = image.size
-            
+
             # Relative coords: top, left, height, width
             rel_coords = [i / H, j / W, h / H, w / W]
             rel_coords = torch.tensor(rel_coords, dtype=torch.float32)
 
             # Apply crop and resize
             image = F.resized_crop(image, i, j, h, w, size=(self.image_size, self.image_size))
-            
+
             # To Tensor and Normalize [-1, 1]
             image = F.to_tensor(image)
-            image = (image - 0.5) * 2.0 
-
+            image = (image - 0.5) * 2.0
             return {
                 "image": image,
-                "prompt": prompt,
+                "prompt": full_prompt,
                 "full_prompt": full_prompt,
                 "coords": rel_coords
             }
-        
+
         except Exception as e:
             print(f"Error preprocessing sample: {e}")
             return None
 
     def make_loader(self):
         dataset = (
-            wds.WebDataset(self.url, nodesplitter=wds.split_by_node, handler=warn_and_continue,)
+            wds.WebDataset(
+                self.url,
+                nodesplitter=wds.split_by_node,
+                handler=warn_and_continue,
+            )
             .shuffle(1000)
-            .map(self.preprocess, handler=warn_and_continue,)
+            .map(self.preprocess, handler=warn_and_continue)
             .select(lambda x: x is not None)
-            .to_tuple("image", "prompt", "coords", handler=warn_and_continue,)
+            .to_tuple("image", "prompt", "coords", handler=warn_and_continue)
             .batched(self.batch_size, partial=False)
         )
-        
-        loader = DataLoader(
+
+        loader = wds.WebLoader(
             dataset,
-            batch_size=None, # Batched in webdataset
             num_workers=self.num_workers,
-            pin_memory=True
+            pin_memory=True, batch_size=None
         )
+
         return loader
