@@ -23,9 +23,9 @@ model:
   depth: 24
   heads: 24
   mlp_dim: 6144
-  in_channels: 16 # Latents
+  in_channels: 32 # Latents
   context_dim: 1024 # LLM hidden size (adjust based on your LLM)
-  vae_model: "REPA-E/e2e-flux-vae"
+  vae_model: "fal/FLUX.2-Tiny-AutoEncoder"
   # LLM text encoder for cross-attention
   text_encoder_model: "Qwen/Qwen3-0.6B"  # Replace with your LLM path
   llm_max_seq_length: 128  # Maximum sequence length for LLM
