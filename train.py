@@ -12,15 +12,21 @@ from tqdm.auto import tqdm
 import wandb
 import glob
 import builtins
-from diffusers import AutoencoderKL
-from transformers import AutoTokenizer, AutoModel
-
+from diffusers import AutoencoderKL, AutoModel
+from transformers import AutoTokenizer
+import timm
 from model import DiT
 from dataset import WDSLoader
 from text_encoder import encode_prompt_with_llm
-from loss import DriftingAndPerceptualLoss
 from torch.optim import AdamW
 from torch.optim.lr_scheduler import CosineAnnealingLR
+import torch.nn.functional as F
+import bitsandbytes as bnb
+
+
+# ---------------------------------------------------------------------------
+# Helper: extract & normalize features
+# ---------------------------------------------------------------------------
 
 
 def setup_ddp():
@@ -123,7 +129,7 @@ def sample_flow(model, vae, tokenizer, text_encoder, latent_size, batch_size, pr
         x = x + v * dt
 
     latents = x / vae.config.scaling_factor + vae.config.shift_factor
-    images = vae.decode(latents).sample
+    images = vae.decode(latents, return_dict=False)
     images = (images / 2 + 0.5).clamp(0, 1)
     return images
 
@@ -146,17 +152,17 @@ def train(config_path):
         wandb.init(project=config.get('wandb_project', 'nanoWaifu-T2I'), config=config)
 
     # Load Models
-    vae = AutoModel.from_pretrained(config['model']['vae_model'], trust_remote_code=True, torch_dtype=torch.bfloat16).to(device).eval()
+    vae = AutoModel.from_pretrained(config['model']['vae_model'], trust_remote_code=True,
+                                    torch_dtype=torch.bfloat16).to(device).eval()
     vae.requires_grad_(False)
     vae.config.scaling_factor = 0.62
     vae.config.shift_factor = 0
+    vae.compile()
     tokenizer = AutoTokenizer.from_pretrained(config['model']['text_encoder_model'])
     text_encoder = AutoModel.from_pretrained(config['model']['text_encoder_model']).to(device).eval()
     text_encoder.requires_grad_(False)
+    text_encoder.compile
     print(f"Using LLM text encoder: {config['model']['text_encoder_model']}")
-
-    # Initialize Drifting Loss
-    drifting_loss_fn = DriftingAndPerceptualLoss(device=device, dtype=torch.bfloat16)
 
     # Load Data
     wds_loader = WDSLoader(
@@ -204,7 +210,7 @@ def train(config_path):
         momentum=0.95, nesterov=True, adjust_lr_fn="match_rms_adamw"
     )
 
-    optimizer_adamw = AdamW(
+    optimizer_adamw = bnb.optim.AdamW8bit(
         params_1d, lr=config['training']['learning_rate'],
         weight_decay=0.1, betas=(0.9, 0.95),
     )
@@ -282,6 +288,7 @@ def train(config_path):
 
     while global_step < max_train_steps:
         model.train()
+        model.compile()
         try:
             batch = next(data_iter)
         except StopIteration:
@@ -305,7 +312,7 @@ def train(config_path):
         with torch.no_grad():
             with torch.cuda.amp.autocast(dtype=torch.bfloat16):
                 latents = (vae.encode(
-                    images).latent_dist.sample() - vae.config.shift_factor) * vae.config.scaling_factor
+                    images, return_dict=False) - vae.config.shift_factor) * vae.config.scaling_factor
                 text_embeds, text_mask = encode_prompt_with_llm(
                     tokenizer, text_encoder, prompts, device,
                     max_sequence_length=config['model'].get('llm_max_seq_length', 64)
@@ -322,8 +329,8 @@ def train(config_path):
             current_token_drop_ratio = base_token_drop_ratio if sprint_enabled else 0.0
 
         torch.manual_seed(global_step)
-        if torch.rand(1).item() < 0.1:
-            current_token_drop_ratio = 0.0
+        # if torch.rand(1).item() < 0.1:
+        #    current_token_drop_ratio = 0.0
 
         t = torch.rand((latents.shape[0],), device=device)
         x0 = torch.randn_like(latents)
@@ -340,30 +347,7 @@ def train(config_path):
             loss_head = ((v_head - ut) ** 2).mean()
             loss_base = ((v_base - ut) ** 2).mean()
 
-            # --- Drifting & Perceptual Loss ---
-            # 1. Reconstruct x1 (clean latent) from predicted velocity
-            # xt = (1-t)x0 + t*x1  AND  v = x1 - x0
-            # implies x1 = xt + (1-t)v
-            x1_pred = xt + (1 - t_reshaped) * v_head
-            
-            # 2. Decode to Pixel Space
-            # Scale back to VAE latent space
-            latents_pred = x1_pred / vae.config.scaling_factor + vae.config.shift_factor
-            
-            # Decode (use VAE in eval mode, gradient flows through latents_pred)
-            # We use chunks or just full batch. For memory, full batch might be heavy but let's try.
-            # VAE is in eval mode, so no internal gradients, but input requires grad.
-            images_pred = vae.decode(latents_pred).sample
-            
-            # 3. Normalize to [0, 1] for Loss
-            images_pred_norm = (images_pred / 2 + 0.5).clamp(0, 1)
-            images_real_norm = (images / 2 + 0.5).clamp(0, 1)
-
-            # 4. Compute Loss
-            drift_out = drifting_loss_fn(images_pred_norm, images_real_norm)
-            loss_drift = drift_out["loss"]
-
-            loss = loss_head + loss_base * 1 / 4 + loss_drift
+            loss = loss_head + loss_base * 1 / 4
 
         optimizer_muon.zero_grad()
         optimizer_adamw.zero_grad()
@@ -380,7 +364,7 @@ def train(config_path):
                 "loss": loss.item(),
                 "loss_head": loss_head.item(),
                 "loss_base": loss_base.item(),
-                "loss_drift": loss_drift.item(),
+                # "loss_drift": loss_drift.item(),
                 "grad_norm": grad_norm.item() if torch.is_tensor(grad_norm) else grad_norm,
             }
             pbar.set_postfix(**logs)

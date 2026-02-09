@@ -1,15 +1,15 @@
 training:
-  batch_size: 128
+  batch_size: 16
   learning_rate: 1.0e-4
   num_epochs: 100
   max_train_steps: 1000000
-  gradient_checkpointing: false
+  gradient_checkpointing: true
   freeze_backbone: false
   log_every_steps: 10
 
   save_image_every_steps: 5000
   image_size: 256
-  patch_size: 2   # For 32x32 latents, patch_size 2 gives 16x16=256 patches
+  patch_size: 1   # For 32x32 latents, patch_size 2 gives 16x16=256 patches
   num_workers: 2
   class_dropout_prob: 0
   cfg_scale: 1.4
@@ -21,9 +21,9 @@ training:
 model:
   dim: 1536
   depth: 24
-  heads: 24
+  heads: 16
   mlp_dim: 6144
-  in_channels: 32 # Latents
+  in_channels: 128 # Latents
   context_dim: 1024 # LLM hidden size (adjust based on your LLM)
   vae_model: "fal/FLUX.2-Tiny-AutoEncoder"
   # LLM text encoder for cross-attention
@@ -31,7 +31,7 @@ model:
   llm_max_seq_length: 128  # Maximum sequence length for LLM
 
 data:
-  webdataset_url: 'pipe:curl -s -L -H "Authorization: Bearer <Something something>>" https://huggingface.co/datasets/animetimm/danbooru-wdtagger-v4-w640-ws-full/resolve/main/train/00{001..213}.tar'
+  webdataset_url: '/teamspace/studios/this_studio/nanoWaifu-T2I/anime/train/00{001..006}.tar'
   csv_path: "characters.csv"
   use_advanced_captions: true  # Enable advanced caption processing with tag dropping
 

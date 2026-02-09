@@ -117,12 +117,12 @@ class FinalLayer(nn.Module):
 class PatchEmbed(nn.Module):
     def __init__(self, img_size=224, patch_size=16, in_chans=3, embed_dim=768):
         super().__init__()
-        self.num_patches = (img_size // patch_size) ** 2
+        self.num_patches = (img_size // patch_size // 2) ** 2
         self.unshuffle = nn.PixelUnshuffle(patch_size)
         self.proj = nn.Conv2d(in_chans * patch_size ** 2, embed_dim, kernel_size=7, padding=3)
 
     def forward(self, x):
-        x = self.unshuffle(x)
+        # x = self.unshuffle(x)
         x = self.proj(x)
         return x.flatten(2).transpose(1, 2)
 
